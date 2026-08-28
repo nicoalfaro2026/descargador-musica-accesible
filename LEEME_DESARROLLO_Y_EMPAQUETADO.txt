@@ -1,0 +1,31 @@
+﻿DESCARGADOR DE MÚSICA ACCESIBLE - DESARROLLO Y DISTRIBUCIÓN
+
+PARA PROBAR EL CÓDIGO FUENTE EN SU PC
+1. Ejecute PREPARAR_MODO_ROBUSTO.bat.
+2. Ejecute ABRIR_PROGRAMA.bat.
+
+PARA CREAR LA VERSIÓN QUE SE ENVÍA A OTROS USUARIOS
+Ejecute únicamente:
+CREAR_VERSION_DISTRIBUIBLE.bat
+
+El constructor usa un entorno aislado y una ruta corta bajo su perfil de
+Windows. Esto evita depender de la instalación de Python de Microsoft Store y
+evita el problema que produjo nodejs-wheel-binaries con rutas demasiado largas.
+
+El constructor genera:
+- PAQUETE_PARA_DISTRIBUIR\
+- DescargadorMusicaAccesible_1_8_0_PORTABLE.zip
+- DescargadorMusicaAccesible_1_8_0_PORTABLE.zip.sha256.txt
+
+QUÉ RECIBE EL USUARIO FINAL
+Solo el contenido de PAQUETE_PARA_DISTRIBUIR o el ZIP portable.
+El usuario abre DescargadorMusicaAccesible.exe.
+
+El usuario final NO debe ejecutar:
+- PREPARAR_MODO_ROBUSTO.bat
+- INSTALAR_DEPENDENCIAS.bat
+- ACTUALIZAR_MOTOR_DESCARGA.bat
+- CREAR_VERSION_DISTRIBUIBLE.bat
+
+Tampoco necesita Python, pip, Deno, Node.js, FFmpeg o MPV instalados en Windows,
+ni permisos de administrador, ni habilitar rutas largas.

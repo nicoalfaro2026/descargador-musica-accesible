@@ -1,0 +1,26 @@
+DESCARGADOR DE MÚSICA ACCESIBLE 1.8.0 - VERSIÓN PORTABLE
+
+1. Descomprima la carpeta completa.
+2. Abra DescargadorMusicaAccesible.exe.
+3. No necesita instalar Python, pip, FFmpeg, MPV, Deno ni Node.js.
+4. No necesita permisos de administrador ni modificar el Registro de Windows.
+5. Mantenga completa la carpeta _internal que acompaña al ejecutable.
+
+NOVEDADES 1.8.0
+- Historial limitado automáticamente y opción para limpiarlo sin borrar las descargas.
+- Cantidad de resultados de búsqueda configurable entre 20 y 300.
+- Opción para preguntar o no la cantidad en cada búsqueda.
+- Dispositivo de salida del reproductor seleccionable desde Herramientas > Opciones.
+- Audio en MP3, M4A, AAC, OPUS, OGG, WAV y FLAC.
+- Video MP4 con mejor resolución disponible o límite desde 144p hasta 2160p/4K.
+- Reproductor simplificado; los atajos completos están en Ayuda > Atajos de teclado.
+
+MOTORES INTERNOS
+- yt-dlp: motor principal.
+- Deno portable: runtime JavaScript principal de yt-dlp.
+- pytubefix: motor alternativo automático.
+- Node.js portable: runtime utilizado internamente por pytubefix cuando lo necesita.
+- FFmpeg/ffprobe: procesamiento y conversión multimedia.
+- MPV: reproducción interna.
+
+Si una descarga no funciona, el programa decide internamente cuándo intentar el motor alternativo. El usuario no necesita cambiar ninguna opción.

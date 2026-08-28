@@ -1,0 +1,204 @@
+﻿MANUEL UTILISATEUR
+Téléchargeur de musique accessible
+Version 1.8.0
+Développé par Nicolás Alfaro
+
+============================================================
+1. INTRODUCTION
+============================================================
+
+Téléchargeur de musique accessible est une application Windows conçue pour rechercher, écouter et télécharger du contenu multimédia simplement, avec une attention particulière à la navigation au clavier et aux lecteurs d’écran NVDA et JAWS.
+
+Fonctions principales :
+- Rechercher des vidéos sur YouTube.
+- Rechercher des chaînes et des listes de lecture.
+- Écouter un résultat avant de le télécharger.
+- Télécharger à partir d’une URL.
+- Télécharger l’audio en MP3, M4A, AAC, OPUS, OGG, WAV ou FLAC, et la vidéo en MP4.
+- Marquer plusieurs vidéos d’une chaîne ou d’une liste pour un téléchargement multiple.
+- Afficher les informations et copier l’URL d’un résultat.
+- Consulter l’historique et les journaux.
+- Changer la langue de l’interface.
+- Mettre à jour le moteur de téléchargement et rechercher les mises à jour du programme.
+
+Utilisez l’application uniquement avec du contenu que vous avez le droit ou l’autorisation de télécharger et respectez les conditions applicables du service utilisé.
+
+============================================================
+2. OUVRIR LE PROGRAMME
+============================================================
+
+Dans une version portable finale, ouvrez :
+DescargadorMusicaAccesible.exe
+
+Il n’est pas nécessaire d’installer séparément Python, Deno, Node ou FFmpeg. Si la distribution contient un dossier _internal, ne le supprimez pas et ne déplacez pas les fichiers qu’il contient.
+
+Il n’est pas recommandé de désactiver Windows Defender ou un autre antivirus. Si un antivirus détecte le programme, vérifiez que le fichier provient de la publication officielle et signalez la détection au développeur.
+
+============================================================
+3. TÉLÉCHARGER À PARTIR D’UNE URL
+============================================================
+
+1. Allez dans l’onglet Télécharger par URL, ou appuyez sur Alt+1.
+2. Collez l’URL dans le champ correspondant.
+3. Appuyez sur Entrée.
+4. Choisissez Télécharger ou Informations.
+5. Si vous choisissez Télécharger, sélectionnez le format et la qualité lorsque le programme le demande.
+
+============================================================
+4. RECHERCHER SUR YOUTUBE
+============================================================
+
+1. Ouvrez Rechercher sur YouTube ou appuyez sur Alt+2.
+2. Saisissez votre recherche et appuyez sur Entrée.
+3. Le nombre par défaut se règle dans Outils > Options : 20, 50, 75, 100, 150, 200 ou 300 résultats.
+4. Si « Demander le nombre avant chaque recherche » est activé, le sélecteur apparaît à chaque recherche.
+5. Utilisez les flèches pour parcourir la liste et Entrée pour ouvrir les actions.
+
+Actions : Télécharger, Informations, Lire et Copier l’URL. Raccourcis : Alt+D, Alt+R, Alt+I, Alt+C et Alt+L.
+
+============================================================
+5. CHAÎNES ET LISTES DE LECTURE
+============================================================
+
+1. Allez dans Chaînes et listes, ou appuyez sur Alt+3.
+2. Saisissez un nom et appuyez sur Entrée.
+3. Choisissez Chaîne ou Liste de lecture.
+4. Sélectionnez un résultat et ouvrez ses actions.
+5. Vous pouvez consulter les informations, ouvrir les vidéos, télécharger les premières vidéos ou copier l’URL.
+
+Dans une liste de vidéos :
+- Espace : marquer ou démarquer la vidéo ayant le focus.
+- Entrée : ouvrir les actions de la vidéo ayant le focus.
+- Alt+D : télécharger uniquement la vidéo ayant le focus.
+- Alt+R : lire uniquement la vidéo ayant le focus.
+- Ctrl+Maj+D : télécharger uniquement les vidéos marquées.
+
+Les téléchargements de chaînes et de listes sont enregistrés dans leur propre dossier à l’intérieur du dossier principal de téléchargement.
+
+============================================================
+6. LECTEUR INTERNE
+============================================================
+
+L’action Lire permet d’écouter le contenu avant de le télécharger.
+
+Commandes :
+1 = reculer.
+2 = mettre en pause ou reprendre.
+3 = avancer.
+4 = arrêter et revenir.
+5 = diminuer la vitesse.
+6 = augmenter la vitesse.
+7 = diminuer le volume.
+8 = augmenter le volume.
+9 = annoncer la position actuelle.
+0 = annoncer la durée totale.
+
+Utilisez les chiffres de la rangée supérieure du clavier. Le dernier volume choisi est mémorisé et réutilisé lors des lectures suivantes. Le périphérique de sortie peut être choisi dans Outils > Options et la liste complète des raccourcis se trouve dans Aide > Raccourcis clavier.
+
+============================================================
+7. FORMATS, QUALITÉ ET RÉSOLUTION
+============================================================
+
+La version 1.8.0 prend en charge MP3, M4A, AAC, OPUS, OGG, WAV et FLAC pour l’audio, ainsi que MP4 pour la vidéo.
+
+MP3, M4A, AAC, OPUS et OGG proposent 128, 192, 256 ou 320 kbps. WAV et FLAC utilisent la meilleure qualité audio disponible.
+
+Pour MP4, choisissez Meilleure disponible ou une limite jusqu’à 2160p (4K), 1440p, 1080p, 720p, 480p, 360p, 240p ou 144p. Si la résolution exacte n’existe pas, la meilleure option compatible sous la limite est utilisée.
+
+============================================================
+8. DOSSIER DE TÉLÉCHARGEMENT
+============================================================
+
+Le programme utilise son propre dossier de téléchargement et permet de choisir un autre emplacement depuis l’interface. Il n’est pas nécessaire de déplacer les composants internes du programme pour modifier l’emplacement des fichiers téléchargés.
+
+============================================================
+9. MOTEUR DE TÉLÉCHARGEMENT ROBUSTE
+============================================================
+
+Le programme utilise yt-dlp comme moteur principal. Lorsqu’il est disponible, Deno est utilisé pour la prise en charge JavaScript. pytubefix peut également être utilisé comme moteur alternatif en cas d’échec compatible ; le changement est automatique.
+
+L’utilisateur n’a pas besoin de choisir le moteur. Les détails techniques sont enregistrés dans logs/descargador.log.
+
+Dans Outils > Voir la version de la bibliothèque de téléchargement, vous pouvez vérifier l’état de yt-dlp, du moteur JavaScript et du moteur alternatif.
+
+============================================================
+10. OUTILS ET OPTIONS
+============================================================
+
+Selon la version, le menu Outils peut contenir :
+- Rechercher les mises à jour du programme.
+- Mettre à jour la bibliothèque ou le moteur de téléchargement.
+- Voir la version de la bibliothèque de téléchargement.
+- Options.
+- Langue.
+
+Options permet de configurer notamment la fréquence des mises à jour, les sons et les paramètres du lecteur.
+
+Pour changer de langue :
+1. Ouvrez Outils.
+2. Ouvrez Langue.
+3. Choisissez Español, English, Français, Italiano, Português ou Русский.
+4. Si le programme le demande, fermez-le puis rouvrez-le afin d’appliquer tous les textes.
+
+============================================================
+11. PRINCIPAUX RACCOURCIS CLAVIER
+============================================================
+
+Alt+1 = Télécharger par URL.
+Alt+2 = Rechercher sur YouTube.
+Alt+3 = Chaînes et listes.
+Ctrl+L = aller au champ URL.
+Ctrl+O = sélectionner le dossier.
+Ctrl+I = informations.
+Alt+D = télécharger l’élément ayant le focus.
+Alt+R = lire l’élément ayant le focus.
+Ctrl+Maj+D = télécharger les vidéos marquées dans Chaînes et listes.
+Ctrl+K ou Échap = annuler le téléchargement lorsque cela s’applique.
+Ctrl+B = aller à Rechercher sur YouTube.
+Ctrl+H = afficher l’historique.
+Ctrl+Q = quitter.
+
+L’aide complète des raccourcis est également disponible dans le menu Aide du programme.
+
+============================================================
+12. HISTORIQUE ET JOURNAUX
+============================================================
+
+Fichier > Voir l’historique ouvre l’historique enregistré par l’application.
+Fichier > Ouvrir le dossier des journaux ouvre le dossier des informations techniques.
+
+Pour signaler un problème, vous pouvez partager la partie pertinente du journal après avoir vérifié qu’elle ne contient aucune information que vous ne souhaitez pas envoyer.
+
+============================================================
+13. SI QUELQUE CHOSE NE FONCTIONNE PAS
+============================================================
+
+Si la recherche ou le téléchargement ne fonctionne pas :
+- Vérifiez votre connexion Internet.
+- Utilisez l’option Outils pour mettre à jour le moteur de téléchargement.
+- Essayez un autre résultat.
+- Consultez le diagnostic du moteur et, si nécessaire, le journal.
+
+Si le lecteur ne fonctionne pas :
+- Consultez son diagnostic dans les outils disponibles.
+- Ne supprimez pas mpv-1.dll ni le dossier _internal de la version portable.
+
+Si NVDA ou JAWS n’annonce pas correctement un contrôle :
+- Notez l’écran, le contrôle, la touche utilisée et le texte annoncé.
+- Indiquez également la langue du programme et la version du lecteur d’écran.
+
+============================================================
+14. LANGUES ET COLLABORATION
+============================================================
+
+L’application comprend des catalogues pour Español, English, Français, Italiano, Português et Русский. Les traductions se trouvent dans le dossier idiomas et peuvent être corrigées sans modifier la logique principale du programme.
+
+L’espagnol est le catalogue maître. Avant de publier une traduction, il est recommandé de la tester avec un lecteur d’écran et, si possible, avec une personne de langue maternelle correspondante.
+
+============================================================
+15. CONTACT ET REMERCIEMENTS
+============================================================
+
+Téléchargeur de musique accessible a été développé par Nicolás Alfaro afin de proposer un outil simple et accessible.
+
+Merci à toutes les personnes qui testent le programme, signalent des problèmes et contribuent aux traductions et aux tests d’accessibilité.

@@ -1,0 +1,66 @@
+MANIFIESTO DE LA BASE 1.8.0
+Fecha: 28/08/2026
+
+CÓDIGO PRINCIPAL
+- main.py
+- ui.py
+- descargador.py
+- motor_ytdlp.py
+- motor_pytubefix.py
+- reproductor.py
+- historial.py
+- configuracion.py
+- config.py
+- i18n.py
+- actualizador_app.py
+- sonidos.py
+- voz.py
+- utils.py
+
+IDIOMAS Y MANUALES
+- idiomas/es.json, en.json, fr.json, it.json, pt.json y ru.json
+- manuales/MANUAL_ES.txt, EN, FR, IT, PT y RU
+- MANUAL_DE_USUARIO_DESCARGADOR_MUSICA_ACCESIBLE.txt
+
+PREPARACIÓN Y CONSTRUCCIÓN
+- PREPARAR_MODO_ROBUSTO.bat
+- INSTALAR_DEPENDENCIAS.bat
+- ACTUALIZAR_MOTOR_DESCARGA.bat
+- ABRIR_PROGRAMA.bat
+- CREAR_VERSION_DISTRIBUIBLE.bat
+- EMPAQUETAR_MODO_FINAL.bat
+- DescargadorAccesible_FINAL.spec
+- requirements.txt
+- requirements_build.txt
+- preparar_motor_robusto.py
+- preparar_node_portable.py
+- nodejs_wheel/
+
+BINARIOS DE LA CARPETA COMPLETA DE PRUEBA
+- yt-dlp.exe
+- ffmpeg.exe
+- ffprobe.exe
+- mpv-1.dll
+- nvdaControllerClient64.dll
+Deno y Node se preparan mediante PREPARAR_MODO_ROBUSTO.bat y no se almacenan en el repositorio fuente.
+
+GITHUB Y DOCUMENTACIÓN
+- README.md / README_EN.md
+- CONTRIBUTING.md
+- SECURITY.md
+- PUBLICAR_EN_GITHUB.md
+- docs/
+- tools/
+- .github/
+- .gitignore / .gitattributes
+- CAMBIOS.txt
+- REPORTE_CAMBIOS_1_8_0.txt
+
+NO DEBEN FORMAR PARTE DE UNA ENTREGA LIMPIA
+- __pycache__/
+- datos/
+- logs/
+- build/
+- dist/
+- ZIP de pruebas anteriores
+- reportes históricos internos de la fase 1.7.1

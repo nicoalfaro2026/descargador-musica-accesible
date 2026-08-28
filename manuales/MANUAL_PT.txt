@@ -1,0 +1,204 @@
+﻿MANUAL DO USUÁRIO
+Baixador de Música Acessível
+Versão 1.8.0
+Desenvolvido por Nicolás Alfaro
+
+============================================================
+1. INTRODUÇÃO
+============================================================
+
+Baixador de Música Acessível é um aplicativo para Windows criado para pesquisar, ouvir e baixar conteúdo multimídia de forma simples, com atenção especial à navegação pelo teclado e aos leitores de tela NVDA e JAWS.
+
+Principais funções:
+- Pesquisar vídeos no YouTube.
+- Pesquisar canais e playlists.
+- Reproduzir um resultado antes de baixá-lo.
+- Baixar por URL.
+- Baixar áudio em MP3, M4A, AAC, OPUS, OGG, WAV ou FLAC e vídeo em MP4.
+- Marcar vários vídeos de um canal ou playlist para download múltiplo.
+- Ver informações e copiar a URL de um resultado.
+- Consultar histórico e logs.
+- Alterar o idioma da interface.
+- Atualizar o mecanismo de download e verificar atualizações do programa.
+
+Use o aplicativo somente com conteúdo que você tenha direito ou permissão para baixar e respeite os termos aplicáveis do serviço utilizado.
+
+============================================================
+2. ABRIR O PROGRAMA
+============================================================
+
+Em uma versão portátil final, abra:
+DescargadorMusicaAccesible.exe
+
+Não é necessário instalar Python, Deno, Node ou FFmpeg separadamente. Se a distribuição contiver uma pasta _internal, não a exclua nem mova arquivos de dentro dela.
+
+Não é recomendado desativar o Windows Defender ou outro antivírus. Se um antivírus detectar o programa, verifique se o arquivo veio da publicação oficial e informe a detecção ao desenvolvedor.
+
+============================================================
+3. BAIXAR POR URL
+============================================================
+
+1. Vá para a guia Baixar por URL ou pressione Alt+1.
+2. Cole a URL no campo correspondente.
+3. Pressione Enter.
+4. Escolha Baixar ou Informações.
+5. Se escolher Baixar, selecione formato e qualidade quando o programa solicitar.
+
+============================================================
+4. PESQUISAR NO YOUTUBE
+============================================================
+
+1. Vá para Pesquisar no YouTube ou pressione Alt+2.
+2. Digite a pesquisa e pressione Enter.
+3. A quantidade padrão é configurada em Ferramentas > Opções: 20, 50, 75, 100, 150, 200 ou 300 resultados.
+4. Se «Perguntar a quantidade antes de cada pesquisa» estiver ativado, o seletor será exibido em cada pesquisa.
+5. Use as setas para percorrer a lista e Enter para abrir as ações.
+
+Ações: Baixar, Informações, Reproduzir e Copiar URL. Atalhos: Alt+D, Alt+R, Alt+I, Alt+C e Alt+L.
+
+============================================================
+5. CANAIS E PLAYLISTS
+============================================================
+
+1. Vá para Canais e playlists ou pressione Alt+3.
+2. Digite um nome e pressione Enter.
+3. Escolha Canal ou Playlist.
+4. Selecione um resultado e abra suas ações.
+5. Você pode ver informações, abrir os vídeos, baixar os primeiros vídeos ou copiar a URL.
+
+Dentro de uma lista de vídeos:
+- Espaço: marcar ou desmarcar o vídeo em foco.
+- Enter: abrir as ações do vídeo em foco.
+- Alt+D: baixar somente o vídeo em foco.
+- Alt+R: reproduzir somente o vídeo em foco.
+- Ctrl+Shift+D: baixar somente os vídeos marcados.
+
+Os downloads de canais e playlists são salvos em uma pasta própria dentro da pasta principal de downloads.
+
+============================================================
+6. REPRODUTOR INTERNO
+============================================================
+
+A ação Reproduzir permite ouvir o conteúdo antes de baixá-lo.
+
+Controles:
+1 = retroceder.
+2 = pausar ou continuar.
+3 = avançar.
+4 = parar e voltar.
+5 = diminuir velocidade.
+6 = aumentar velocidade.
+7 = diminuir volume.
+8 = aumentar volume.
+9 = anunciar posição atual.
+0 = anunciar duração total.
+
+Use os números da linha superior do teclado. O último volume escolhido é salvo e reutilizado nas próximas reproduções. O dispositivo de saída pode ser escolhido em Ferramentas > Opções e a lista completa de atalhos está em Ajuda > Atalhos de teclado.
+
+============================================================
+7. FORMATOS, QUALIDADE E RESOLUÇÃO
+============================================================
+
+A versão 1.8.0 suporta MP3, M4A, AAC, OPUS, OGG, WAV e FLAC para áudio e MP4 para vídeo.
+
+MP3, M4A, AAC, OPUS e OGG oferecem 128, 192, 256 ou 320 kbps. WAV e FLAC usam a melhor qualidade de áudio disponível.
+
+Para MP4 é possível escolher Melhor disponível ou limitar até 2160p (4K), 1440p, 1080p, 720p, 480p, 360p, 240p ou 144p. Se a resolução exata não existir, será usada a melhor opção compatível abaixo do limite.
+
+============================================================
+8. PASTA DE DOWNLOADS
+============================================================
+
+O programa usa sua própria pasta de downloads e permite escolher outro local pela interface. Não é necessário mover os componentes internos do programa para alterar onde os arquivos baixados serão salvos.
+
+============================================================
+9. MECANISMO DE DOWNLOAD ROBUSTO
+============================================================
+
+O programa usa yt-dlp como mecanismo principal. Quando disponível, usa Deno para suporte JavaScript. Também pode usar pytubefix como mecanismo alternativo diante de falhas compatíveis; a troca acontece automaticamente.
+
+O usuário não precisa escolher qual mecanismo usar. Os detalhes técnicos são armazenados em logs/descargador.log.
+
+Em Ferramentas > Ver versão da biblioteca de download é possível verificar o estado do yt-dlp, do mecanismo JavaScript e do mecanismo alternativo.
+
+============================================================
+10. FERRAMENTAS E OPÇÕES
+============================================================
+
+Dependendo da versão, o menu Ferramentas pode incluir:
+- Verificar atualizações do programa.
+- Atualizar a biblioteca ou o mecanismo de download.
+- Ver versão da biblioteca de download.
+- Opções.
+- Idioma.
+
+Em Opções é possível configurar itens como frequência de atualização, sons e parâmetros do reprodutor.
+
+Para mudar o idioma:
+1. Abra Ferramentas.
+2. Entre em Idioma.
+3. Escolha Español, English, Français, Italiano, Português ou Русский.
+4. Se o programa solicitar, feche e abra novamente para aplicar todos os textos.
+
+============================================================
+11. PRINCIPAIS ATALHOS DE TECLADO
+============================================================
+
+Alt+1 = Baixar por URL.
+Alt+2 = Pesquisar no YouTube.
+Alt+3 = Canais e playlists.
+Ctrl+L = ir para o campo URL.
+Ctrl+O = selecionar pasta.
+Ctrl+I = informações.
+Alt+D = baixar item em foco.
+Alt+R = reproduzir item em foco.
+Ctrl+Shift+D = baixar vídeos marcados em Canais e playlists.
+Ctrl+K ou Esc = cancelar download quando aplicável.
+Ctrl+B = ir para Pesquisar no YouTube.
+Ctrl+H = ver histórico.
+Ctrl+Q = sair.
+
+A ajuda completa de atalhos também está disponível no menu Ajuda do programa.
+
+============================================================
+12. HISTÓRICO E LOGS
+============================================================
+
+Arquivo > Ver histórico abre o histórico registrado pelo aplicativo.
+Arquivo > Abrir pasta de logs abre a pasta dos registros técnicos.
+
+Se precisar informar um problema, você pode compartilhar a parte relevante do log depois de verificar que ele não contém informações que você não queira enviar.
+
+============================================================
+13. SE ALGO NÃO FUNCIONAR
+============================================================
+
+Se a pesquisa ou o download não funcionar:
+- Verifique a conexão com a Internet.
+- Use a opção de Ferramentas para atualizar o mecanismo de download.
+- Tente outro resultado.
+- Consulte o diagnóstico do mecanismo e, se necessário, o log.
+
+Se o reprodutor não funcionar:
+- Consulte o diagnóstico do reprodutor nas ferramentas disponíveis.
+- Não exclua mpv-1.dll nem a pasta _internal da versão portátil.
+
+Se NVDA ou JAWS não anunciar corretamente um controle:
+- Anote a tela, o controle, a tecla utilizada e o texto anunciado.
+- Informe também o idioma do programa e a versão do leitor de tela.
+
+============================================================
+14. IDIOMAS E COLABORAÇÃO
+============================================================
+
+O aplicativo inclui catálogos para Español, English, Français, Italiano, Português e Русский. As traduções ficam na pasta idiomas e podem ser corrigidas sem alterar a lógica principal do programa.
+
+O espanhol é o catálogo mestre. Antes de publicar uma tradução, recomenda-se testá-la com um leitor de tela e, quando possível, com uma pessoa nativa do idioma.
+
+============================================================
+15. CONTATO E AGRADECIMENTOS
+============================================================
+
+Baixador de Música Acessível foi desenvolvido por Nicolás Alfaro com o objetivo de oferecer uma ferramenta simples e acessível.
+
+Obrigado a todas as pessoas que testam o programa, relatam problemas e colaboram com traduções e testes de acessibilidade.

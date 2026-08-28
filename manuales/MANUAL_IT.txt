@@ -1,0 +1,204 @@
+﻿MANUALE UTENTE
+Scaricatore di musica accessibile
+Versione 1.8.0
+Sviluppato da Nicolás Alfaro
+
+============================================================
+1. INTRODUZIONE
+============================================================
+
+Scaricatore di musica accessibile è un’applicazione per Windows progettata per cercare, ascoltare e scaricare contenuti multimediali in modo semplice, con particolare attenzione alla navigazione da tastiera e agli screen reader NVDA e JAWS.
+
+Funzioni principali:
+- Cercare video su YouTube.
+- Cercare canali e playlist.
+- Riprodurre un risultato prima di scaricarlo.
+- Scaricare da un URL.
+- Scaricare audio in MP3, M4A, AAC, OPUS, OGG, WAV o FLAC e video in MP4.
+- Contrassegnare più video di un canale o di una playlist per un download multiplo.
+- Visualizzare informazioni e copiare l’URL di un risultato.
+- Consultare cronologia e log.
+- Cambiare la lingua dell’interfaccia.
+- Aggiornare il motore di download e controllare gli aggiornamenti del programma.
+
+Utilizzare l’applicazione solo con contenuti che si ha il diritto o il permesso di scaricare e rispettare le condizioni applicabili del servizio utilizzato.
+
+============================================================
+2. APERTURA DEL PROGRAMMA
+============================================================
+
+In una versione portable finale, aprire:
+DescargadorMusicaAccesible.exe
+
+Non è necessario installare separatamente Python, Deno, Node o FFmpeg. Se la distribuzione contiene una cartella _internal, non eliminarla e non spostare i file al suo interno.
+
+Non è consigliabile disattivare Windows Defender o un altro antivirus. Se un antivirus rileva il programma, verificare che il file provenga dalla pubblicazione ufficiale e segnalare il rilevamento allo sviluppatore.
+
+============================================================
+3. SCARICARE DA UN URL
+============================================================
+
+1. Andare alla scheda Scarica da URL, oppure premere Alt+1.
+2. Incollare l’URL nel campo corrispondente.
+3. Premere Invio.
+4. Scegliere Scarica oppure Informazioni.
+5. Se si sceglie Scarica, selezionare formato e qualità quando richiesto.
+
+============================================================
+4. CERCARE SU YOUTUBE
+============================================================
+
+1. Aprire Cerca su YouTube oppure premere Alt+2.
+2. Digitare la ricerca e premere Invio.
+3. Il numero predefinito si imposta in Strumenti > Opzioni: 20, 50, 75, 100, 150, 200 o 300 risultati.
+4. Se è attiva «Chiedi il numero prima di ogni ricerca», il selettore viene mostrato ogni volta.
+5. Usare le frecce per scorrere l’elenco e Invio per aprire le azioni.
+
+Azioni: Scarica, Informazioni, Riproduci e Copia URL. Scorciatoie: Alt+D, Alt+R, Alt+I, Alt+C e Alt+L.
+
+============================================================
+5. CANALI E PLAYLIST
+============================================================
+
+1. Andare a Canali e playlist, oppure premere Alt+3.
+2. Digitare un nome e premere Invio.
+3. Scegliere Canale oppure Playlist.
+4. Selezionare un risultato e aprire le azioni.
+5. È possibile consultare le informazioni, aprire i video, scaricare i primi video oppure copiare l’URL.
+
+All’interno di un elenco di video:
+- Spazio: contrassegna o rimuove il contrassegno dal video con il focus.
+- Invio: apre le azioni del video con il focus.
+- Alt+D: scarica solo il video con il focus.
+- Alt+R: riproduce solo il video con il focus.
+- Ctrl+Maiusc+D: scarica solo i video contrassegnati.
+
+I download di canali e playlist vengono salvati in una cartella dedicata all’interno della cartella principale dei download.
+
+============================================================
+6. LETTORE INTERNO
+============================================================
+
+L’azione Riproduci permette di ascoltare il contenuto prima di scaricarlo.
+
+Comandi:
+1 = indietro.
+2 = pausa o riprendi.
+3 = avanti.
+4 = interrompi e torna indietro.
+5 = diminuisci velocità.
+6 = aumenta velocità.
+7 = diminuisci volume.
+8 = aumenta volume.
+9 = annuncia la posizione corrente.
+0 = annuncia la durata totale.
+
+Usare i numeri della riga superiore della tastiera. L’ultimo volume scelto viene salvato e riutilizzato nelle riproduzioni successive. Il dispositivo di uscita può essere scelto in Strumenti > Opzioni e l’elenco completo delle scorciatoie si trova in Aiuto > Scorciatoie da tastiera.
+
+============================================================
+7. FORMATI, QUALITÀ E RISOLUZIONE
+============================================================
+
+La versione 1.8.0 supporta MP3, M4A, AAC, OPUS, OGG, WAV e FLAC per l’audio e MP4 per il video.
+
+MP3, M4A, AAC, OPUS e OGG offrono 128, 192, 256 o 320 kbps. WAV e FLAC utilizzano la migliore qualità audio disponibile.
+
+Per MP4 è possibile scegliere Migliore disponibile oppure un limite fino a 2160p (4K), 1440p, 1080p, 720p, 480p, 360p, 240p o 144p. Se la risoluzione esatta non esiste, viene usata la migliore opzione compatibile sotto il limite.
+
+============================================================
+8. CARTELLA DEI DOWNLOAD
+============================================================
+
+Il programma utilizza una propria cartella di download e permette di scegliere un’altra posizione dall’interfaccia. Non è necessario spostare i componenti interni del programma per cambiare la posizione in cui vengono salvati i file scaricati.
+
+============================================================
+9. MOTORE DI DOWNLOAD ROBUSTO
+============================================================
+
+Il programma usa yt-dlp come motore principale. Quando disponibile, utilizza Deno per il supporto JavaScript. Può inoltre usare pytubefix come motore alternativo in caso di errori compatibili; il passaggio avviene automaticamente.
+
+L’utente non deve scegliere il motore. I dettagli tecnici vengono salvati in logs/descargador.log.
+
+In Strumenti > Visualizza versione della libreria di download è possibile verificare lo stato di yt-dlp, del motore JavaScript e del motore alternativo.
+
+============================================================
+10. STRUMENTI E OPZIONI
+============================================================
+
+A seconda della versione, il menu Strumenti può includere:
+- Cerca aggiornamenti del programma.
+- Aggiorna la libreria o il motore di download.
+- Visualizza versione della libreria di download.
+- Opzioni.
+- Lingua.
+
+In Opzioni è possibile configurare elementi come frequenza degli aggiornamenti, suoni e impostazioni del lettore.
+
+Per cambiare lingua:
+1. Aprire Strumenti.
+2. Aprire Lingua.
+3. Scegliere Español, English, Français, Italiano, Português o Русский.
+4. Se richiesto, chiudere e riaprire il programma per applicare completamente tutti i testi.
+
+============================================================
+11. PRINCIPALI SCORCIATOIE DA TASTIERA
+============================================================
+
+Alt+1 = Scarica da URL.
+Alt+2 = Cerca su YouTube.
+Alt+3 = Canali e playlist.
+Ctrl+L = vai al campo URL.
+Ctrl+O = seleziona cartella.
+Ctrl+I = informazioni.
+Alt+D = scarica elemento con il focus.
+Alt+R = riproduci elemento con il focus.
+Ctrl+Maiusc+D = scarica i video contrassegnati in Canali e playlist.
+Ctrl+K oppure Esc = annulla il download, quando applicabile.
+Ctrl+B = vai a Cerca su YouTube.
+Ctrl+H = visualizza cronologia.
+Ctrl+Q = esci.
+
+La guida completa alle scorciatoie è disponibile anche nel menu Aiuto del programma.
+
+============================================================
+12. CRONOLOGIA E LOG
+============================================================
+
+File > Visualizza cronologia apre la cronologia registrata dall’applicazione.
+File > Apri cartella log apre la cartella dei registri tecnici.
+
+Per segnalare un problema è possibile condividere la parte pertinente del log, dopo aver verificato che non contenga informazioni che non si desidera inviare.
+
+============================================================
+13. SE QUALCOSA NON FUNZIONA
+============================================================
+
+Se la ricerca o il download non funzionano:
+- Verificare la connessione Internet.
+- Usare l’opzione Strumenti per aggiornare il motore di download.
+- Provare un altro risultato.
+- Consultare la diagnostica del motore e, se necessario, il log.
+
+Se il lettore non funziona:
+- Consultare la diagnostica del lettore negli strumenti disponibili.
+- Non eliminare mpv-1.dll né la cartella _internal dalla versione portable.
+
+Se NVDA o JAWS non annuncia correttamente un controllo:
+- Annotare schermata, controllo, tasto utilizzato e testo annunciato.
+- Indicare anche la lingua del programma e la versione dello screen reader.
+
+============================================================
+14. LINGUE E COLLABORAZIONE
+============================================================
+
+L’applicazione include cataloghi per Español, English, Français, Italiano, Português e Русский. Le traduzioni si trovano nella cartella idiomas e possono essere corrette senza modificare la logica principale del programma.
+
+Lo spagnolo è il catalogo principale. Prima di pubblicare una traduzione è consigliabile provarla con uno screen reader e, quando possibile, farla revisionare da una persona madrelingua.
+
+============================================================
+15. CONTATTO E RINGRAZIAMENTI
+============================================================
+
+Scaricatore di musica accessibile è stato sviluppato da Nicolás Alfaro con l’obiettivo di offrire uno strumento semplice e accessibile.
+
+Grazie a tutte le persone che provano il programma, segnalano problemi e collaborano con traduzioni e test di accessibilità.

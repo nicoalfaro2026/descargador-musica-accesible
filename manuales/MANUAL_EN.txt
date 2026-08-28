@@ -1,0 +1,204 @@
+﻿USER MANUAL
+Accessible Music Downloader
+Version 1.8.0
+Developed by Nicolás Alfaro
+
+============================================================
+1. INTRODUCTION
+============================================================
+
+Accessible Music Downloader is a Windows application designed to search for, listen to and download multimedia content in a simple way, with special attention to keyboard navigation and the NVDA and JAWS screen readers.
+
+Main features:
+- Search for videos on YouTube.
+- Search for channels and playlists.
+- Play a result before downloading it.
+- Download from a URL.
+- Download audio as MP3, M4A, AAC, OPUS, OGG, WAV or FLAC, and video as MP4.
+- Mark multiple videos from a channel or playlist for a multiple download.
+- View information and copy a result URL.
+- Review history and logs.
+- Change the interface language.
+- Update the download engine and check for application updates.
+
+Use the application only with content you have the right or permission to download and follow the applicable terms of the service being used.
+
+============================================================
+2. OPENING THE PROGRAM
+============================================================
+
+In a final portable release, open:
+DescargadorMusicaAccesible.exe
+
+You do not need to install Python, Deno, Node or FFmpeg separately. If the distribution contains an _internal folder, do not delete it or move files from it.
+
+Disabling Windows Defender or another antivirus is not recommended. If an antivirus detects the program, verify that the file came from the official release and report the detection to the developer.
+
+============================================================
+3. DOWNLOADING FROM A URL
+============================================================
+
+1. Go to the Download by URL tab, or press Alt+1.
+2. Paste the URL into the corresponding field.
+3. Press Enter.
+4. Choose Download or Information.
+5. If you choose Download, select the format and quality when requested.
+
+============================================================
+4. SEARCHING YOUTUBE
+============================================================
+
+1. Go to Search YouTube, or press Alt+2.
+2. Type your search and press Enter.
+3. The default amount is configured in Tools > Options and can be 20, 50, 75, 100, 150, 200 or 300 results.
+4. If "Ask for the number before each search" is enabled, the selector appears for every search.
+5. Use the arrow keys to browse the list and Enter to open actions.
+
+Actions: Download, Information, Play and Copy URL. Shortcuts: Alt+D, Alt+R, Alt+I, Alt+C and Alt+L.
+
+============================================================
+5. CHANNELS AND PLAYLISTS
+============================================================
+
+1. Go to Channels and playlists, or press Alt+3.
+2. Type a name and press Enter.
+3. Choose Channel or Playlist.
+4. Select a result and open its actions.
+5. You can view information, open its videos, download the first videos or copy the URL.
+
+Inside a video list:
+- Space: mark or unmark the focused video.
+- Enter: open actions for the focused video.
+- Alt+D: download only the focused video.
+- Alt+R: play only the focused video.
+- Ctrl+Shift+D: download only the marked videos.
+
+Channel and playlist downloads are saved in their own folder inside the main download folder.
+
+============================================================
+6. INTERNAL PLAYER
+============================================================
+
+The Play action lets you listen to content before downloading it.
+
+Controls:
+1 = rewind.
+2 = pause or resume.
+3 = fast forward.
+4 = stop and go back.
+5 = decrease speed.
+6 = increase speed.
+7 = decrease volume.
+8 = increase volume.
+9 = announce current position.
+0 = announce total duration.
+
+Use the number keys on the top row of the keyboard. The last selected volume is saved and reused for later playback. The output device can be selected in Tools > Options and full shortcuts are under Help > Keyboard shortcuts.
+
+============================================================
+7. FORMATS, QUALITY AND RESOLUTION
+============================================================
+
+Version 1.8.0 supports MP3, M4A, AAC, OPUS, OGG, WAV and FLAC audio, plus MP4 video.
+
+MP3, M4A, AAC, OPUS and OGG offer 128, 192, 256 or 320 kbps. WAV and FLAC use the best available audio quality.
+
+For MP4 you can choose Best available or limit resolution up to 2160p (4K), 1440p, 1080p, 720p, 480p, 360p, 240p or 144p. If the exact resolution is unavailable, the best compatible option below the selected limit is used.
+
+============================================================
+8. DOWNLOAD FOLDER
+============================================================
+
+The program uses its own download folder and allows another location to be selected from the interface. You do not need to move internal program components to change where downloaded files are saved.
+
+============================================================
+9. ROBUST DOWNLOAD ENGINE
+============================================================
+
+The program uses yt-dlp as its main engine. When available, it uses Deno for JavaScript support. It can also use pytubefix as an alternative engine for compatible failures; switching is automatic.
+
+The user does not need to choose an engine. Technical details are stored in logs/descargador.log.
+
+Under Tools > View download library version you can check the status of yt-dlp, the JavaScript runtime and the alternative engine.
+
+============================================================
+10. TOOLS AND OPTIONS
+============================================================
+
+Depending on the version, the Tools menu can include:
+- Check for program updates.
+- Update the download library or engine.
+- View download library version.
+- Options.
+- Language.
+
+Options lets you configure items such as update frequency, sounds and player settings.
+
+To change language:
+1. Open Tools.
+2. Open Language.
+3. Choose Español, English, Français, Italiano, Português or Русский.
+4. If requested, close and reopen the program to apply all text completely.
+
+============================================================
+11. MAIN KEYBOARD SHORTCUTS
+============================================================
+
+Alt+1 = Download by URL.
+Alt+2 = Search YouTube.
+Alt+3 = Channels and playlists.
+Ctrl+L = go to the URL field.
+Ctrl+O = select folder.
+Ctrl+I = information.
+Alt+D = download focused item.
+Alt+R = play focused item.
+Ctrl+Shift+D = download marked videos in Channels and playlists.
+Ctrl+K or Esc = cancel download when applicable.
+Ctrl+B = go to Search YouTube.
+Ctrl+H = view history.
+Ctrl+Q = exit.
+
+The complete shortcut help is also available from the program's Help menu.
+
+============================================================
+12. HISTORY AND LOGS
+============================================================
+
+File > View history opens the application history. It is limited to 1,000 entries, and File > Clear history empties it without deleting downloaded files.
+File > Open logs folder opens the technical log folder.
+
+If you need to report a problem, you may share the relevant part of the log after checking that it does not contain information you do not want to send.
+
+============================================================
+13. IF SOMETHING DOES NOT WORK
+============================================================
+
+If search or download does not work:
+- Check your Internet connection.
+- Use the Tools option to update the download engine.
+- Try another result.
+- Review the engine diagnostic and, if necessary, the log.
+
+If the player does not work:
+- Review the player diagnostic from the available tools.
+- Do not delete mpv-1.dll or the _internal folder from the portable release.
+
+If NVDA or JAWS does not announce a control correctly:
+- Note the screen, control, key used and text announced.
+- Also report the application language and screen reader version.
+
+============================================================
+14. LANGUAGES AND COLLABORATION
+============================================================
+
+The application includes catalogs for Español, English, Français, Italiano, Português and Русский. Translations are stored in the idiomas folder and can be corrected without changing the main program logic.
+
+Spanish is the master catalog. Before publishing a translation, it is recommended to test it with a screen reader and, when possible, with a native speaker.
+
+============================================================
+15. CONTACT AND THANKS
+============================================================
+
+Accessible Music Downloader was developed by Nicolás Alfaro with the goal of providing a simple and accessible tool.
+
+Thank you to everyone who tests the program, reports issues, and contributes translations and accessibility testing.

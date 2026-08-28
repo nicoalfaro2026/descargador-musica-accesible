@@ -1,0 +1,8 @@
+{
+  "github_repo": "nicoalfaro2026/descargador-musica-accesible",
+  "api_url": "https://api.github.com/repos/nicoalfaro2026/descargador-musica-accesible/releases/latest",
+  "manifest_url": "",
+  "asset_contains": "DescargadorMusicaAccesible",
+  "asset_extension": ".zip",
+  "pagina_descargas": "https://github.com/nicoalfaro2026/descargador-musica-accesible/releases/latest"
+}

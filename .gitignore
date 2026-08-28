@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+
+# Compilación y paquetes
+build/
+dist/
+PAQUETE_PARA_DISTRIBUIR/
+*.zip
+*.sha256.txt
+*.spec.bak
+
+# Datos privados/locales del usuario
+datos/
+logs/
+*.log
+
+# Diagnósticos locales
+diagnostico_dependencias.txt
+
+# Binarios portables de terceros: se incluyen en Releases, no en el código fuente
+ffmpeg.exe
+ffprobe.exe
+mpv-1.dll
+yt-dlp.exe
+deno.exe
+node.exe
+qjs.exe
+nvdaControllerClient64.dll
+
+# Sistema/editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

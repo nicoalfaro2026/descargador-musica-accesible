@@ -1,0 +1,81 @@
+DESCARGADOR DE MÚSICA ACCESIBLE - CAMBIOS CONSOLIDADOS
+
+Versión base revisada: 1.7.1
+Fecha de revisión: 28/08/2026
+
+Cambios de esta revisión:
+- Se mantiene yt-dlp.exe como motor principal y la librería Python como respaldo.
+- La librería interna yt-dlp pasa a ser opcional al iniciar; si falta, el programa puede seguir usando yt-dlp.exe.
+- Se eliminó el User-Agent fijo de Chrome 120 para no quedar atado a un navegador antiguo.
+- Se eliminó el forzado de clientes YouTube web/android/ios; yt-dlp selecciona sus clientes actuales.
+- Se agregó detección de Deno, Node o QuickJS para desafíos JavaScript de YouTube.
+- Se mejoraron los mensajes cuando falta el motor JavaScript.
+- Se reforzó la actualización de yt-dlp con verificación posterior y restauración del respaldo si falla.
+- El actualizador de la aplicación limpia de forma controlada notas y archivos de prueba obsoletos sin tocar datos/logs.
+- La versión empaquetada también limpia esos restos al arrancar, útil al venir de un actualizador antiguo que solo copiaba archivos.
+- La revisión automática de yt-dlp ahora solo avisa cuando la versión remota es realmente mayor.
+- Se actualizó requirements.txt para instalar yt-dlp con dependencias recomendadas y curl_cffi.
+- Se simplificó el paquete final y el archivo .spec para dejar fuera notas históricas, el instalador redundante de python-mpv y DLL redundantes de NVDA.
+- Si yt-dlp no puede reemplazarse junto al EXE por permisos, la copia actualizada en datos ahora tiene prioridad.
+
+Nota:
+El yt-dlp.exe incluido originalmente en el paquete recibido corresponde a 2026.06.09.
+La aplicación puede actualizarlo desde Herramientas > Actualizar motor de descarga.
+
+MEJORAS DE ROBUSTEZ - 28/08/2026
+- yt-dlp.exe sigue siendo el motor principal.
+- Se añadió pytubefix como respaldo automático para fallos compatibles.
+- Se añadió preparación de Deno portable sin instalación global.
+- Se añadió registro técnico del motor usado en logs/descargador.log.
+- El fallback no se activa ante videos privados/eliminados, errores de Internet, timeout o bloqueos de autenticación.
+- El empaquetado final incluye Deno y pytubefix cuando se ejecuta PREPARAR_MODO_ROBUSTO.bat antes de compilar.
+
+
+DISTRIBUCIÓN PORTABLE - 28/08/2026
+- Se separó el entorno de desarrollo del paquete que recibe el usuario final.
+- El usuario final no necesita Python, pip ni permisos de administrador.
+- Se eliminó nodejs-wheel-binaries como dependencia obligatoria del proyecto.
+- Se agregó un adaptador local nodejs_wheel para que pytubefix use un node.exe portable.
+- Se agregó preparación segura de Node.js oficial con comprobación SHA-256.
+- Se conserva Deno como runtime recomendado de yt-dlp y Node como runtime interno de pytubefix.
+- Se agregó CREAR_VERSION_DISTRIBUIBLE.bat, que construye en una ruta corta aislada y genera un ZIP portable.
+- El diagnóstico del motor alternativo ahora indica si Node portable fue detectado.
+
+REVISIÓN MULTILINGÜE Y PREPARACIÓN PARA GITHUB - 28/08/2026
+- Se creó idiomas/es.json como catálogo maestro explícito.
+- Español, inglés, francés, italiano, portugués y ruso usan el mismo conjunto de claves.
+- Se localizaron mensajes dinámicos de descargas, reproductor, diagnósticos, actualizaciones y motor alternativo.
+- La ayuda de atajos se trasladó al sistema de idiomas.
+- Se añadieron manuales separados para los seis idiomas.
+- Se añadió tools/verificar_traducciones.py para detectar claves faltantes, textos vacíos y variables incompatibles.
+- Se añadieron README, guía de traducciones, contribuciones, seguridad y plantillas de incidencias para GitHub.
+- Los binarios portables de terceros quedan fuera del repositorio fuente y se reservan para las Releases.
+
+VERSIÓN 1.8.0 - MEJORAS DE USABILIDAD Y FORMATOS - 28/08/2026
+- El historial se limita automáticamente a los 1.000 registros más recientes.
+- Se añadió Archivo > Limpiar historial con confirmación; nunca elimina archivos descargados.
+- La lectura del historial usa un búfer de los últimos registros en lugar de cargar todo el archivo para mostrar los últimos 100.
+- Se añadió cantidad predeterminada de búsqueda configurable: 20, 50, 75, 100, 150, 200 o 300.
+- Se añadió opción para preguntar o no la cantidad antes de cada búsqueda.
+- Se añadió selector real de dispositivo de salida de audio mediante MPV.
+- Si un dispositivo de audio guardado desaparece, el reproductor vuelve al dispositivo predeterminado.
+- Se eliminó del reproductor el cuadro redundante con los atajos; la ayuda completa permanece en Ayuda.
+- Se añadieron formatos de audio MP3, M4A, AAC, OPUS, OGG, WAV y FLAC.
+- MP3/M4A/AAC/OPUS/OGG permiten 128, 192, 256 o 320 kbps.
+- WAV y FLAC utilizan la mejor calidad disponible.
+- MP4 permite Mejor disponible o un límite de resolución hasta 2160p, 1440p, 1080p, 720p, 480p, 360p, 240p o 144p.
+- El respaldo pytubefix se amplió para respetar los nuevos formatos y el límite de resolución.
+- Los seis idiomas se sincronizaron nuevamente y pasaron las verificaciones automáticas.
+
+IDENTIDAD DE INICIO Y CIERRE - 28/08/2026
+- El nombre "Descargador de Música Accesible" es ahora lo primero que se anuncia al iniciar.
+- El inicio anuncia la versión y "Desarrollado por Nicolás Alfaro".
+- Al cerrar se anuncia: "Gracias por utilizar Descargador de Música Accesible. Desarrollado por Nicolás Alfaro."
+- Los mensajes de inicio y cierre están traducidos a los seis idiomas.
+- La despedida usa un anuncio de cierre fiable para evitar que se pierda al terminar el proceso.
+
+PREPUBLICACIÓN GITHUB - 28/08/2026
+- Se actualizó el repositorio oficial a nicoalfaro2026/descargador-musica-accesible (sin guion final).
+- Se añadió LICENSE con GNU GPL v3.0.
+- Se añadió RELEASE_NOTES_1_8_0.md con las novedades completas para GitHub Releases.
+- El actualizador automático quedó apuntando a las Releases del repositorio definitivo.

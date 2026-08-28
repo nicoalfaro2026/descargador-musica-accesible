@@ -1,0 +1,204 @@
+﻿MANUAL DE USUARIO
+Descargador de Música Accesible
+Versión 1.8.0
+Desarrollado por Nicolás Alfaro
+
+============================================================
+1. INTRODUCCIÓN
+============================================================
+
+Descargador de Música Accesible es una aplicación para Windows diseñada para buscar, escuchar y descargar contenido multimedia de forma sencilla, con especial atención a la navegación por teclado y a los lectores de pantalla NVDA y JAWS.
+
+Funciones principales:
+- Buscar videos en YouTube.
+- Buscar canales y listas de reproducción.
+- Reproducir un resultado antes de descargarlo.
+- Descargar por URL.
+- Descargar audio en MP3, M4A, AAC, OPUS, OGG, WAV o FLAC, y video en MP4.
+- Marcar varios videos de un canal o lista para una descarga múltiple.
+- Ver información y copiar la URL de un resultado.
+- Consultar el historial y los logs.
+- Cambiar el idioma de la interfaz.
+- Actualizar el motor de descarga y comprobar actualizaciones del programa.
+
+Use la aplicación únicamente con contenido que tenga derecho o permiso para descargar y respete las condiciones aplicables del servicio utilizado.
+
+============================================================
+2. ABRIR EL PROGRAMA
+============================================================
+
+En una versión portable final, abra:
+DescargadorMusicaAccesible.exe
+
+No necesita instalar Python, Deno, Node ni FFmpeg por separado. Si la distribución incluye una carpeta _internal, no la elimine ni mueva archivos de su interior.
+
+No se recomienda desactivar Windows Defender ni otro antivirus. Si un antivirus detecta el programa, verifique que el archivo provenga de la publicación oficial y comunique la detección al desarrollador.
+
+============================================================
+3. DESCARGAR POR URL
+============================================================
+
+1. Vaya a la pestaña Descargar por URL, o presione Alt+1.
+2. Pegue la URL en el campo correspondiente.
+3. Presione Enter.
+4. Elija Descargar o Información.
+5. Si elige Descargar, seleccione formato y calidad cuando el programa lo solicite.
+
+============================================================
+4. BUSCAR EN YOUTUBE
+============================================================
+
+1. Vaya a Buscar en YouTube, o presione Alt+2.
+2. Escriba la búsqueda y presione Enter.
+3. La cantidad predeterminada se configura en Herramientas > Opciones y puede ser 20, 50, 75, 100, 150, 200 o 300 resultados.
+4. Si activa "Preguntar la cantidad antes de cada búsqueda", el programa mostrará el selector en cada búsqueda.
+5. Use las flechas para recorrer la lista y Enter para abrir las acciones.
+
+Acciones: Descargar, Información, Reproducir y Copiar URL. Atajos: Alt+D, Alt+R, Alt+I, Alt+C y Alt+L.
+
+============================================================
+5. CANALES Y LISTAS
+============================================================
+
+1. Vaya a Canales y listas, o presione Alt+3.
+2. Escriba un nombre y presione Enter.
+3. Elija Canal o Lista de reproducción.
+4. Seleccione un resultado y abra sus acciones.
+5. Puede consultar información, abrir los videos, descargar los primeros videos o copiar la URL.
+
+Dentro de una lista de videos:
+- Espacio: marcar o desmarcar el video enfocado.
+- Enter: abrir acciones del video enfocado.
+- Alt+D: descargar solo el video enfocado.
+- Alt+R: reproducir solo el video enfocado.
+- Ctrl+Shift+D: descargar únicamente los videos marcados.
+
+Las descargas de canales y listas se guardan en una carpeta propia dentro de la carpeta principal de descargas.
+
+============================================================
+6. REPRODUCTOR INTERNO
+============================================================
+
+La acción Reproducir permite escuchar el contenido antes de descargarlo.
+
+Controles:
+1 = retroceder.
+2 = pausar o continuar.
+3 = adelantar.
+4 = detener y volver.
+5 = bajar velocidad.
+6 = subir velocidad.
+7 = bajar volumen.
+8 = subir volumen.
+9 = anunciar posición actual.
+0 = anunciar duración total.
+
+Use los números de la fila superior del teclado. El último volumen elegido se guarda y se reutiliza en reproducciones posteriores. El dispositivo de salida se puede elegir desde Herramientas > Opciones y los atajos completos están en Ayuda > Atajos de teclado.
+
+============================================================
+7. FORMATOS, CALIDAD Y RESOLUCIÓN
+============================================================
+
+La versión 1.8.0 permite descargar audio en MP3, M4A, AAC, OPUS, OGG, WAV y FLAC, además de video en MP4.
+
+MP3, M4A, AAC, OPUS y OGG ofrecen 128, 192, 256 o 320 kbps. WAV y FLAC usan la mejor calidad de audio disponible.
+
+Para MP4 puede elegir Mejor disponible o limitar la resolución hasta 2160p (4K), 1440p, 1080p, 720p, 480p, 360p, 240p o 144p. Si la resolución exacta no existe, se usa la mejor compatible sin superar el límite.
+
+============================================================
+8. CARPETA DE DESCARGAS
+============================================================
+
+El programa utiliza una carpeta de descargas propia y permite elegir otra ubicación desde la interfaz. No es necesario mover los componentes internos del programa para cambiar la carpeta donde se guardan los archivos descargados.
+
+============================================================
+9. MOTOR DE DESCARGA ROBUSTO
+============================================================
+
+El programa usa yt-dlp como motor principal. Cuando está disponible, utiliza Deno como soporte JavaScript. También puede usar pytubefix como motor alternativo ante fallos compatibles; el cambio se realiza automáticamente.
+
+El usuario no necesita elegir qué motor usar. Los detalles técnicos se guardan en logs/descargador.log.
+
+En Herramientas > Ver versión de la librería de descarga puede comprobar el estado de yt-dlp, el motor JavaScript y el motor alternativo.
+
+============================================================
+10. HERRAMIENTAS Y OPCIONES
+============================================================
+
+En el menú Herramientas puede encontrar, según la versión:
+- Buscar actualizaciones del programa.
+- Actualizar la librería o motor de descarga.
+- Ver versión de la librería de descarga.
+- Opciones.
+- Idioma.
+
+En Opciones puede configurar elementos como la frecuencia de actualización, sonidos y parámetros del reproductor.
+
+Para cambiar de idioma:
+1. Abra Herramientas.
+2. Entre en Idioma.
+3. Elija Español, English, Français, Italiano, Português o Русский.
+4. Si el programa lo solicita, cierre y vuelva a abrir para aplicar todos los textos.
+
+============================================================
+11. ATAJOS PRINCIPALES
+============================================================
+
+Alt+1 = Descargar por URL.
+Alt+2 = Buscar en YouTube.
+Alt+3 = Canales y listas.
+Ctrl+L = ir al campo URL.
+Ctrl+O = seleccionar carpeta.
+Ctrl+I = información.
+Alt+D = descargar elemento enfocado.
+Alt+R = reproducir elemento enfocado.
+Ctrl+Shift+D = descargar videos marcados en Canales y listas.
+Ctrl+K o Esc = cancelar descarga, cuando corresponda.
+Ctrl+B = ir a Buscar en YouTube.
+Ctrl+H = ver historial.
+Ctrl+Q = salir.
+
+La ayuda completa de atajos también está disponible desde el menú Ayuda del programa.
+
+============================================================
+12. HISTORIAL Y LOGS
+============================================================
+
+Archivo > Ver historial abre el historial registrado por la aplicación. El historial se limita a 1.000 registros y Archivo > Limpiar historial permite vaciarlo sin borrar los archivos descargados.
+Archivo > Abrir carpeta de logs abre la carpeta de registros técnicos.
+
+Si necesita informar un problema, puede compartir la parte pertinente del log, después de comprobar que no contenga información que no desee enviar.
+
+============================================================
+13. SI ALGO NO FUNCIONA
+============================================================
+
+Si no busca o no descarga:
+- Compruebe la conexión a Internet.
+- Use la opción de Herramientas para actualizar el motor de descarga.
+- Pruebe otro resultado.
+- Revise el diagnóstico del motor y, si es necesario, el log.
+
+Si el reproductor no funciona:
+- Compruebe el diagnóstico del reproductor desde las herramientas disponibles.
+- No elimine mpv-1.dll ni la carpeta _internal de la versión portable.
+
+Si NVDA o JAWS no anuncia correctamente un control:
+- Anote la pantalla, el control, la tecla utilizada y el texto anunciado.
+- Informe también el idioma del programa y la versión del lector de pantalla.
+
+============================================================
+14. IDIOMAS Y COLABORACIÓN
+============================================================
+
+La aplicación incluye catálogos para Español, English, Français, Italiano, Português y Русский. Las traducciones se encuentran en la carpeta idiomas y pueden corregirse sin modificar la lógica principal del programa.
+
+El español es el catálogo maestro. Antes de publicar una traducción se recomienda comprobarla con un lector de pantalla y, cuando sea posible, con una persona nativa del idioma.
+
+============================================================
+15. CONTACTO Y AGRADECIMIENTO
+============================================================
+
+Descargador de Música Accesible fue desarrollado por Nicolás Alfaro con el objetivo de ofrecer una herramienta sencilla y accesible.
+
+Gracias a todas las personas que prueban el programa, informan errores y colaboran con traducciones y pruebas de accesibilidad.

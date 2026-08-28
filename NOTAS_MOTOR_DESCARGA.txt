@@ -1,0 +1,18 @@
+MOTOR DE DESCARGA
+Versión de la aplicación: 1.8.0 - modo robusto
+
+Motor principal:
+yt-dlp.exe. Se actualiza desde Herramientas > Actualizar motor de descarga.
+
+JavaScript de YouTube:
+Deno portable es la opción preferida. PREPARAR_MODO_ROBUSTO.bat lo descarga desde la release oficial de Deno y lo deja junto al proyecto. No lo instala en Windows ni modifica PATH.
+
+Motor alternativo:
+pytubefix. Se usa automáticamente solo si yt-dlp falla por una causa compatible. No requiere que el usuario elija motores ni cambie opciones.
+
+Procesamiento:
+FFmpeg/FFprobe se conservan para conversiones MP3, M4A, AAC, OPUS, OGG, WAV y FLAC, además de la combinación de video/audio MP4.
+
+Diagnóstico:
+Herramientas > Versión de la librería de descarga muestra yt-dlp, Deno/Node/QuickJS detectado y pytubefix.
+Los detalles de cada cambio de motor quedan en logs/descargador.log.
