@@ -1,0 +1,187 @@
+﻿DESCARGADOR DE MÚSICA ACCESIBLE - CAMBIOS CONSOLIDADOS
+
+Versión base revisada: 1.7.1
+Fecha de revisión: 28/08/2026
+
+Cambios de esta revisión:
+- Se mantiene yt-dlp.exe como motor principal y la librería Python como respaldo.
+- La librería interna yt-dlp pasa a ser opcional al iniciar; si falta, el programa puede seguir usando yt-dlp.exe.
+- Se eliminó el User-Agent fijo de Chrome 120 para no quedar atado a un navegador antiguo.
+- Se eliminó el forzado de clientes YouTube web/android/ios; yt-dlp selecciona sus clientes actuales.
+- Se agregó detección de Deno, Node o QuickJS para desafíos JavaScript de YouTube.
+- Se mejoraron los mensajes cuando falta el motor JavaScript.
+- Se reforzó la actualización de yt-dlp con verificación posterior y restauración del respaldo si falla.
+- El actualizador de la aplicación limpia de forma controlada notas y archivos de prueba obsoletos sin tocar datos/logs.
+- La versión empaquetada también limpia esos restos al arrancar, útil al venir de un actualizador antiguo que solo copiaba archivos.
+- La revisión automática de yt-dlp ahora solo avisa cuando la versión remota es realmente mayor.
+- Se actualizó requirements.txt para instalar yt-dlp con dependencias recomendadas y curl_cffi.
+- Se simplificó el paquete final y el archivo .spec para dejar fuera notas históricas, el instalador redundante de python-mpv y DLL redundantes de NVDA.
+- Si yt-dlp no puede reemplazarse junto al EXE por permisos, la copia actualizada en datos ahora tiene prioridad.
+
+Nota:
+El yt-dlp.exe incluido originalmente en el paquete recibido corresponde a 2026.06.09.
+La aplicación puede actualizarlo desde Herramientas > Actualizar motor de descarga.
+
+MEJORAS DE ROBUSTEZ - 28/08/2026
+- yt-dlp.exe sigue siendo el motor principal.
+- Se añadió pytubefix como respaldo automático para fallos compatibles.
+- Se añadió preparación de Deno portable sin instalación global.
+- Se añadió registro técnico del motor usado en logs/descargador.log.
+- El fallback no se activa ante videos privados/eliminados, errores de Internet, timeout o bloqueos de autenticación.
+- El empaquetado final incluye Deno y pytubefix cuando se ejecuta PREPARAR_MODO_ROBUSTO.bat antes de compilar.
+
+
+DISTRIBUCIÓN PORTABLE - 28/08/2026
+- Se separó el entorno de desarrollo del paquete que recibe el usuario final.
+- El usuario final no necesita Python, pip ni permisos de administrador.
+- Se eliminó nodejs-wheel-binaries como dependencia obligatoria del proyecto.
+- Se agregó un adaptador local nodejs_wheel para que pytubefix use un node.exe portable.
+- Se agregó preparación segura de Node.js oficial con comprobación SHA-256.
+- Se conserva Deno como runtime recomendado de yt-dlp y Node como runtime interno de pytubefix.
+- Se agregó CREAR_VERSION_DISTRIBUIBLE.bat, que construye en una ruta corta aislada y genera un ZIP portable.
+- El diagnóstico del motor alternativo ahora indica si Node portable fue detectado.
+
+REVISIÓN MULTILINGÜE Y PREPARACIÓN PARA GITHUB - 28/08/2026
+- Se creó idiomas/es.json como catálogo maestro explícito.
+- Español, inglés, francés, italiano, portugués y ruso usan el mismo conjunto de claves.
+- Se localizaron mensajes dinámicos de descargas, reproductor, diagnósticos, actualizaciones y motor alternativo.
+- La ayuda de atajos se trasladó al sistema de idiomas.
+- Se añadieron manuales separados para los seis idiomas.
+- Se añadió tools/verificar_traducciones.py para detectar claves faltantes, textos vacíos y variables incompatibles.
+- Se añadieron README, guía de traducciones, contribuciones, seguridad y plantillas de incidencias para GitHub.
+- Los binarios portables de terceros quedan fuera del repositorio fuente y se reservan para las Releases.
+
+VERSIÓN 1.8.0 - MEJORAS DE USABILIDAD Y FORMATOS - 28/08/2026
+- El historial se limita automáticamente a los 1.000 registros más recientes.
+- Se añadió Archivo > Limpiar historial con confirmación; nunca elimina archivos descargados.
+- La lectura del historial usa un búfer de los últimos registros en lugar de cargar todo el archivo para mostrar los últimos 100.
+- Se añadió cantidad predeterminada de búsqueda configurable: 20, 50, 75, 100, 150, 200 o 300.
+- Se añadió opción para preguntar o no la cantidad antes de cada búsqueda.
+- Se añadió selector real de dispositivo de salida de audio mediante MPV.
+- Si un dispositivo de audio guardado desaparece, el reproductor vuelve al dispositivo predeterminado.
+- Se eliminó del reproductor el cuadro redundante con los atajos; la ayuda completa permanece en Ayuda.
+- Se añadieron formatos de audio MP3, M4A, AAC, OPUS, OGG, WAV y FLAC.
+- MP3/M4A/AAC/OPUS/OGG permiten 128, 192, 256 o 320 kbps.
+- WAV y FLAC utilizan la mejor calidad disponible.
+- MP4 permite Mejor disponible o un límite de resolución hasta 2160p, 1440p, 1080p, 720p, 480p, 360p, 240p o 144p.
+- El respaldo pytubefix se amplió para respetar los nuevos formatos y el límite de resolución.
+- Los seis idiomas se sincronizaron nuevamente y pasaron las verificaciones automáticas.
+
+IDENTIDAD DE INICIO Y CIERRE - 28/08/2026
+- El nombre "Descargador de Música Accesible" es ahora lo primero que se anuncia al iniciar.
+- El inicio anuncia la versión y "Desarrollado por Nicolás Alfaro".
+- Al cerrar se anuncia: "Gracias por utilizar Descargador de Música Accesible. Desarrollado por Nicolás Alfaro."
+- Los mensajes de inicio y cierre están traducidos a los seis idiomas.
+- La despedida usa un anuncio de cierre fiable para evitar que se pierda al terminar el proceso.
+
+PREPUBLICACIÓN GITHUB - 28/08/2026
+- Se actualizó el repositorio oficial a nicoalfaro2026/descargador-musica-accesible (sin guion final).
+- Se añadió LICENSE con GNU GPL v3.0.
+- Se añadió RELEASE_NOTES_1_8_0.md con las novedades completas para GitHub Releases.
+- El actualizador automático quedó apuntando a las Releases del repositorio definitivo.
+
+VERSIÓN 1.8.1 - MANTENIMIENTO Y ROBUSTEZ - EN PRUEBA
+- La lista de búsquedas de YouTube ya no muestra la URL como columna visible.
+- Los resultados presentan índice, título, canal, fecha de publicación, visualizaciones y duración cuando esos datos están disponibles.
+- Los metadatos ausentes se completan de forma diferida al permanecer sobre un resultado, evitando cientos de consultas simultáneas.
+- Se añadió preferencia opcional por metadatos de YouTube en el idioma seleccionado en la aplicación.
+- Se añadió un respaldo voluntario con la sesión ya iniciada en un navegador compatible cuando YouTube solicite verificación o inicio de sesión.
+- El primer intento continúa realizándose sin cookies y las cookies no se guardan en historial, logs ni configuración.
+- Se añadió selección Automático, Chrome, Edge, Firefox, Brave, Opera, Vivaldi o Chromium.
+- La descarga externa usa archivos parciales y continuación cuando el servicio lo permite.
+- La actualización manual de la librería compara versiones y evita reinstalar la misma versión.
+- Se añadió actualización automática opcional de la librería únicamente cuando existe una versión más reciente.
+- Se retrasó la revisión automática de actualizaciones para evitar interrumpir la bienvenida.
+- El cierre mantiene el proceso activo brevemente para que el lector de pantalla pueda terminar la despedida.
+- Se creó un nuevo manual profesional en PDF accesible y TXT para los seis idiomas.
+- El manual incluye el funcionamiento portable, tamaño del programa, sesión del navegador y datos de contacto de Nicolás Alfaro.
+- Se añadió documentación técnica separada para colaboradores y desarrolladores.
+
+1.8.1 - Ajustes de accesibilidad y canal del motor
+- Opción para elegir Estable, Nightly o Master / Desarrollo como canal del motor de descarga.
+- Actualización del motor sensible al canal seleccionado.
+- Eliminado el doble anuncio final de las descargas con lector de pantalla.
+- Aviso de conversión genérico para todos los formatos.
+- Manual actualizado con la explicación de los canales.
+
+
+1.8.1 - Favoritos
+- Nueva función persistente Herramientas > Favoritos.
+- Alt+F agrega o quita el video enfocado.
+- Enter incluye la acción Agregar a favoritos / Quitar de favoritos.
+- Los favoritos no muestran URLs en la lista y se conservan en datos/favoritos.json.
+- Se evitan duplicados normalizando enlaces de YouTube.
+- Desde Favoritos funcionan reproducir, descargar, información, copiar URL y quitar.
+- Ajuste de mnemónicos de menú para reservar Alt+F a Favoritos en todos los idiomas.
+- Corregido el texto de menú de Cancelar descarga para evitar el aviso interno de wxPython; Ctrl+K y Escape siguen activos.
+
+1.8.1 - Corrección de traducción faltante
+- Se agregó a los seis idiomas la clave "No hay un archivo cookies.txt seleccionado.", usada en el tooltip de la ruta de cookies.txt en Herramientas, Opciones.
+- Antes solo existía en español; en el resto de idiomas el texto se mostraba parcialmente sin traducir.
+- Verificado con tools/verificar_traducciones.py (940 claves sincronizadas en los 6 idiomas) y tools/verificar_textos_interfaz.py (sin textos fuera del catálogo).
+
+1.8.1 - Reproductor interno: mensajes de error diferenciados
+- El reproductor interno ya distingue cuatro situaciones en lugar de una sola bolsa genérica: autenticación de YouTube requerida, video no disponible (privado, eliminado, con copyright, restringido por edad o país), falta el componente MPV, o error general.
+- Nuevo tipo de error ErrorVideoNoDisponible en descargador.py: se detecta con el mismo mecanismo ya usado para decidir si vale la pena reintentar con el motor alternativo (pytubefix), evitando reintentos inútiles cuando el video no existe para nadie.
+- El mensaje de "falta MPV" ahora solo aparece cuando realmente falla la inicialización de python-mpv/mpv-1.dll, no ante cualquier error del reproductor.
+- La detección y el mensaje amigable se comparten entre la ruta de yt-dlp externo (yt-dlp.exe) y la ruta interna (librería Python), tanto para reproducción como para descarga, para no duplicar la lógica.
+- Nuevas claves de idioma agregadas y sincronizadas en los 6 idiomas: __player.video_unavailable.body__, __player.mpv_missing.body__, y __player.start_error.body__ reescrita para dejar de mencionar MPV cuando el problema es otro.
+
+1.8.1 - Aviso de novedades tras actualizar
+- La ventana "Actualización completada" que ya se mostraba después de actualizar el programa ahora incluye, cuando existe, la lista de novedades visibles de la nueva versión antes del botón Aceptar.
+- El texto de novedades por versión se define en NOVEDADES_VERSION (ui.py) apuntando a una clave __whatsnew.<version>.body__ del catálogo de idiomas; para la próxima versión alcanza con agregar una entrada nueva.
+- Se agregó __whatsnew.1_8_1__body__ con los cambios visibles de esta versión (Favoritos, Cola de descargas, cookies.txt/sesión del navegador, manual nuevo, canal del motor), sin detalles técnicos.
+
+1.8.1 - Posible corrección: foco inicial en Herramientas > Opciones
+- Reporte de usuario: al abrir Opciones, NVDA anunciaba "Opciones, diálogo, Archivo cookies.txt:" en vez del primer control real (Buscar actualizaciones del programa).
+- Diagnóstico: mostrar_opciones() llama a combo_frecuencia.SetFocus() en el mismo instante en que actualizar_controles_autenticacion() acaba de mostrar/ocultar varios controles y recalcular el layout (Layout/FitInside) según el método de autenticación guardado. Es la única ventana del programa que hace ese reacomodo dinámico justo antes de pedir el foco inicial, lo que puede dejar a NVDA leyendo una etiqueta cercana en lugar del control con foco real.
+- Cambio aplicado: el foco inicial ahora se pide con wx.CallAfter(combo_frecuencia.SetFocus) en vez de llamarlo directamente, para que se asigne una vez que la ventana ya está mostrada y estable. No se tocó ningún otro SetFocus del programa.
+- Pendiente de confirmación: no se pudo reproducir con NVDA real durante el desarrollo (entorno sin Windows); si el aviso persiste después de este cambio, hace falta más detalle de en qué momento exacto ocurre (al abrir, al tabular, al elegir un archivo) para seguir investigando.
+
+1.8.1 - Segundo intento: foco inicial en Herramientas > Opciones (el primero no fue suficiente)
+- El usuario confirmó que el primer intento (wx.CallAfter) no solucionó el problema, y aportó un dato clave: solo ocurre cuando el método de autenticación guardado ya es Archivo cookies.txt con una ruta guardada (es decir, cuando actualizar_controles_autenticacion() muestra los controles del archivo al abrir el diálogo). Sin un archivo guardado, Opciones se abre bien.
+- wx.CallAfter espera solo "el próximo momento libre" del bucle de eventos, prácticamente sin demora real; no fue suficiente cuando el diálogo tiene que mostrar/ordenar controles adicionales.
+- Se cambió a wx.CallLater(120, combo_frecuencia.SetFocus), el mismo mecanismo (con el mismo tiempo de espera) que ya se usa en este programa para devolver el foco al botón de selección de cookies.txt después de elegir un archivo, y que ahí sí funciona de forma confiable.
+- Pendiente de confirmación: sigue sin poder probarse con NVDA real durante el desarrollo. Si tampoco funciona esta vez, el problema probablemente no es de tiempos sino de qué control recibe el foco realmente; en ese caso ayudaría saber, al escuchar el anuncio incorrecto, si al pulsar Tab una vez se llega al control de frecuencia de actualizaciones (foco correcto pero mal anunciado) o a otro control distinto (foco realmente equivocado).
+- El usuario probó lo anterior: al pulsar Tab una vez sí se llega al control correcto ("Buscar actualizaciones del programa"), pero el anuncio incorrecto de NVDA seguía escuchándose antes. Esto descarta que el foco esté mal puesto: es un anuncio de más, no un foco equivocado.
+
+1.8.1 - Tercer intento: se quita una actualización redundante que coincidía con el anuncio incorrecto
+- Con el foco ya descartado como causa, se revisó qué hace distinto actualizar_controles_autenticacion() solo cuando el método guardado es Archivo cookies.txt: además de mostrar los controles del archivo, volvía a llamar a establecer_ruta_cookies_en_control() sobre el control de texto de la ruta (ChangeValue, SetInsertionPointEnd y SetToolTip).
+- Esa llamada resultó ser innecesaria: estado_ruta_cookies["valor"] solo se modifica dentro de esa misma función, así que el texto y el tooltip del control ya estaban correctos desde que se creó el diálogo; repetirla no cambiaba ningún dato, pero sí manipulaba el control de texto justo cuando el diálogo se muestra por primera vez, coincidiendo exactamente con los casos donde aparecía el anuncio incorrecto.
+- Se quitó esa llamada redundante en actualizar_controles_autenticacion(). El comportamiento visible no cambia (el texto de la ruta se sigue mostrando igual), solo se elimina una manipulación innecesaria del control justo al abrir el diálogo.
+- Pendiente de confirmación: no se pudo probar con NVDA real. Si el anuncio incorrecto persiste incluso después de esto, el siguiente paso sería revisar si el mismo patrón (Show/Hide de un grupo de controles justo antes de mostrar el diálogo) está causando el aviso por sí solo, sin relación con el control de texto.
+- El usuario confirmó que tampoco funcionó. Se le pidió usar el comando de NVDA "informar foco actual" (NVDA+Tab) justo al escuchar el anuncio incorrecto: NVDA respondió que el foco real ya estaba en "Buscar actualizaciones del programa" (enfocado). Esto confirma que el foco final es correcto; el problema es un anuncio de más que ocurre antes de que se asiente el foco correcto.
+
+1.8.1 - Cuarto intento: pedir el foco al activarse el diálogo, no con una demora fija
+- Con el foco final ya confirmado correcto, la explicación más probable es una carrera de tiempos: tanto wx.CallAfter como wx.CallLater(120, ...) piden el foco recién cuando el bucle de eventos procesa mensajes con la ventana ya visible, es decir, después de que Windows asignó su propio foco inicial por defecto. Solo cuando los controles de Archivo cookies.txt están visibles (archivo ya guardado), ese foco por defecto de Windows parece caer en el botón "Seleccionar archivo cookies.txt...", y NVDA anuncia su etiqueta antes de que la corrección, con una pequeña demora, la reemplace por el foco correcto.
+- Se cambió el mecanismo: en vez de depender de ganarle a Windows por unos milisegundos con un número fijo de espera, ahora se pide el foco en el propio evento de activación del diálogo (wx.EVT_ACTIVATE), que ocurre como parte del mismo proceso nativo de mostrar la ventana. Se conserva además wx.CallLater(120, ...) como respaldo, por si EVT_ACTIVATE no llegara a dispararse en algún caso particular.
+- Se intentó además usar el Visor de voz de NVDA para ver la secuencia exacta de anuncios, pero en la prueba del usuario no registraba nada ni siquiera para acciones normales; probablemente se abrió por error el Visor de Braille (aparece vacío sin un dispositivo Braille conectado). No fue necesario insistir con esa vía porque el dato del foco actual ya alcanzó para descartar un foco mal puesto.
+- Pendiente de confirmación: cuarto intento sobre el mismo síntoma, sin poder probarse con NVDA real. Si esto tampoco lo resuelve, el problema podría no depender del foco en absoluto sino ser un comportamiento propio de NVDA al detectar una ventana nueva con texto estático visible sin foco asociado (lee cualquier texto "suelto" del diálogo al abrirlo), en cuyo caso la solución pasaría por asegurar que ese texto quede correctamente asociado como etiqueta de su control en vez de leerse por separado.
+- El usuario confirmó que tampoco funcionó. Se activó el registro de depuración de NVDA (categoría "speech") y se obtuvo evidencia real, no una suposición: al abrir Opciones se registran dos anuncios separados, con solo 8 milisegundos de diferencia:
+  Speaking ['Opciones', 'diálogo', 'Archivo cookies.txt:', ...]
+  Speaking ['Buscar actualizaciones del programa:', 'cuadro combinado', 'Cada semana', 'contraído', ...]
+  El primero no menciona ningún tipo de control (ni "botón" ni "cuadro de texto"), a diferencia del segundo que sí dice "cuadro combinado". Ese patrón (nombre de ventana + "diálogo" + texto, sin rol de control) es la forma en que NVDA anuncia una ventana nueva junto con su "descripción" (texto suelto que decide leer como presentación), no un anuncio de foco. Confirma que el problema nunca fue el foco: es NVDA leyendo la etiqueta "Archivo cookies.txt:" como si fuera la descripción del diálogo.
+
+1.8.1 - Quinto intento: se reordena la etiqueta para que acompañe a un cuadro de texto en vez de a un botón
+- Con la causa ya identificada como lectura de "texto suelto" y no un problema de foco, se comparó qué tienen en común las etiquetas que SÍ funcionan bien (nunca se leen de más) con la que falla. lbl_metodo_auth precede a un combo (combo_metodo_auth) y nunca causó el problema; lbl_archivo_cookies precede a un botón (btn_archivo_cookies) y es la única que se lee de más.
+- Se movió lbl_archivo_cookies, dentro del árbol de accesibilidad, para que quede junto a txt_archivo_cookies (un cuadro de texto, como el combo que sí funciona) en vez de junto al botón, usando MoveBeforeInTabOrder. Esto no cambia el recorrido real con Tab (un wx.StaticText nunca recibe foco de teclado con Tab), solo su posición en el orden interno de controles.
+- Pendiente de confirmación: quinto intento, todavía sin poder probarse con NVDA real. Si el registro de depuración de NVDA (ya activado por el usuario) muestra que el problema persiste, el próximo paso sería revisar el registro completo alrededor de ese momento (no solo las líneas de "speech", también "events" si hace falta) para ver si NVDA expone directamente qué objeto quedó asociado como "descripción" del diálogo.
+- El usuario confirmó que tampoco funcionó (mismo mensaje exacto en el registro). Se activó adicionalmente la categoría de depuración "MSAA" y el nivel general de registro "Depuración", y se capturó el registro completo con los eventos crudos de accesibilidad de Windows. Esto reveló la causa real:
+  - Windows emite EVENT_SYSTEM_FOREGROUND sobre la propia ventana del diálogo (clase nativa #32770, un diálogo estándar de Windows), que NVDA convierte en un evento gainFocus para un objeto Dynamic_DialogIAccessibleWindowNVDAObject (el diálogo en sí).
+  - Por separado, Windows emite EVENT_OBJECT_FOCUS sobre el ComboBox real (combo_frecuencia), que NVDA convierte en su propio gainFocus.
+  - Son dos eventos de foco genuinos y distintos que Windows dispara siempre que aparece un diálogo de este tipo: uno para el diálogo (que dispara la lectura de su "descripción", tomada de una etiqueta de texto suelta) y otro para el control que realmente tiene el foco de teclado. Esto no depende en nada de nuestro código de foco (por eso los intentos 1 a 4, todos centrados en el foco, no podían funcionar).
+  - Esto también explica por qué el intento 5 (MoveBeforeInTabOrder) no tuvo efecto: esa función de wx solo reordena la lista lógica de navegación por Tab que usa wx internamente; no cambia el orden real (Z-order) de las ventanas nativas de Windows, que es lo que consulta NVDA para decidir la "descripción" del diálogo.
+
+1.8.1 - Sexto intento: se cambia el orden real de creación de las ventanas, no solo el orden de Tab
+- Con la causa exacta ya confirmada, se cambió el orden de CREACIÓN de los controles (la única forma real de influir en el Z-order nativo que usa NVDA): ahora btn_archivo_cookies se crea antes que lbl_archivo_cookies, dejando la etiqueta junto al cuadro de texto de la ruta (txt_archivo_cookies) en el orden real de ventanas, en vez de junto al botón.
+- El orden visual (de arriba a abajo: etiqueta, botón, ruta, botón de ayuda) se mantiene exactamente igual, controlado por separado con sizer.Add() en ese orden.
+- El orden de navegación con Tab (botón, ruta, ayuda) también se mantiene igual, controlado por separado con MoveAfterInTabOrder, como ya funcionaba antes.
+- Pendiente de confirmación: sexto intento. Esta vez el diagnóstico está respaldado por el registro crudo de eventos de Windows/NVDA, no por una suposición, así que hay mayor confianza en que ataca la causa real; aun así no se pudo probar con NVDA real durante el desarrollo.
+
+1.8.1 - Posible corrección: el programa se quedaba hablando con voz de Windows (Elena) en vez de NVDA
+- Reporte de usuario: al abrir el programa, en vez de escucharse con NVDA se escuchaba con la voz de Windows "Elena", cuando antes eso no pasaba.
+- Diagnóstico: en voz.py, _cargar_nvda() solo intentaba detectar NVDA una vez por ejecución del programa (variable _nvda_probado). Si ese primer intento ocurría antes de que NVDA terminara de arrancar (por ejemplo, en el primer anuncio de bienvenida al abrir el programa recién iniciado Windows), el resultado negativo quedaba guardado para siempre: el programa nunca volvía a comprobar si NVDA ya estaba disponible y usaba la voz de Windows (SAPI, buscando "Elena"/"Helena" como preferidas) durante el resto de esa sesión, aunque NVDA estuviera funcionando segundos después.
+- Cambio aplicado: ahora, si la detección de NVDA falla, se vuelve a intentar automáticamente cada 3 segundos (no se descarta para siempre); si NVDA responde en cualquier intento posterior, se usa desde ese momento. Una detección exitosa sí se sigue recordando sin volver a comprobarla, para no perder tiempo revisándolo en cada mensaje.
+- No se quitó ninguna voz de respaldo (Windows SAPI, PowerShell, pyttsx3, beep): siguen existiendo solo para el caso real de que NVDA no esté instalado o nunca llegue a ejecutarse, que es distinto del problema reportado (NVDA sí estaba, pero el programa había dejado de comprobarlo).
+- Pendiente de confirmación: no se pudo probar con NVDA real durante el desarrollo (entorno sin Windows); si se sigue escuchando la voz de Windows en vez de NVDA después de este cambio, ayuda saber si ocurre siempre o solo a veces, y si NVDA ya estaba abierto antes de iniciar el programa o se abre después.
+- Actualización: en la práctica, la causa de este caso puntual resultó ser que faltaba el archivo nvdaControllerClient64.dll en la carpeta de prueba (se había perdido al reemplazar la carpeta completa en vez de solo los archivos cambiados). Con la DLL en su lugar, NVDA vuelve a hablar con normalidad. El cambio de reintento cada 3 segundos en voz.py se conserva de todas formas, porque corrige un problema real y distinto (si NVDA tarda en arrancar, antes quedaba descartado para siempre en esa sesión).

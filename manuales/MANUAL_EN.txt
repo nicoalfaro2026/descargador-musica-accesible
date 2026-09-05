@@ -1,0 +1,177 @@
+﻿Accessible Music Downloader
+User Manual
+Version 1.8.1
+Developed by Nicolás Alfaro
+
+1. Introduction
+
+Accessible Music Downloader is a Windows application designed to search, play and download multimedia content with special attention to keyboard navigation and screen readers such as NVDA and JAWS.
+This manual describes only user-facing features. Internal components are managed automatically and do not require technical knowledge.
+
+2. Starting the program and portable operation
+
+Open DescargadorMusicaAccesible.exe from the official portable package. You do not need to run additional files or perform external configuration to start using the program.
+Do not remove or move the folders and files supplied with the executable.
+
+3. Main interface
+
+The main window contains Download by URL, Search YouTube, and Channels and playlists.
+Use Alt+1, Alt+2 and Alt+3 to move between these areas. File, Actions, Search, Tools and Help contain additional features.
+
+4. Download by URL
+
+1. Open Download by URL with Alt+1.
+2. Paste the content address.
+3. Press Enter and choose the desired action.
+4. If you choose Download, select format, quality or resolution when requested.
+5. The program announces progress and completion.
+
+5. Search YouTube
+
+Open Search YouTube with Alt+2, enter your query and press Enter.
+Results show the index, title, channel, publication date, views and duration when YouTube provides those details. The URL is not shown in the list but remains available internally for playback, download, information and Alt+C copy.
+When channel, date or views are missing, the program tries to complete them in the background after you remain on that result. This keeps the initial search fast.
+The program can prefer YouTube metadata in the application language. If no translated title is available, the title supplied by YouTube is preserved.
+
+6. Channels and playlists
+
+Open Channels and playlists with Alt+3. Search, choose channel or playlist and open the desired result.
+Inside a video list, Space marks or unmarks an item, Enter opens actions, and Ctrl+Shift+D downloads marked videos.
+
+6.1. Favorites
+
+You can save a video to Favorites from YouTube Search results or from the video list of a channel or playlist. With the video focused, press Alt+F. The program will announce “Added to your favorites.” Press Alt+F again on the same video to remove it from Favorites.
+You can also press Enter on a video and choose Add to favorites or Remove from favorites from the actions menu.
+To view saved items, open Tools, Favorites. The list shows title, channel and type without displaying the URL. In Favorites, Enter opens actions; Alt+D downloads, Alt+R plays, Alt+I shows information, Alt+C copies the URL, and Alt+F or Delete removes the item from Favorites.
+Favorites are kept when the program is closed.
+
+6.2. Download queue
+
+You can collect several videos and download them one by one using the Download queue. With a video focused, press Alt+Q or open its actions with Enter and choose Add to download queue. If the item is already queued, the program will report it and will not create a duplicate.
+In Channels and playlists you can also mark several videos with Space and press Ctrl+Shift+Q to add them to the queue together.
+Open Tools, Download queue to review pending items. The list shows title, channel and status without displaying the URL. You can start the queue, remove an item with Delete, clear the queue, cancel only the current download, or stop the entire queue.
+When started, the queue uses the format, quality or resolution, and destination folder currently selected in the main window. Items are downloaded one at a time and the screen reader announces their position, for example: “Downloading 2 of 8.”
+If you cancel only the current download, that item is removed and the queue continues with the next one. If you stop the queue, pending items are preserved so you can continue later. Items that fail remain in the queue so they can be retried.
+The queue is saved when the program closes, but it never starts automatically when the program is opened again.
+
+6.3. Improved playlists
+
+Playlists are managed from the Channels and playlists tab, without adding another tab to the main window.
+When the selected result is a playlist, press Enter to open its actions. You can view its contents, add the entire playlist to the download queue, select a range, add or remove the playlist from Favorites, view information, or copy its URL.
+If you choose View playlist contents, you can specify how many items to display or choose All. In the resulting list, use Space to select or clear items. When you press Alt+Q, if items are selected, all selected items are added to the queue; if none are selected, only the focused item is added. You can also use Ctrl+Shift+Q to explicitly send selected items to the queue.
+Add the entire playlist to the queue loads its items and asks for confirmation before adding them. When the total number is known, the program reports it. Large playlists include a notice that the operation may take some time.
+Select a playlist range lets you enter a starting and ending position, for example from 5 through 20. Only those items are loaded and sent to the download queue.
+If you paste a playlist URL directly into Download by URL and press Enter or Download, the program detects it and offers the same playlist actions instead of treating it as an individual video.
+Playlists can also be saved to Favorites. When you open a saved playlist from Tools, Favorites, you can view its contents, add the entire playlist to the queue, or select a range. The URL is kept internally but is not shown in accessible lists.
+
+
+7. Internal player
+
+Play lets you listen before downloading.
+Main controls: 1 rewind, 2 pause/resume, 3 forward, 4 stop and return, 5 decrease speed, 6 increase speed, 7 decrease volume, 8 increase volume, 9 announce position, 0 announce duration.
+The selected volume is preserved. Choose the audio output device in Tools, Options.
+
+8. Download formats
+
+Audio: MP3, M4A, AAC, OPUS, OGG, WAV and FLAC.
+Video: MP4 at best available resolution or limited to 2160p, 1440p, 1080p, 720p, 480p, 360p, 240p or 144p.
+The program handles the required preparation internally.
+
+9. YouTube authentication with cookies.txt
+
+YouTube may occasionally request verification or sign-in. On Windows, the recommended method in Accessible Music Downloader is a cookies.txt file exported from a YouTube session that the user has signed in to.
+
+The file must use Netscape format. The program validates this format before saving the setting. Only the selected file path is stored; its contents are never copied to history, logs, or diagnostic reports.
+
+9.1. Obtain cookies.txt with Google Chrome
+
+1. Open Google Chrome. Press Ctrl+L to move to the address bar.
+
+2. Paste this address and press Enter: https://chromewebstore.google.com/detail/get-cookiestxt-locally/cclelndahbckbenkjhflpdbgdldlbecc
+
+3. In Chrome Web Store, activate Add to Chrome. When Chrome asks for confirmation, choose Add extension.
+
+4. Open https://www.youtube.com and sign in to the account you normally use.
+
+5. Open Chrome Extensions. With a screen reader, move through the browser toolbar with Tab until you reach Extensions.
+
+6. Choose Get cookies.txt LOCALLY.
+
+7. Select Netscape format in the extension. Do not use JSON.
+
+8. Export the cookies. Chrome will download a file usually named cookies.txt.
+
+9. In Accessible Music Downloader open Tools, Options, YouTube and authentication.
+
+10. Under YouTube authentication method choose cookies.txt file (recommended).
+
+11. Activate Select cookies.txt file, locate the exported file and open it. The program will confirm that it was configured correctly.
+
+9.2. Obtain cookies.txt with Mozilla Firefox
+
+1. Open Firefox and press Ctrl+L.
+
+2. Paste this address and press Enter: https://addons.mozilla.org/es-ES/firefox/addon/cookies-txt/
+
+3. Activate Add to Firefox and confirm the installation.
+
+4. Open https://www.youtube.com and sign in.
+
+5. Open Extensions, choose cookies.txt and export the file.
+
+6. Select that file in Accessible Music Downloader from Tools, Options, YouTube and authentication.
+
+9.3. Direct browser session
+
+Direct browser session remains available as an alternative. In recent Chrome versions on Windows, the system may prevent an external application from decrypting cookies and report a DPAPI error. If that happens, use cookies.txt instead of weakening Windows or browser security.
+
+9.4. Cookie file security
+
+cookies.txt can contain information that permits use of a signed-in session. Do not share it, email it, publish it, or attach it to bug reports. If you believe someone else obtained the file, sign out active sessions and export a new one.
+
+If YouTube requests authentication while a download queue is running, the program pauses the queue and keeps pending items instead of repeating the same error for every item.
+
+10. Tools and options
+
+Tools includes program updates, download-library updates and version information, language selection, and Options.
+Options controls update frequency, optional automatic download-library updates, the download-engine channel, result count, YouTube language preference, YouTube authentication method, the cookies.txt file, sounds and player settings.
+Stable prioritizes more thoroughly tested releases. Nightly receives recent fixes faster and can be useful when YouTube changes before a new stable release. Master or Development contains the newest changes and is mainly recommended for testing.
+If you manually request a library update while already using the latest version, the program reports that no update is available and does not download the same version again.
+
+11. Updates
+
+The program can check for a new application version and offer to download and install it. Manual checking is also available in Tools.
+Download-library updates are compared with the installed version before downloading.
+
+12. History
+
+File, View history shows recorded downloads. The history has a record limit to prevent unlimited growth.
+File, Clear history removes records without deleting downloaded files.
+
+13. Program size and portable operation
+
+Accessible Music Downloader is designed to provide a complete, stable and simple experience from the first start.
+The extracted program may therefore be relatively large. The application includes the tools required for its functions so users do not need to run extra files, install separate components or perform external configuration.
+Stability, accessibility and ease of use are prioritized. Thank you for your understanding.
+
+14. Troubleshooting
+
+If a search or download fails, check your Internet connection and try again.
+If YouTube requests verification, configure a cookies.txt file as described in section 9. If direct browser access reports a DPAPI error, switch to cookies.txt.
+If an update check fails, wait a few minutes and try again.
+Do not disable Windows Defender or another antivirus as a normal troubleshooting step. Always obtain the program from the official project page.
+
+15. Accessibility
+
+The program is designed for keyboard and screen-reader use. When reporting an accessibility issue, include the program version, screen reader and steps that led to the issue.
+
+16. Contact and support
+
+Developed by Nicolás Alfaro.
+Email: alfaronico8@gmail.com
+Official project: https://github.com/nicoalfaro2026/descargador-musica-accesible
+When reporting a problem, include the program version, screen reader, a short description and steps to reproduce it. Never send passwords or private account data.
+
+17. Responsible use
+
+Use the program only with content you have the right or authorization to download and follow the applicable terms of the source service.

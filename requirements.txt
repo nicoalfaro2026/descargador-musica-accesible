@@ -1,0 +1,5 @@
+wxPython
+yt-dlp[default,curl-cffi]
+pyttsx3
+python-mpv
+aiohttp>=3.12.13

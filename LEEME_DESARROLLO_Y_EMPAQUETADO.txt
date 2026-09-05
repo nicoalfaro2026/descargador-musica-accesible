@@ -1,0 +1,21 @@
+DESCARGADOR DE MÚSICA ACCESIBLE - DESARROLLO Y DISTRIBUCIÓN
+
+PARA PROBAR EL CÓDIGO FUENTE EN WINDOWS
+1. Ejecute PREPARAR_MODO_ROBUSTO.bat.
+2. Ejecute ABRIR_PROGRAMA.bat.
+
+PARA CREAR LA VERSIÓN PORTABLE
+Ejecute únicamente:
+CREAR_VERSION_DISTRIBUIBLE.bat
+
+El constructor detecta automáticamente la versión indicada en config.py y genera:
+- PAQUETE_PARA_DISTRIBUIR\
+- DescargadorMusicaAccesible_<VERSION>_PORTABLE.zip
+- DescargadorMusicaAccesible_<VERSION>_PORTABLE.zip.sha256.txt
+
+El constructor trabaja en una ruta temporal corta y usa un entorno Python aislado para reducir diferencias entre equipos de desarrollo.
+
+QUÉ RECIBE LA PERSONA USUARIA
+Solo el contenido de PAQUETE_PARA_DISTRIBUIR o el ZIP portable. La aplicación se inicia con DescargadorMusicaAccesible.exe.
+
+Los scripts de desarrollo y preparación no forman parte de la experiencia normal de la persona usuaria.

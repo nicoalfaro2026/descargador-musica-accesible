@@ -1,0 +1,78 @@
+MANIFIESTO DE LA BASE 1.8.1 DE PRUEBA
+Fecha: 29/08/2026
+
+CÓDIGO PRINCIPAL
+- main.py
+- ui.py
+- descargador.py
+- motor_ytdlp.py
+- motor_pytubefix.py
+- reproductor.py
+- historial.py
+- favoritos.py
+- cola_descargas.py
+- configuracion.py
+- config.py
+- i18n.py
+- actualizador_app.py
+- sonidos.py
+- voz.py
+- utils.py
+
+IDIOMAS Y MANUALES
+- idiomas/es.json, en.json, fr.json, it.json, pt.json y ru.json
+- manuales/MANUAL_ES.pdf y MANUAL_ES.txt
+- manuales/MANUAL_EN.pdf y MANUAL_EN.txt
+- manuales/MANUAL_FR.pdf y MANUAL_FR.txt
+- manuales/MANUAL_IT.pdf y MANUAL_IT.txt
+- manuales/MANUAL_PT.pdf y MANUAL_PT.txt
+- manuales/MANUAL_RU.pdf y MANUAL_RU.txt
+- MANUAL_DE_USUARIO_DESCARGADOR_MUSICA_ACCESIBLE.txt
+
+PREPARACIÓN Y CONSTRUCCIÓN
+- PREPARAR_MODO_ROBUSTO.bat
+- INSTALAR_DEPENDENCIAS.bat
+- ACTUALIZAR_MOTOR_DESCARGA.bat
+- ABRIR_PROGRAMA.bat
+- CREAR_VERSION_DISTRIBUIBLE.bat
+- EMPAQUETAR_MODO_FINAL.bat
+- DescargadorAccesible_FINAL.spec
+- requirements.txt
+- requirements_build.txt
+- preparar_motor_robusto.py
+- preparar_node_portable.py
+- copiar_build_portable.py
+- nodejs_wheel/
+
+BINARIOS DE LA CARPETA COMPLETA DE PRUEBA
+- yt-dlp.exe
+- ffmpeg.exe
+- ffprobe.exe
+- mpv-1.dll
+- nvdaControllerClient64.dll
+Deno y Node se preparan mediante PREPARAR_MODO_ROBUSTO.bat y no se almacenan en el repositorio fuente.
+
+GITHUB Y DOCUMENTACIÓN
+- README.md / README_EN.md
+- RELEASE_NOTES_1_8_1_PRUEBA.md
+- CONTRIBUTING.md
+- SECURITY.md
+- PUBLICAR_EN_GITHUB.md
+- docs/DOCUMENTACION_TECNICA.md
+- docs/DEPENDENCIAS_BINARIAS.md
+- docs/TRADUCCIONES.md
+- tools/
+- .github/
+- .gitignore / .gitattributes
+- CAMBIOS.txt
+
+NO DEBEN FORMAR PARTE DE UNA ENTREGA LIMPIA
+- __pycache__/
+- *.pyc
+- datos/
+- logs/
+- build/
+- dist/
+- DOCX intermedios de creación del manual
+- ZIP de pruebas anteriores
+- reportes históricos internos

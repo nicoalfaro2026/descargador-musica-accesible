@@ -1,0 +1,14 @@
+DEPENDENCIAS - DESARROLLO VS USUARIO FINAL
+
+DESARROLLO:
+- Python 3.12 recomendado.
+- requirements.txt instala dependencias base.
+- pytubefix 10.11.0 se instala con --no-deps para evitar nodejs-wheel-binaries.
+- preparar_node_portable.py aporta node.exe oficial y verificado.
+
+USUARIO FINAL:
+No instala ninguna dependencia. La carpeta generada por
+CREAR_VERSION_DISTRIBUIBLE.bat contiene el runtime de Python y todos los
+componentes necesarios.
+
+No es necesario habilitar rutas largas de Windows ni modificar el Registro.

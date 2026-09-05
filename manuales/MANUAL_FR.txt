@@ -1,0 +1,163 @@
+﻿Descargador de Música Accesible
+Manuel utilisateur
+Version 1.8.1
+Développé par Nicolás Alfaro
+
+1. Présentation
+
+Descargador de Música Accesible est une application Windows conçue pour rechercher, lire et télécharger du contenu multimédia, avec une attention particulière à la navigation au clavier et aux lecteurs d’écran tels que NVDA et JAWS.
+Ce manuel décrit uniquement les fonctions destinées à l’utilisateur. Les composants internes sont gérés automatiquement.
+
+2. Démarrage et fonctionnement portable
+
+Ouvrez DescargadorMusicaAccesible.exe depuis la version portable officielle. Aucun fichier supplémentaire ni configuration externe n’est nécessaire.
+Ne supprimez ni ne déplacez les dossiers et fichiers fournis avec le programme.
+
+3. Interface principale
+
+La fenêtre principale contient Télécharger par URL, Rechercher sur YouTube et Chaînes et listes.
+Utilisez Alt+1, Alt+2 et Alt+3 pour changer de zone.
+
+4. Télécharger par URL
+
+1. Ouvrez Télécharger par URL avec Alt+1.
+2. Collez l’adresse du contenu.
+3. Appuyez sur Entrée et choisissez l’action.
+4. Choisissez le format, la qualité ou la résolution si nécessaire.
+5. Le programme annonce la progression et la fin.
+
+5. Rechercher sur YouTube
+
+Ouvrez la recherche avec Alt+2, saisissez votre recherche et appuyez sur Entrée.
+Les résultats affichent l’index, le titre, la chaîne, la date de publication, le nombre de vues et la durée lorsque YouTube fournit ces données. L’URL n’est pas affichée dans la liste, mais reste disponible pour les actions et Alt+C.
+Lorsque certaines informations manquent, le programme tente de les compléter en arrière-plan après que vous restez sur le résultat.
+Le programme peut préférer les métadonnées YouTube dans la langue de l’application. Si aucune traduction du titre n’est disponible, le titre fourni par YouTube est conservé.
+
+6. Chaînes et listes de lecture
+
+Ouvrez cette zone avec Alt+3. Recherchez puis choisissez une chaîne ou une liste.
+Dans une liste de vidéos, Espace marque un élément, Entrée ouvre les actions et Ctrl+Shift+D télécharge les vidéos marquées.
+
+6.1. Favoris
+
+Vous pouvez enregistrer une vidéo dans les Favoris depuis les résultats de recherche YouTube ou depuis la liste des vidéos d’une chaîne ou d’une liste de lecture. Lorsque la vidéo est en focus, appuyez sur Alt+F. Le programme annoncera « Ajouté à vos favoris ». Appuyez à nouveau sur Alt+F sur la même vidéo pour la retirer des Favoris.
+Vous pouvez également appuyer sur Entrée sur une vidéo puis choisir Ajouter aux favoris ou Retirer des favoris dans le menu des actions.
+Pour consulter les éléments enregistrés, ouvrez Outils, Favoris. La liste affiche le titre, la chaîne et le type sans afficher l’URL. Dans Favoris, Entrée ouvre les actions ; Alt+D télécharge, Alt+R lit, Alt+I affiche les informations, Alt+C copie l’URL et Alt+F ou Suppr retire l’élément des Favoris.
+Les favoris sont conservés après la fermeture du programme.
+
+6.2. File de téléchargements
+
+Vous pouvez regrouper plusieurs vidéos et les télécharger une par une avec la File de téléchargements. Avec une vidéo ciblée, appuyez sur Alt+Q ou ouvrez ses actions avec Entrée puis choisissez Ajouter à la file de téléchargements. Si l’élément est déjà dans la file, le programme l’indique et ne crée pas de doublon.
+Dans Chaînes et listes, vous pouvez également marquer plusieurs vidéos avec Espace puis appuyer sur Ctrl+Maj+Q pour les ajouter ensemble à la file.
+Ouvrez Outils, File de téléchargements pour consulter les éléments en attente. La liste affiche le titre, la chaîne et l’état sans afficher l’URL. Vous pouvez démarrer la file, retirer un élément avec Suppr, vider la file, annuler uniquement le téléchargement actuel ou arrêter toute la file.
+Au démarrage, la file utilise le format, la qualité ou la résolution et le dossier de destination actuellement sélectionnés dans la fenêtre principale. Les éléments sont téléchargés un par un et le lecteur d’écran annonce leur position, par exemple : « Téléchargement 2 sur 8 ».
+Si vous annulez uniquement le téléchargement actuel, cet élément est retiré et la file continue avec le suivant. Si vous arrêtez la file, les éléments en attente sont conservés pour reprendre plus tard. Les éléments en erreur restent dans la file afin de pouvoir être réessayés.
+La file est enregistrée à la fermeture du programme, mais elle ne démarre jamais automatiquement lors de la prochaine ouverture.
+
+6.3. Playlists améliorées
+
+Les playlists sont gérées depuis l’onglet Chaînes et playlists, sans ajouter un nouvel onglet à la fenêtre principale.
+Lorsque le résultat sélectionné est une playlist, appuyez sur Entrée pour ouvrir ses actions. Vous pouvez afficher son contenu, ajouter toute la playlist à la file de téléchargements, sélectionner une plage, ajouter ou retirer la playlist des Favoris, consulter les informations ou copier son URL.
+Si vous choisissez Voir le contenu de la playlist, vous pouvez indiquer le nombre d’éléments à afficher ou choisir Tous. Dans la liste obtenue, utilisez Espace pour sélectionner ou désélectionner des éléments. Lorsque vous appuyez sur Alt+Q, si des éléments sont sélectionnés, ils sont tous ajoutés à la file ; si aucun n’est sélectionné, seul l’élément ciblé est ajouté. Vous pouvez également utiliser Ctrl+Maj+Q pour envoyer explicitement les éléments sélectionnés à la file.
+L’option Ajouter toute la playlist à la file charge ses éléments et demande confirmation avant de les ajouter. Lorsque le nombre total est connu, le programme l’annonce. Pour les grandes playlists, un avertissement indique que l’opération peut prendre du temps.
+L’option Sélectionner une plage de la playlist permet d’indiquer une position de début et une position de fin, par exemple de 5 à 20. Seuls ces éléments sont chargés et envoyés à la file de téléchargements.
+Si vous collez directement une URL de playlist dans Télécharger par URL et appuyez sur Entrée ou Télécharger, le programme la détecte et propose les mêmes actions de playlist au lieu de la traiter comme une vidéo individuelle.
+Les playlists peuvent également être enregistrées dans les Favoris. Lorsque vous ouvrez une playlist enregistrée depuis Outils, Favoris, vous pouvez afficher son contenu, l’ajouter entièrement à la file ou sélectionner une plage. L’URL est conservée en interne mais n’est pas affichée dans les listes accessibles.
+
+
+7. Lecteur interne
+
+L’action Lire permet d’écouter avant le téléchargement.
+Contrôles principaux : 1 reculer, 2 pause/reprendre, 3 avancer, 4 arrêter et revenir, 5 réduire la vitesse, 6 augmenter la vitesse, 7 baisser le volume, 8 augmenter le volume, 9 annoncer la position, 0 annoncer la durée.
+Le volume choisi est conservé et le périphérique de sortie se règle dans Outils, Options.
+
+8. Formats de téléchargement
+
+Audio : MP3, M4A, AAC, OPUS, OGG, WAV et FLAC.
+Vidéo : MP4 en meilleure résolution ou avec une limite de 2160p à 144p.
+
+9. Authentification YouTube avec cookies.txt
+
+YouTube peut parfois demander une vérification ou une connexion. Sous Windows, la méthode recommandée consiste à utiliser un fichier cookies.txt exporté depuis une session YouTube ouverte par la personne utilisatrice.
+
+Le fichier doit être au format Netscape. Le programme vérifie ce format avant d’enregistrer le réglage. Seul le chemin du fichier est conservé ; son contenu n’est jamais copié dans l’historique, les journaux ou les rapports de diagnostic.
+
+9.1. Obtenir cookies.txt avec Google Chrome
+
+1. Ouvrez Google Chrome et appuyez sur Ctrl+L.
+
+2. Collez cette adresse et appuyez sur Entrée : https://chromewebstore.google.com/detail/get-cookiestxt-locally/cclelndahbckbenkjhflpdbgdldlbecc
+
+3. Activez Ajouter à Chrome puis confirmez avec Ajouter l’extension.
+
+4. Ouvrez https://www.youtube.com et connectez-vous à votre compte.
+
+5. Ouvrez le bouton Extensions de Chrome et choisissez Get cookies.txt LOCALLY.
+
+6. Choisissez le format Netscape, pas JSON, puis exportez le fichier cookies.txt.
+
+7. Dans le programme, ouvrez Outils, Options, YouTube et authentification, choisissez Fichier cookies.txt puis sélectionnez le fichier exporté.
+
+9.2. Obtenir cookies.txt avec Mozilla Firefox
+
+1. Ouvrez Firefox, appuyez sur Ctrl+L et ouvrez https://addons.mozilla.org/es-ES/firefox/addon/cookies-txt/
+
+2. Activez Ajouter à Firefox et confirmez.
+
+3. Connectez-vous à YouTube, ouvrez Extensions, choisissez cookies.txt et exportez le fichier.
+
+4. Sélectionnez ce fichier depuis Outils, Options, YouTube et authentification.
+
+9.3. Session directe du navigateur
+
+La session directe du navigateur reste disponible comme alternative. Si Chrome sous Windows affiche une erreur DPAPI, utilisez cookies.txt au lieu de modifier la sécurité du système.
+
+9.4. Sécurité
+
+Le fichier cookies.txt peut permettre d’utiliser une session ouverte. Ne le partagez pas, ne l’envoyez pas et ne le joignez jamais à un rapport de problème.
+
+Si YouTube demande une authentification pendant une file de téléchargements, le programme met la file en pause et conserve les éléments en attente.
+
+10. Outils et options
+
+Outils permet de rechercher les mises à jour du programme, de mettre à jour la bibliothèque de téléchargement, de consulter sa version, de changer la langue et d’ouvrir Options.
+Options permet de configurer la fréquence des mises à jour, la mise à jour automatique de la bibliothèque, le canal du moteur de téléchargement, le nombre de résultats, la langue de YouTube, la méthode d’authentification YouTube, le fichier cookies.txt, les sons et le lecteur.
+Stable privilégie les versions les plus éprouvées. Nightly reçoit plus rapidement les correctifs récents et peut être utile lorsque YouTube change avant une nouvelle version stable. Master ou Développement contient les changements les plus récents et est principalement recommandé pour les tests.
+Si la bibliothèque est déjà à jour, le programme l’indique sans télécharger à nouveau la même version.
+
+11. Mises à jour
+
+Le programme peut rechercher une nouvelle version, la télécharger et l’installer avec votre accord.
+La bibliothèque de téléchargement est comparée à la version installée avant tout téléchargement.
+
+12. Historique
+
+Fichier, Voir l’historique affiche les téléchargements enregistrés. L’historique est limité pour éviter une croissance indéfinie.
+Effacer l’historique ne supprime pas les fichiers téléchargés.
+
+13. Taille et fonctionnement portable
+
+Descargador de Música Accesible est conçu pour offrir une expérience complète, stable et simple dès le premier démarrage.
+La taille du programme décompressé peut donc être importante. L’application intègre les outils nécessaires afin que l’utilisateur n’ait pas à exécuter des fichiers supplémentaires, installer des composants séparés ou effectuer des réglages externes.
+La stabilité, l’accessibilité et la simplicité ont été privilégiées. Merci de votre compréhension.
+
+14. Résolution des problèmes
+
+Vérifiez d’abord votre connexion Internet et réessayez.
+Si YouTube demande une vérification, configurez un fichier cookies.txt comme indiqué à la section 9. Si l’accès direct au navigateur affiche une erreur DPAPI, utilisez cookies.txt.
+Ne désactivez pas Windows Defender ou un autre antivirus comme solution normale. Téléchargez toujours le programme depuis la page officielle.
+
+15. Accessibilité
+
+Le programme est conçu pour le clavier et les lecteurs d’écran. Pour signaler un problème, indiquez la version, le lecteur d’écran et les étapes permettant de reproduire le problème.
+
+16. Contact et assistance
+
+Développé par Nicolás Alfaro.
+Adresse e-mail : alfaronico8@gmail.com
+Projet officiel : https://github.com/nicoalfaro2026/descargador-musica-accesible
+N’envoyez jamais de mots de passe ni de données privées de votre compte.
+
+17. Utilisation responsable
+
+Utilisez le programme uniquement pour du contenu que vous avez le droit ou l’autorisation de télécharger et respectez les conditions du service source.

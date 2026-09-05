@@ -1,0 +1,31 @@
+CONSTRUCCION DE LA VERSION PARA DISTRIBUIR
+
+OBJETIVO
+El usuario final recibe una aplicación portable que no requiere Python ni
+instalación de librerías y no modifica Windows.
+
+COMO CONSTRUIR
+Ejecute CREAR_VERSION_DISTRIBUIBLE.bat en la PC de desarrollo.
+
+El script:
+1. Copia el proyecto a %USERPROFILE%\DMA_B para trabajar con rutas cortas.
+2. Crea un entorno Python aislado.
+3. Instala las dependencias de construcción.
+4. Instala pytubefix sin nodejs-wheel-binaries.
+5. Descarga/verifica Deno portable.
+6. Descarga/verifica Node.js portable y extrae solo node.exe.
+7. Actualiza yt-dlp si es posible.
+8. Compila con PyInstaller en modo carpeta.
+9. Verifica los motores obligatorios.
+10. Genera PAQUETE_PARA_DISTRIBUIR y un ZIP portable.
+
+POR QUE NO SE USA nodejs-wheel-binaries
+Pytubefix lo declara como dependencia, pero su estructura incluye npm y rutas
+muy profundas. En Windows puede superar el límite de rutas de ciertas
+configuraciones. Este proyecto aporta un adaptador mínimo nodejs_wheel que hace
+que pytubefix encuentre el node.exe portable oficial incluido con la app.
+
+IMPORTANTE
+El usuario final NO debe recibir los archivos .py, requirements, scripts de
+preparación ni el entorno virtual. Solo se distribuye el contenido generado en
+PAQUETE_PARA_DISTRIBUIR o el ZIP portable.

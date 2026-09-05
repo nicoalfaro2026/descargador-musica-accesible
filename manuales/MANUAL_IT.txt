@@ -1,0 +1,163 @@
+﻿Descargador de Música Accesible
+Manuale utente
+Versione 1.8.1
+Sviluppato da Nicolás Alfaro
+
+1. Presentazione
+
+Descargador de Música Accesible è un’applicazione Windows progettata per cercare, riprodurre e scaricare contenuti multimediali, con particolare attenzione alla tastiera e ai lettori di schermo NVDA e JAWS.
+Il manuale descrive solo le funzioni disponibili all’utente. I componenti interni sono gestiti automaticamente.
+
+2. Avvio e funzionamento portable
+
+Aprire DescargadorMusicaAccesible.exe dalla versione portable ufficiale. Non è necessario eseguire file aggiuntivi o configurazioni esterne.
+Non eliminare o spostare le cartelle e i file forniti con il programma.
+
+3. Interfaccia principale
+
+La finestra principale contiene Scarica tramite URL, Cerca su YouTube e Canali e playlist.
+Usare Alt+1, Alt+2 e Alt+3 per passare da un’area all’altra.
+
+4. Scaricare tramite URL
+
+1. Aprire Scarica tramite URL con Alt+1.
+2. Incollare l’indirizzo del contenuto.
+3. Premere Invio e scegliere l’azione.
+4. Se necessario, scegliere formato, qualità o risoluzione.
+5. Il programma annuncia avanzamento e completamento.
+
+5. Cercare su YouTube
+
+Aprire la ricerca con Alt+2, scrivere la richiesta e premere Invio.
+I risultati mostrano indice, titolo, canale, data di pubblicazione, visualizzazioni e durata quando YouTube fornisce questi dati. L’URL non viene mostrato nella lista, ma resta disponibile per le azioni e con Alt+C.
+Se alcuni dati mancano, il programma prova a completarli in background quando si rimane sul risultato.
+Il programma può preferire i metadati YouTube nella lingua dell’applicazione. Se non esiste una traduzione del titolo, viene mantenuto il titolo fornito da YouTube.
+
+6. Canali e playlist
+
+Aprire l’area con Alt+3, cercare e scegliere canale o playlist.
+Nella lista dei video, Spazio seleziona o deseleziona, Invio apre le azioni e Ctrl+Shift+D scarica i video selezionati.
+
+6.1. Preferiti
+
+Puoi salvare un video nei Preferiti dai risultati di Cerca su YouTube o dall’elenco dei video di un canale o di una playlist. Con il video evidenziato, premi Alt+F. Il programma annuncerà “Aggiunto ai preferiti”. Premendo di nuovo Alt+F sullo stesso video, verrà rimosso dai Preferiti.
+Puoi anche premere Invio su un video e scegliere Aggiungi ai preferiti o Rimuovi dai preferiti nel menu delle azioni.
+Per consultare gli elementi salvati, apri Strumenti, Preferiti. L’elenco mostra titolo, canale e tipo senza visualizzare l’URL. In Preferiti, Invio apre le azioni; Alt+D scarica, Alt+R riproduce, Alt+I mostra le informazioni, Alt+C copia l’URL e Alt+F o Canc rimuove l’elemento dai Preferiti.
+I preferiti vengono conservati anche dopo la chiusura del programma.
+
+6.2. Coda di download
+
+Puoi raccogliere più video e scaricarli uno alla volta con la Coda di download. Con un video selezionato, premi Alt+Q oppure apri le azioni con Invio e scegli Aggiungi alla coda di download. Se l’elemento è già in coda, il programma lo segnala e non crea duplicati.
+In Canali e playlist puoi anche selezionare più video con Spazio e premere Ctrl+Maiusc+Q per aggiungerli insieme alla coda.
+Apri Strumenti, Coda di download per controllare gli elementi in attesa. L’elenco mostra titolo, canale e stato senza visualizzare l’URL. Puoi avviare la coda, rimuovere un elemento con Canc, svuotare la coda, annullare soltanto il download corrente oppure arrestare l’intera coda.
+All’avvio, la coda usa il formato, la qualità o la risoluzione e la cartella di destinazione attualmente selezionati nella finestra principale. Gli elementi vengono scaricati uno alla volta e il lettore di schermo annuncia la posizione, ad esempio: “Download 2 di 8”.
+Se annulli soltanto il download corrente, quell’elemento viene rimosso e la coda continua con il successivo. Se arresti la coda, gli elementi in attesa vengono conservati per continuare in seguito. Gli elementi che generano errori restano nella coda per poter essere riprovati.
+La coda viene salvata alla chiusura del programma, ma non si avvia mai automaticamente alla successiva apertura.
+
+6.3. Playlist migliorate
+
+Le playlist vengono gestite dalla scheda Canali e playlist, senza aggiungere una nuova scheda alla finestra principale.
+Quando il risultato selezionato è una playlist, premi Invio per aprirne le azioni. Puoi visualizzarne il contenuto, aggiungere l’intera playlist alla coda dei download, selezionare un intervallo, aggiungere o rimuovere la playlist dai Preferiti, consultare le informazioni o copiarne l’URL.
+Se scegli Visualizza il contenuto della playlist, puoi indicare quanti elementi mostrare oppure scegliere Tutti. Nell’elenco risultante usa Spazio per selezionare o deselezionare gli elementi. Premendo Alt+Q, se ci sono elementi selezionati vengono aggiunti tutti alla coda; se non ce ne sono, viene aggiunto solo l’elemento con il focus. Puoi anche usare Ctrl+Maiusc+Q per inviare esplicitamente gli elementi selezionati alla coda.
+L’opzione Aggiungi l’intera playlist alla coda carica gli elementi e richiede conferma prima di aggiungerli. Quando il numero totale è disponibile, il programma lo comunica. Per playlist molto grandi viene segnalato che l’operazione può richiedere tempo.
+L’opzione Seleziona un intervallo della playlist permette di indicare una posizione iniziale e una finale, ad esempio da 5 a 20. Solo questi elementi vengono caricati e inviati alla coda dei download.
+Se incolli direttamente un URL di playlist in Scarica da URL e premi Invio o Scarica, il programma lo rileva e propone le stesse azioni della playlist invece di trattarlo come un singolo video.
+Le playlist possono anche essere salvate nei Preferiti. Aprendo una playlist salvata da Strumenti, Preferiti, puoi visualizzarne il contenuto, aggiungerla interamente alla coda o selezionare un intervallo. L’URL viene conservato internamente ma non viene mostrato negli elenchi accessibili.
+
+
+7. Lettore interno
+
+Riproduci consente di ascoltare prima del download.
+Comandi principali: 1 indietro, 2 pausa/riprendi, 3 avanti, 4 stop e ritorno, 5 riduci velocità, 6 aumenta velocità, 7 abbassa volume, 8 alza volume, 9 annuncia posizione, 0 annuncia durata.
+Il volume viene conservato e il dispositivo di uscita si sceglie in Strumenti, Opzioni.
+
+8. Formati di download
+
+Audio: MP3, M4A, AAC, OPUS, OGG, WAV e FLAC.
+Video: MP4 con migliore risoluzione disponibile o limite da 2160p a 144p.
+
+9. Autenticazione YouTube con cookies.txt
+
+YouTube può richiedere verifica o accesso. Su Windows, il metodo consigliato è usare un file cookies.txt esportato da una sessione YouTube a cui l’utente ha effettuato l’accesso.
+
+Il file deve essere in formato Netscape. Il programma verifica il formato e salva solo il percorso, mai il contenuto nei registri, nella cronologia o nei rapporti diagnostici.
+
+9.1. Ottenere cookies.txt con Google Chrome
+
+1. Apri Google Chrome e premi Ctrl+L.
+
+2. Incolla questo indirizzo e premi Invio: https://chromewebstore.google.com/detail/get-cookiestxt-locally/cclelndahbckbenkjhflpdbgdldlbecc
+
+3. Attiva Aggiungi a Chrome e conferma con Aggiungi estensione.
+
+4. Apri https://www.youtube.com ed effettua l’accesso.
+
+5. Apri Estensioni di Chrome e scegli Get cookies.txt LOCALLY.
+
+6. Scegli il formato Netscape, non JSON, ed esporta cookies.txt.
+
+7. Nel programma apri Strumenti, Opzioni, YouTube e autenticazione, scegli File cookies.txt e seleziona il file esportato.
+
+9.2. Ottenere cookies.txt con Mozilla Firefox
+
+1. Apri Firefox, premi Ctrl+L e visita https://addons.mozilla.org/es-ES/firefox/addon/cookies-txt/
+
+2. Attiva Aggiungi a Firefox e conferma.
+
+3. Accedi a YouTube, apri Estensioni, scegli cookies.txt ed esporta il file.
+
+4. Seleziona il file da Strumenti, Opzioni, YouTube e autenticazione.
+
+9.3. Sessione diretta del browser
+
+La sessione diretta del browser rimane disponibile come alternativa. Se Chrome su Windows mostra un errore DPAPI, usa cookies.txt invece di modificare la sicurezza del sistema.
+
+9.4. Sicurezza
+
+cookies.txt può consentire l’uso di una sessione aperta. Non condividerlo, non inviarlo e non allegarlo ai rapporti di errore.
+
+Se YouTube richiede autenticazione durante una coda di download, il programma mette in pausa la coda e mantiene gli elementi in attesa.
+
+10. Strumenti e opzioni
+
+Strumenti include aggiornamenti del programma, aggiornamento e versione della libreria di download, lingua e Opzioni.
+Opzioni permette di configurare frequenza degli aggiornamenti, aggiornamento automatico della libreria, canale del motore di download, quantità dei risultati, lingua di YouTube, metodo di autenticazione YouTube, file cookies.txt, suoni e lettore.
+Stabile privilegia le versioni più collaudate. Nightly riceve più rapidamente le correzioni recenti e può essere utile quando YouTube cambia prima di una nuova versione stabile. Master o Sviluppo contiene le modifiche più recenti ed è consigliato principalmente per i test.
+Se la libreria è già aggiornata, il programma lo comunica senza scaricare di nuovo la stessa versione.
+
+11. Aggiornamenti
+
+Il programma può cercare una nuova versione e proporre download e installazione.
+La libreria di download viene confrontata con la versione installata prima di scaricare.
+
+12. Cronologia
+
+File, Visualizza cronologia mostra i download registrati. La cronologia ha un limite per evitare una crescita indefinita.
+La pulizia della cronologia non elimina i file scaricati.
+
+13. Dimensioni e funzionamento portable
+
+Descargador de Música Accesible è progettato per offrire un’esperienza completa, stabile e semplice fin dal primo avvio.
+Per questo la dimensione del programma estratto può essere considerevole. L’applicazione include gli strumenti necessari affinché l’utente non debba eseguire file aggiuntivi, installare componenti separati o effettuare configurazioni esterne.
+Sono state privilegiate stabilità, accessibilità e semplicità. Grazie per la comprensione.
+
+14. Risoluzione dei problemi
+
+Controllare prima la connessione Internet e riprovare.
+Se YouTube richiede una verifica, configurare un file cookies.txt come descritto nella sezione 9. Se l’accesso diretto al browser mostra un errore DPAPI, usare cookies.txt.
+Non disattivare Windows Defender o altri antivirus come soluzione normale. Scaricare sempre il programma dalla pagina ufficiale.
+
+15. Accessibilità
+
+Il programma è progettato per tastiera e lettori di schermo. Per segnalare un problema indicare versione, lettore di schermo e passaggi per riprodurlo.
+
+16. Contatto e supporto
+
+Sviluppato da Nicolás Alfaro.
+E-mail: alfaronico8@gmail.com
+Progetto ufficiale: https://github.com/nicoalfaro2026/descargador-musica-accesible
+Non inviare mai password o dati privati dell’account.
+
+17. Uso responsabile
+
+Usare il programma solo con contenuti che si ha il diritto o l’autorizzazione di scaricare e rispettare le condizioni del servizio di origine.
