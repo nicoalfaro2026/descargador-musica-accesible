@@ -41,6 +41,8 @@ Los binarios portables de terceros no se almacenan en el repositorio fuente. Con
 
 ## Crear una versión portable
 
+Ejecute `CREAR_VERSION_DISTRIBUIBLE.bat` desde la carpeta completa de construcción. Los paquetes portables destinados a personas usuarias se publican en **GitHub Releases**.
+
 
 
 ## Traducciones
