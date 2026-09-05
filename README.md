@@ -8,13 +8,11 @@ Aplicación de escritorio para Windows desarrollada con accesibilidad como requi
 
 ## Estado del proyecto
 
-Versión pública estable: **1.8.0**.
-
-Rama de trabajo actual: **1.8.1 en prueba**, centrada en mantenimiento, búsquedas, autenticación opcional mediante navegador y documentación accesible.
+Versión pública estable: **1.8.1**.
 
 Idiomas incluidos: Español, English, Français, Italiano, Português y Русский. `idiomas/es.json` es el catálogo maestro y los seis catálogos deben mantener las mismas claves.
 
-## Cambios en prueba para 1.8.1
+## Novedades de la versión 1.8.1
 
 - Resultados de YouTube más simples: índice, título, canal, publicación, visualizaciones y duración; la URL se conserva internamente pero no se muestra en la lista.
 - Enriquecimiento diferido de metadatos para mantener rápidas las búsquedas grandes.
@@ -25,8 +23,11 @@ Idiomas incluidos: Español, English, Français, Italiano, Português y Русс
 - Manual profesional en PDF accesible y TXT para los seis idiomas.
 - Favoritos persistentes: Alt+F agrega o quita el video enfocado y Herramientas > Favoritos permite reproducirlo, descargarlo, consultar información o retirarlo de la lista.
 - Cola de descargas persistente: Alt+Q agrega el video enfocado, Ctrl+Shift+Q agrega videos marcados y Herramientas > Cola de descargas permite iniciar, revisar, detener o administrar la cola.
+- Playlists mejoradas, integradas con Favoritos y la Cola: ver contenido, agregar la playlist completa o seleccionar un rango de elementos.
+- Reproductor interno con mensajes diferenciados según la causa (autenticación de YouTube requerida, video no disponible, falta de un componente o error general), usando el mismo archivo cookies.txt o sesión de navegador que las descargas.
+- Corregido un anuncio incorrecto de NVDA al abrir Herramientas > Opciones con un archivo cookies.txt ya guardado.
 
-Consulte [RELEASE_NOTES_1_8_1_PRUEBA.md](RELEASE_NOTES_1_8_1_PRUEBA.md) para el detalle de esta versión de prueba.
+Consulte [RELEASE_NOTES_1_8_1.md](RELEASE_NOTES_1_8_1.md) para el detalle completo de esta versión.
 
 ## Accesibilidad
 
@@ -40,7 +41,7 @@ Los binarios portables de terceros no se almacenan en el repositorio fuente. Con
 
 ## Crear una versión portable
 
-Ejecute `CREAR_VERSION_DISTRIBUIBLE.bat` desde la carpeta completa de construcción. Los paquetes portables destinados a personas usuarias se publican en **GitHub Releases**.
+
 
 ## Traducciones
 
@@ -68,5 +69,3 @@ Proyecto oficial: https://github.com/nicoalfaro2026/descargador-musica-accesible
 ## Licencia
 
 Este proyecto se distribuye bajo la **GNU General Public License v3.0 (GPL-3.0)**. Consulte [LICENSE](LICENSE).
-
-- Playlists mejoradas integradas con Favoritos y Cola: contenido, playlist completa y selección por rango.
