@@ -1,4 +1,5 @@
 import os
+import re
 import sys
 import threading
 import time
@@ -91,6 +92,7 @@ from motor_ytdlp import (
 # en idiomas/es.json), sin detalles técnicos innecesarios.
 NOVEDADES_VERSION = {
     "1.8.1": "__whatsnew.1_8_1__body__",
+    "1.8.2": "__whatsnew.1_8_2__body__",
 }
 
 
@@ -1948,21 +1950,78 @@ class Ventana(wx.Frame):
                 "Error comprobando actualizaciones",
             )
 
+    @staticmethod
+    def _limpiar_notas_actualizacion(texto):
+        """Quita el marcado Markdown más común de las notas de la versión para que
+        se escuchen de forma natural con el lector de pantalla (sin símbolos
+        sueltos de #, * o `)."""
+        texto = str(texto or "").strip()
+        if not texto:
+            return texto
+        texto = re.sub(r"^#{1,6}\s*", "", texto, flags=re.MULTILINE)
+        texto = re.sub(r"\*\*(.+?)\*\*", r"\1", texto)
+        texto = re.sub(r"(?<!\*)\*([^*\n]+)\*(?!\*)", r"\1", texto)
+        texto = re.sub(r"`([^`]+)`", r"\1", texto)
+        texto = re.sub(r"^[-*]\s+", "- ", texto, flags=re.MULTILINE)
+        return texto.strip()
+
     def _preguntar_descargar_actualizacion_programa(self, info, continuar_motor_despues=False):
-        mensaje = (
-            "Hay una nueva versión de Descargador de Música Accesible.\n\n"
-            f"Versión actual: {VERSION}.\n"
-            f"Nueva versión: {info.version}.\n\n"
-            "Se recomienda actualizar para recibir mejoras, correcciones y mayor estabilidad.\n\n"
-            "¿Desea descargar e instalar la actualización ahora?"
+        notas = self._limpiar_notas_actualizacion(getattr(info, "notas", ""))
+        if not notas:
+            notas = traducir("Esta versión no incluye una descripción detallada de novedades.")
+
+        contenido = (
+            traducir_formato("Versión actual: {version}", version=VERSION) + "\n"
+            + traducir_formato("Nueva versión: {version}", version=info.version) + "\n\n"
+            + traducir("Novedades de esta versión:") + "\n\n"
+            + notas
         )
-        hablar_async("Nueva actualización disponible", limpiar=True)
-        respuesta = wx.MessageBox(
-            mensaje,
-            "Nueva actualización disponible",
-            wx.YES_NO | wx.ICON_QUESTION,
+
+        hablar_async(traducir("Nueva actualización disponible"), limpiar=True)
+
+        dialogo = wx.Dialog(
+            self,
+            title=traducir("Nueva actualización disponible"),
+            size=(640, 480),
+            style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER,
         )
-        if respuesta == wx.YES:
+        panel = wx.Panel(dialogo)
+        sizer = wx.BoxSizer(wx.VERTICAL)
+
+        etiqueta = wx.StaticText(
+            panel,
+            label=traducir(
+                "Se recomienda actualizar para recibir mejoras, correcciones y mayor estabilidad.\n"
+                "Use las flechas arriba y abajo para leer las novedades de esta versión."
+            ),
+        )
+        sizer.Add(etiqueta, 0, wx.EXPAND | wx.ALL, 10)
+
+        cuadro = wx.TextCtrl(panel, value=contenido, style=wx.TE_MULTILINE | wx.TE_READONLY)
+        cuadro.SetName(traducir("Novedades de la nueva versión"))
+        sizer.Add(cuadro, 1, wx.EXPAND | wx.LEFT | wx.RIGHT, 10)
+
+        botones = wx.BoxSizer(wx.HORIZONTAL)
+        btn_aceptar = wx.Button(panel, wx.ID_YES, label=traducir("Aceptar"))
+        btn_aceptar.SetName(traducir("Aceptar y descargar la actualización"))
+        btn_mas_tarde = wx.Button(panel, wx.ID_NO, label=traducir("Más tarde"))
+        btn_mas_tarde.SetName(traducir("Actualizar más tarde"))
+        botones.Add(btn_aceptar, 0, wx.ALL, 10)
+        botones.Add(btn_mas_tarde, 0, wx.TOP | wx.BOTTOM | wx.RIGHT, 10)
+        sizer.Add(botones, 0, wx.ALIGN_RIGHT)
+
+        panel.SetSizer(sizer)
+        dialogo.SetEscapeId(wx.ID_NO)
+        dialogo.SetAffirmativeId(wx.ID_YES)
+
+        # El foco inicial va al cuadro de novedades (no al botón) para que la
+        # persona usuaria pueda leerlas de inmediato con las flechas arriba y
+        # abajo; al presionar Tab pasa a Aceptar y luego a Más tarde.
+        cuadro.SetFocus()
+        respuesta = dialogo.ShowModal()
+        dialogo.Destroy()
+
+        if respuesta == wx.ID_YES:
             self._revision_motor_arranque_pendiente = False
             self._descargar_actualizacion_programa(info)
         elif continuar_motor_despues:

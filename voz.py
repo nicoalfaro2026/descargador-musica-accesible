@@ -2,18 +2,10 @@ import ctypes
 import os
 import platform
 import queue
-import shutil
-import subprocess
 import sys
-import tempfile
 import threading
 import time
 from pathlib import Path
-
-try:
-    import pyttsx3
-except Exception:
-    pyttsx3 = None
 
 _cola_voz = queue.Queue()
 _worker_iniciado = False
@@ -25,25 +17,14 @@ _ultimo_error = ""
 _nvda = None
 _nvda_probado = False
 _nvda_ultimo_intento = 0.0
+_jaws = None
+_jaws_probado = False
+_jaws_ultimo_intento = 0.0
 _NVDA_REINTENTO_SEGUNDOS = 3.0
-
-NOMBRES_VOZ_PREFERIDOS = ["Elena", "Helena", "Spanish", "Español", "Espanol"]
 
 
 def _windows():
     return platform.system().lower() == "windows"
-
-
-def _startupinfo_oculto():
-    if not _windows():
-        return None
-    try:
-        startupinfo = subprocess.STARTUPINFO()
-        startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-        startupinfo.wShowWindow = 0
-        return startupinfo
-    except Exception:
-        return None
 
 
 def _posibles_dll_nvda():
@@ -164,171 +145,59 @@ def _hablar_nvda(texto, limpiar=False):
         return False
 
 
-def _vbs_literal(texto):
-    # Literal VBScript: "texto" con comillas duplicadas.
-    return '"' + str(texto).replace('"', '""') + '"'
-
-
-def _hablar_vbs_sapi(texto):
-    """Usa SAPI de Windows mediante Windows Script Host. Suele ser más estable que PowerShell."""
-    global _ultimo_error
-
+def _jaws_esta_ejecutandose():
+    """Detecta la ventana principal de JAWS sin iniciarlo ni hablar con él."""
     if not _windows():
         return False
-
-    wscript = shutil.which("wscript.exe") or shutil.which("cscript.exe")
-    if not wscript:
-        _ultimo_error = "No se encontró wscript.exe ni cscript.exe para voz SAPI."
-        return False
-
-    texto_lit = _vbs_literal(texto)
-    script = f'''
-On Error Resume Next
-Set sapi = CreateObject("SAPI.SpVoice")
-If Err.Number <> 0 Then WScript.Quit 2
-For Each voz In sapi.GetVoices
-    nombre = LCase(voz.GetDescription)
-    If InStr(nombre, "elena") > 0 Or InStr(nombre, "helena") > 0 Then
-        Set sapi.Voice = voz
-        Exit For
-    End If
-Next
-If sapi.Voice Is Nothing Then
-    For Each voz In sapi.GetVoices
-        nombre = LCase(voz.GetDescription)
-        If InStr(nombre, "spanish") > 0 Or InStr(nombre, "español") > 0 Or InStr(nombre, "espanol") > 0 Then
-            Set sapi.Voice = voz
-            Exit For
-        End If
-    Next
-End If
-sapi.Rate = 0
-sapi.Volume = 100
-sapi.Speak {texto_lit}, 0
-Set sapi = Nothing
-'''
-
-    ruta = None
     try:
-        fd, ruta = tempfile.mkstemp(prefix="descargador_voz_", suffix=".vbs", text=True)
-        with os.fdopen(fd, "w", encoding="utf-8") as f:
-            f.write(script)
-        subprocess.run(
-            [wscript, "//B", ruta],
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL,
-            startupinfo=_startupinfo_oculto(),
-            timeout=45,
-            check=False,
-        )
-        return True
-    except Exception as e:
-        _ultimo_error = f"Error usando SAPI por VBScript: {e}"
-        return False
-    finally:
-        if ruta:
-            try:
-                os.remove(ruta)
-            except Exception:
-                pass
-
-
-def _ps_literal(texto):
-    return "'" + str(texto).replace("'", "''") + "'"
-
-
-def _hablar_powershell(texto):
-    global _ultimo_error
-
-    if not _windows():
-        return False
-
-    exe = shutil.which("powershell.exe") or shutil.which("powershell") or shutil.which("pwsh")
-    if not exe:
-        _ultimo_error = "No se encontró PowerShell para voz SAPI."
-        return False
-
-    texto_lit = _ps_literal(texto)
-    script = f"""
-Add-Type -AssemblyName System.Speech
-$s = New-Object System.Speech.Synthesis.SpeechSynthesizer
-$voz = $s.GetInstalledVoices() | Where-Object {{ $_.Enabled -and ($_.VoiceInfo.Name -match 'Elena|Helena') }} | Select-Object -First 1
-if (-not $voz) {{ $voz = $s.GetInstalledVoices() | Where-Object {{ $_.Enabled -and ($_.VoiceInfo.Culture.Name -like 'es-*') }} | Select-Object -First 1 }}
-if (-not $voz) {{ $voz = $s.GetInstalledVoices() | Where-Object {{ $_.Enabled -and ($_.VoiceInfo.Name -match 'Spanish|Español|Espanol') }} | Select-Object -First 1 }}
-if ($voz) {{ $s.SelectVoice($voz.VoiceInfo.Name) }}
-$s.Rate = 0
-$s.Volume = 100
-$s.Speak({texto_lit})
-$s.Dispose()
-"""
-
-    try:
-        import base64
-        encoded = script.encode("utf-16le")
-        cmd = [exe, "-STA", "-NoProfile", "-ExecutionPolicy", "Bypass", "-EncodedCommand", base64.b64encode(encoded).decode("ascii")]
-        subprocess.run(
-            cmd,
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL,
-            startupinfo=_startupinfo_oculto(),
-            timeout=45,
-            check=False,
-        )
-        return True
-    except Exception as e:
-        _ultimo_error = f"Error usando SAPI por PowerShell: {e}"
-        return False
-
-
-def _seleccionar_voz_pyttsx3(motor):
-    try:
-        voces = motor.getProperty("voices") or []
+        return bool(ctypes.windll.user32.FindWindowW("JFWUI2", None))
     except Exception:
-        return "predeterminada"
-
-    for preferida in NOMBRES_VOZ_PREFERIDOS:
-        for voz in voces:
-            texto = f"{getattr(voz, 'name', '')} {getattr(voz, 'id', '')}".lower()
-            if preferida.lower() in texto:
-                try:
-                    motor.setProperty("voice", voz.id)
-                    return getattr(voz, "name", preferida) or preferida
-                except Exception:
-                    pass
-
-    for voz in voces:
-        texto = f"{getattr(voz, 'name', '')} {getattr(voz, 'id', '')}".lower()
-        if any(palabra in texto for palabra in ("spanish", "español", "espanol", "es-")):
-            try:
-                motor.setProperty("voice", voz.id)
-                return getattr(voz, "name", "voz en español") or "voz en español"
-            except Exception:
-                pass
-
-    return "predeterminada"
-
-
-def _hablar_pyttsx3(texto):
-    global _ultimo_error
-
-    if pyttsx3 is None:
-        _ultimo_error = "pyttsx3 no está instalado."
         return False
 
+
+def _cargar_jaws():
+    global _jaws, _jaws_probado, _ultimo_error, _jaws_ultimo_intento
+
+    if _jaws is not None:
+        return _jaws
+
+    # Mismo criterio que con NVDA: si falló, se reintenta pasado un breve
+    # enfriamiento en vez de resignarse a no volver a probar en la sesión.
+    ahora = time.time()
+    if _jaws_probado and (ahora - _jaws_ultimo_intento) < _NVDA_REINTENTO_SEGUNDOS:
+        return None
+
+    _jaws_probado = True
+    _jaws_ultimo_intento = ahora
+
+    if not _windows():
+        return None
+
+    if not _jaws_esta_ejecutandose():
+        _ultimo_error = "JAWS no parece estar en ejecución."
+        return None
+
     try:
-        motor = pyttsx3.init("sapi5" if _windows() else None)
-        _seleccionar_voz_pyttsx3(motor)
-        motor.setProperty("rate", 175)
-        motor.setProperty("volume", 1.0)
-        motor.say(str(texto))
-        motor.runAndWait()
-        try:
-            motor.stop()
-        except Exception:
-            pass
-        return True
+        import comtypes.client
+        objeto = comtypes.client.CreateObject("FreedomSci.JawsApi")
+        _jaws = objeto
+        _ultimo_error = "JAWS detectado."
+        return _jaws
     except Exception as e:
-        _ultimo_error = f"Error usando pyttsx3: {e}"
+        _ultimo_error = f"JAWS está en ejecución, pero no se pudo conectar con su API: {e}"
+        return None
+
+
+def _hablar_jaws(texto, limpiar=False):
+    objeto = _cargar_jaws()
+    if objeto is None:
+        return False
+    try:
+        resultado = objeto.SayString(str(texto), 1 if limpiar else 0)
+        return bool(resultado)
+    except Exception as e:
+        global _ultimo_error
+        _ultimo_error = f"Error hablando con JAWS: {e}"
         return False
 
 
@@ -368,21 +237,14 @@ def _trabajador_voz():
             _metodo_activo = "NVDA"
             continue
 
-        # 2) Voz de Windows por VBScript/SAPI. Más estable que PowerShell en varios equipos.
-        if _hablar_vbs_sapi(texto):
-            _metodo_activo = "voz de Windows SAPI"
+        # 2) JAWS directo, solo si está disponible.
+        if _hablar_jaws(texto, limpiar=limpiar):
+            _metodo_activo = "JAWS"
             continue
 
-        # 3) Voz de Windows por PowerShell.
-        if _hablar_powershell(texto):
-            _metodo_activo = "voz de Windows PowerShell"
-            continue
-
-        # 4) pyttsx3 como último respaldo.
-        if _hablar_pyttsx3(texto):
-            _metodo_activo = "pyttsx3"
-            continue
-
+        # El programa depende únicamente de lectores de pantalla (NVDA o
+        # JAWS): si ninguno está en ejecución, no se usa ninguna voz propia
+        # de Windows como respaldo.
         _metodo_activo = "beep/consola"
         _beep_respaldo()
         print(texto)
@@ -429,9 +291,10 @@ def hablar_async(texto, limpiar=False, preferir_nvda=True):
 def hablar_cierre(texto, limpiar=True):
     """Anuncia la despedida de forma fiable antes de terminar el proceso.
 
-    Con NVDA se entrega el texto directamente al lector de pantalla. Si NVDA
-    no está disponible, usa una voz local síncrona para evitar que el mensaje
-    se pierda al cerrar la aplicación.
+    Se entrega el texto directamente al lector de pantalla activo (NVDA o
+    JAWS). Si ninguno está en ejecución, no se anuncia con ninguna voz
+    propia de Windows: el programa depende únicamente del lector de
+    pantalla de la persona usuaria.
     """
     global _ultimo_texto, _ultimo_tiempo, _metodo_activo
 
@@ -453,16 +316,9 @@ def hablar_cierre(texto, limpiar=True):
         _metodo_activo = "NVDA"
         return True
 
-    # Los respaldos son síncronos a propósito: el programa no termina hasta
-    # haber entregado la despedida al motor de voz local.
-    if _hablar_vbs_sapi(texto):
-        _metodo_activo = "voz de Windows SAPI"
-        return True
-    if _hablar_powershell(texto):
-        _metodo_activo = "voz de Windows PowerShell"
-        return True
-    if _hablar_pyttsx3(texto):
-        _metodo_activo = "pyttsx3"
+    # JAWS también conserva el anuncio aunque la ventana se destruya.
+    if _hablar_jaws(texto, limpiar=limpiar):
+        _metodo_activo = "JAWS"
         return True
 
     _metodo_activo = "beep/consola"
@@ -493,16 +349,12 @@ def diagnostico_voz():
 
     metodo = traducir_dinamico(_metodo_activo)
     detalle = traducir_dinamico(_ultimo_error or traducir("Sin errores registrados"))
-    powershell = shutil.which('powershell.exe') or shutil.which('powershell') or shutil.which('pwsh') or traducir("No encontrado")
-    wsh = shutil.which('wscript.exe') or shutil.which('cscript.exe') or traducir("No encontrado")
-    pyttsx3_estado = traducir("Sí") if pyttsx3 is not None else traducir("No")
+    jaws_estado = traducir("Sí") if _jaws_esta_ejecutandose() else traducir("No")
 
     return "\n".join([
         traducir_formato("Método activo: {metodo}", metodo=metodo),
         traducir_formato("Último detalle/error: {detalle}", detalle=detalle),
         traducir_formato("Windows: {valor}", valor=_windows()),
-        traducir_formato("PowerShell: {valor}", valor=powershell),
-        traducir_formato("Windows Script Host: {valor}", valor=wsh),
-        traducir_formato("pyttsx3 instalado: {valor}", valor=pyttsx3_estado),
+        traducir_formato("JAWS en ejecución: {valor}", valor=jaws_estado),
         traducir("DLL NVDA detectadas:") + "\n- " + "\n- ".join(dlls),
     ])

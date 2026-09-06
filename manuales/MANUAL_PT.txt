@@ -1,6 +1,6 @@
 ﻿Descargador de Música Accesible
 Manual do usuário
-Versão 1.8.1
+Versão 1.8.2
 Desenvolvido por Nicolás Alfaro
 
 1. Apresentação
@@ -82,39 +82,99 @@ O YouTube pode solicitar verificação ou login. No Windows, o método recomenda
 
 O arquivo deve estar no formato Netscape. O programa valida o formato e salva apenas o caminho, nunca o conteúdo no histórico, registros ou relatórios de diagnóstico.
 
-9.1. Obter cookies.txt com Google Chrome
+9.1. Qual extensão usar, e em quais navegadores funciona da mesma forma
 
-1. Abra o Google Chrome e pressione Ctrl+L.
+A extensão recomendada, Get cookies.txt LOCALLY, funciona exatamente da mesma forma no Google Chrome, Microsoft Edge, Brave, Vivaldi e Opera: é a mesma extensão, com o mesmo link de instalação e os mesmos passos dentro dela. Só muda o nome do botão de instalação (Adicionar ao Chrome, Adicionar ao Edge, Adicionar ao Brave etc.) e, no Edge e no Opera, é necessário um passo extra antes de esse botão aparecer, explicado na seção de cada um. O Mozilla Firefox usa uma extensão diferente, equivalente, disponível em sua própria loja de complementos.
+
+9.2. Obter cookies.txt com Google Chrome, Brave ou Vivaldi
+
+Esses três navegadores permitem instalar a extensão diretamente, sem etapas anteriores.
+
+1. Abra seu navegador e pressione Ctrl+L para ir até a barra de endereços.
 
 2. Cole este endereço e pressione Enter: https://chromewebstore.google.com/detail/get-cookiestxt-locally/cclelndahbckbenkjhflpdbgdldlbecc
 
-3. Ative Adicionar ao Chrome e confirme com Adicionar extensão.
+3. Procure o botão de instalação: Adicionar ao Chrome, Adicionar ao Brave ou Adicionar ao Vivaldi, conforme o navegador. Ative-o e, quando o navegador pedir confirmação, escolha Adicionar extensão.
+
+4. Abra https://www.youtube.com e faça login com a conta que você usa normalmente.
+
+5. Abra o botão Extensões do navegador. Com o leitor de tela, percorra a barra de ferramentas com Tab até Extensões.
+
+6. Em Extensões, escolha Get cookies.txt LOCALLY.
+
+7. Na extensão, selecione o formato Netscape. Não use JSON.
+
+8. Exporte os cookies. O navegador baixará um arquivo geralmente chamado cookies.txt.
+
+9. No programa, abra Ferramentas, Opções, YouTube e autenticação.
+
+10. Em Método de autenticação do YouTube, escolha Arquivo cookies.txt (recomendado).
+
+11. Ative Selecionar arquivo cookies.txt, localize o arquivo exportado e abra-o. O programa confirmará que foi configurado corretamente.
+
+Observação para o Vivaldi: se o botão Adicionar ao Vivaldi não aparecer na Chrome Web Store, abra Configurações, Privacidade e segurança, Extensões do Google, e ative Web Store; depois repita o passo 2.
+
+9.3. Obter cookies.txt com Microsoft Edge
+
+O Edge exige permitir extensões de outras lojas antes de instalar o Get cookies.txt LOCALLY.
+
+1. Abra o Microsoft Edge e pressione Ctrl+Shift+X para abrir Extensões diretamente.
+
+2. Procure e ative Permitir extensões de outras lojas.
+
+3. Quando o Edge exibir um aviso sobre extensões não verificadas, escolha Permitir.
+
+4. Pressione Ctrl+L, cole este endereço e pressione Enter: https://chromewebstore.google.com/detail/get-cookiestxt-locally/cclelndahbckbenkjhflpdbgdldlbecc
+
+5. Ative o botão Adicionar ao Chrome, que no Edge instala a extensão da mesma forma, e confirme com Adicionar extensão.
+
+6. Abra https://www.youtube.com e faça login com a conta que você usa normalmente.
+
+7. Abra o botão Extensões do navegador, escolha Get cookies.txt LOCALLY, selecione o formato Netscape e exporte o arquivo.
+
+8. No programa, selecione esse arquivo em Ferramentas, Opções, YouTube e autenticação, seguindo os passos de 9 a 11 da seção do Chrome acima.
+
+9.4. Obter cookies.txt com Opera
+
+O Opera pede primeiro para instalar seu próprio complemento antes de permitir o resto da Chrome Web Store.
+
+1. Abra o Opera. Pressione Ctrl+L, cole este endereço e pressione Enter: https://chromewebstore.google.com/detail/get-cookiestxt-locally/cclelndahbckbenkjhflpdbgdldlbecc
+
+2. O Opera vai oferecer para instalar Install Chrome Extensions. Ative Instalar extensão e confirme.
+
+3. Volte à página do Get cookies.txt LOCALLY, que agora mostrará um botão Adicionar ao Opera, e ative-o.
+
+4. Abra https://www.youtube.com e faça login com a conta que você usa normalmente.
+
+5. Abra o botão Extensões do navegador, escolha Get cookies.txt LOCALLY, selecione o formato Netscape e exporte o arquivo.
+
+6. No programa, selecione esse arquivo em Ferramentas, Opções, YouTube e autenticação, seguindo os passos de 9 a 11 da seção do Chrome acima.
+
+9.5. Obter cookies.txt com Mozilla Firefox
+
+1. Abra o Firefox e pressione Ctrl+L.
+
+2. Cole este endereço e pressione Enter: https://addons.mozilla.org/es-ES/firefox/addon/cookies-txt/
+
+3. Ative Adicionar ao Firefox e confirme a instalação.
 
 4. Abra https://www.youtube.com e faça login.
 
-5. Abra Extensões do Chrome e escolha Get cookies.txt LOCALLY.
+5. Abra Extensões, escolha cookies.txt e exporte o arquivo.
 
-6. Escolha o formato Netscape, não JSON, e exporte cookies.txt.
+6. Selecione esse arquivo no programa em Ferramentas, Opções, YouTube e autenticação.
 
-7. No programa, abra Ferramentas, Opções, YouTube e autenticação, escolha Arquivo cookies.txt e selecione o arquivo exportado.
+9.6. Usa outro navegador baseado em Chromium?
 
-9.2. Obter cookies.txt com Mozilla Firefox
+Se o seu navegador não estiver nesta lista, mas for baseado em Chromium (por exemplo, o próprio Chromium, ou outro menos comum), geralmente é possível instalar o Get cookies.txt LOCALLY seguindo os mesmos passos do Google Chrome. Se o botão de instalação não aparecer, verifique antes as opções de extensões ou privacidade desse navegador.
 
-1. Abra o Firefox, pressione Ctrl+L e acesse https://addons.mozilla.org/es-ES/firefox/addon/cookies-txt/
+9.7. Sessão direta do navegador
 
-2. Ative Adicionar ao Firefox e confirme.
+A sessão direta do navegador continua disponível como alternativa. Em versões recentes do Chrome no Windows, o sistema pode impedir que um aplicativo externo descriptografe diretamente os cookies e exibir um erro DPAPI. Se isso acontecer, use cookies.txt em vez de alterar a segurança do Windows ou do navegador.
 
-3. Faça login no YouTube, abra Extensões, escolha cookies.txt e exporte o arquivo.
+9.8. Segurança do arquivo
 
-4. Selecione o arquivo em Ferramentas, Opções, YouTube e autenticação.
-
-9.3. Sessão direta do navegador
-
-A sessão direta do navegador continua disponível como alternativa. Se o Chrome no Windows mostrar erro DPAPI, use cookies.txt em vez de alterar a segurança do sistema.
-
-9.4. Segurança
-
-cookies.txt pode permitir o uso de uma sessão iniciada. Não compartilhe, não envie e não anexe esse arquivo a relatórios de problemas.
+O arquivo cookies.txt pode conter informações que permitem usar uma sessão já iniciada. Não o compartilhe, não o envie por e-mail, não o publique e não o anexe a relatórios de erro. Se achar que outra pessoa obteve o arquivo, encerre as sessões da sua conta e exporte um novo.
 
 Se o YouTube solicitar autenticação durante uma fila de downloads, o programa pausa a fila e mantém os itens pendentes.
 

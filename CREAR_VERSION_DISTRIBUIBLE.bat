@@ -105,7 +105,6 @@ for %%F in (yt-dlp.exe deno.exe node.exe ffmpeg.exe ffprobe.exe mpv-1.dll nvdaCo
 "%PY%" "%SRC%\copiar_build_portable.py" final "%BUILT%" "%OUT%" >>"%LOG%" 2>&1
 if errorlevel 1 goto :error_finalcopy_pop
 
-if exist "MANUAL_DE_USUARIO_DESCARGADOR_MUSICA_ACCESIBLE.txt" copy /Y "MANUAL_DE_USUARIO_DESCARGADOR_MUSICA_ACCESIBLE.txt" "%OUT%\MANUAL_DE_USUARIO.txt" >>"%LOG%" 2>&1
 if exist "LEEME_USUARIO_FINAL.txt" copy /Y "LEEME_USUARIO_FINAL.txt" "%OUT%\LEEME.txt" >>"%LOG%" 2>&1
 if exist "manuales" powershell -NoProfile -ExecutionPolicy Bypass -Command "Copy-Item -LiteralPath 'manuales' -Destination '%OUT%\Manuales' -Recurse -Force" >>"%LOG%" 2>&1
 popd

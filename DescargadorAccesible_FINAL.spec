@@ -29,7 +29,6 @@ if archivo_actualizacion.exists():
     datas.append((str(archivo_actualizacion), "."))
 
 for archivo_doc in (
-    "MANUAL_DE_USUARIO_DESCARGADOR_MUSICA_ACCESIBLE.txt",
     "NOTAS_MOTOR_DESCARGA.txt", "NOTAS_DEPENDENCIAS.txt", "CAMBIOS.txt",
     "LEEME_USUARIO_FINAL.txt",
 ):
@@ -47,9 +46,6 @@ hiddenimports = [
     "favoritos",
     "i18n",
     "actualizador_app",
-    "pyttsx3",
-    "pyttsx3.drivers",
-    "pyttsx3.drivers.sapi5",
     "comtypes",
     "comtypes.client",
     "nodejs_wheel",

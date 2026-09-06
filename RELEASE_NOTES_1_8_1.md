@@ -29,6 +29,12 @@ Esta versión está centrada en mantenimiento, accesibilidad y robustez.
 - El cierre mantiene el proceso activo brevemente para dar tiempo al lector de pantalla a terminar el mensaje de despedida.
 - La ventana de "Actualización completada" que se muestra tras actualizar el programa ahora incluye, cuando existen, las novedades visibles de la nueva versión antes del botón Aceptar.
 
+## Soporte de JAWS y eliminación de voces de Windows
+
+- El programa ahora habla directamente con JAWS cuando está en ejecución, además de con NVDA.
+- Se eliminaron por completo las voces de respaldo de Windows (SAPI, PowerShell y pyttsx3), que antes podían activarse y anunciar con una voz distinta a la del lector de pantalla de la persona usuaria (por ejemplo, la voz "Elena").
+- Si ni NVDA ni JAWS están en ejecución, el programa ya no habla con ninguna voz propia: solo emite un sonido breve.
+
 ## Manual
 
 - Nuevo manual de usuario profesional en PDF accesible y TXT.

@@ -1,5 +1,5 @@
 wxPython
 yt-dlp[default,curl-cffi]
-pyttsx3
+comtypes
 python-mpv
 aiohttp>=3.12.13

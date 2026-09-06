@@ -1,6 +1,6 @@
 ﻿Accessible Music Downloader
 User Manual
-Version 1.8.1
+Version 1.8.2
 Developed by Nicolás Alfaro
 
 1. Introduction
@@ -83,23 +83,29 @@ YouTube may occasionally request verification or sign-in. On Windows, the recomm
 
 The file must use Netscape format. The program validates this format before saving the setting. Only the selected file path is stored; its contents are never copied to history, logs, or diagnostic reports.
 
-9.1. Obtain cookies.txt with Google Chrome
+9.1. Which extension to use, and which browsers work the same way
 
-1. Open Google Chrome. Press Ctrl+L to move to the address bar.
+The recommended extension, Get cookies.txt LOCALLY, works exactly the same in Google Chrome, Microsoft Edge, Brave, Vivaldi and Opera: it is the same extension, with the same installation link and the same steps inside the extension. Only the name of the install button changes (Add to Chrome, Add to Edge, Add to Brave, etc.), and Edge and Opera each need one extra step before that button appears, covered in their own section below. Mozilla Firefox uses a different, equivalent extension available in its own add-on store.
+
+9.2. Obtain cookies.txt with Google Chrome, Brave or Vivaldi
+
+These three browsers let you install the extension directly, with no extra steps.
+
+1. Open your browser. Press Ctrl+L to move to the address bar.
 
 2. Paste this address and press Enter: https://chromewebstore.google.com/detail/get-cookiestxt-locally/cclelndahbckbenkjhflpdbgdldlbecc
 
-3. In Chrome Web Store, activate Add to Chrome. When Chrome asks for confirmation, choose Add extension.
+3. Find the install button: Add to Chrome, Add to Brave or Add to Vivaldi, depending on your browser. Activate it and, when the browser asks for confirmation, choose Add extension.
 
 4. Open https://www.youtube.com and sign in to the account you normally use.
 
-5. Open Chrome Extensions. With a screen reader, move through the browser toolbar with Tab until you reach Extensions.
+5. Open the browser's Extensions button. With a screen reader, move through the browser toolbar with Tab until you reach Extensions.
 
 6. Choose Get cookies.txt LOCALLY.
 
-7. Select Netscape format in the extension. Do not use JSON.
+7. In the extension, select Netscape format. Do not use JSON.
 
-8. Export the cookies. Chrome will download a file usually named cookies.txt.
+8. Export the cookies. Your browser will download a file usually named cookies.txt.
 
 9. In Accessible Music Downloader open Tools, Options, YouTube and authentication.
 
@@ -107,7 +113,45 @@ The file must use Netscape format. The program validates this format before savi
 
 11. Activate Select cookies.txt file, locate the exported file and open it. The program will confirm that it was configured correctly.
 
-9.2. Obtain cookies.txt with Mozilla Firefox
+Note for Vivaldi: if the Add to Vivaldi button does not appear on the Chrome Web Store page, open Settings, Privacy and security, Google extensions, and enable Web Store; then repeat step 2.
+
+9.3. Obtain cookies.txt with Microsoft Edge
+
+Edge requires enabling extensions from other stores before you can install Get cookies.txt LOCALLY.
+
+1. Open Microsoft Edge and press Ctrl+Shift+X to open Extensions directly.
+
+2. Find and enable Allow extensions from other stores.
+
+3. When Edge shows a warning about unverified extensions, choose Allow.
+
+4. Press Ctrl+L, paste this address and press Enter: https://chromewebstore.google.com/detail/get-cookiestxt-locally/cclelndahbckbenkjhflpdbgdldlbecc
+
+5. Activate the Add to Chrome button, which installs the extension the same way in Edge, and confirm with Add extension.
+
+6. Open https://www.youtube.com and sign in to the account you normally use.
+
+7. Open the browser's Extensions button, choose Get cookies.txt LOCALLY, select Netscape format and export the file.
+
+8. In Accessible Music Downloader select that file from Tools, Options, YouTube and authentication, following steps 9 through 11 in the Chrome section above.
+
+9.4. Obtain cookies.txt with Opera
+
+Opera first asks you to install its own small companion extension before it will let you install anything else from the Chrome Web Store.
+
+1. Open Opera. Press Ctrl+L, paste this address and press Enter: https://chromewebstore.google.com/detail/get-cookiestxt-locally/cclelndahbckbenkjhflpdbgdldlbecc
+
+2. Opera will offer to install Install Chrome Extensions. Activate Install extension and confirm.
+
+3. Return to the Get cookies.txt LOCALLY page, which will now show an Add to Opera button, and activate it.
+
+4. Open https://www.youtube.com and sign in to the account you normally use.
+
+5. Open the browser's Extensions button, choose Get cookies.txt LOCALLY, select Netscape format and export the file.
+
+6. In Accessible Music Downloader select that file from Tools, Options, YouTube and authentication, following steps 9 through 11 in the Chrome section above.
+
+9.5. Obtain cookies.txt with Mozilla Firefox
 
 1. Open Firefox and press Ctrl+L.
 
@@ -121,11 +165,15 @@ The file must use Netscape format. The program validates this format before savi
 
 6. Select that file in Accessible Music Downloader from Tools, Options, YouTube and authentication.
 
-9.3. Direct browser session
+9.6. Using another Chromium-based browser?
+
+If your browser is not listed above but is based on Chromium (for example Chromium itself, or a less common one), you can usually install Get cookies.txt LOCALLY by following the same steps as Google Chrome. If the install button does not appear, check that browser's own extension or privacy settings first.
+
+9.7. Direct browser session
 
 Direct browser session remains available as an alternative. In recent Chrome versions on Windows, the system may prevent an external application from decrypting cookies and report a DPAPI error. If that happens, use cookies.txt instead of weakening Windows or browser security.
 
-9.4. Cookie file security
+9.8. Cookie file security
 
 cookies.txt can contain information that permits use of a signed-in session. Do not share it, email it, publish it, or attach it to bug reports. If you believe someone else obtained the file, sign out active sessions and export a new one.
 

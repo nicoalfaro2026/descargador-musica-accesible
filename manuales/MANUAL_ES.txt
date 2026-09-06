@@ -1,6 +1,6 @@
 ﻿Descargador de Música Accesible
 Manual de usuario
-Versión 1.8.1
+Versión 1.8.2
 Desarrollado por Nicolás Alfaro
 
 1. Presentación
@@ -66,7 +66,6 @@ La opción Seleccionar un rango permite indicar una posición inicial y una posi
 Si pega directamente una URL de playlist en Descargar por URL y pulsa Enter o Descargar, el programa la detecta y ofrece las mismas acciones de playlist en lugar de tratarla como un video individual.
 Las playlists también pueden guardarse en Favoritos. Al abrir una playlist guardada desde Herramientas, Favoritos, podrá ver su contenido, agregarla completa a la cola o seleccionar un rango. La URL se conserva internamente, pero no se muestra en las listas accesibles.
 
-
 7. Reproductor interno
 
 La acción Reproducir permite escuchar el contenido antes de descargarlo.
@@ -85,23 +84,29 @@ En algunas ocasiones YouTube puede solicitar verificación o inicio de sesión. 
 
 El archivo debe estar en formato Netscape. El programa valida este formato antes de guardarlo. Solo se conserva la ruta del archivo seleccionado; su contenido no se copia al historial, los registros ni los informes de diagnóstico.
 
-9.1. Obtener cookies.txt con Google Chrome
+9.1. Qué extensión usar y en qué navegadores funciona igual
 
-1. Abra Google Chrome. Pulse Ctrl+L para ir a la barra de direcciones.
+La extensión recomendada, Get cookies.txt LOCALLY, funciona exactamente igual en Google Chrome, Microsoft Edge, Brave, Vivaldi y Opera: es la misma extensión, con el mismo enlace de instalación y los mismos pasos dentro de la extensión. Solo cambia el nombre del botón de instalación (Añadir a Chrome, Añadir a Edge, Añadir a Brave, etc.) y, en Edge y en Opera, hace falta un paso adicional antes de que ese botón aparezca, explicado en su propia sección. Mozilla Firefox utiliza una extensión equivalente, distinta, disponible en su propia tienda de complementos.
+
+9.2. Obtener cookies.txt con Google Chrome, Brave o Vivaldi
+
+Estos tres navegadores permiten instalar la extensión directamente, sin pasos previos.
+
+1. Abra su navegador. Pulse Ctrl+L para ir a la barra de direcciones.
 
 2. Pegue esta dirección y pulse Enter: https://chromewebstore.google.com/detail/get-cookiestxt-locally/cclelndahbckbenkjhflpdbgdldlbecc
 
-3. En Chrome Web Store, busque el botón Añadir a Chrome y actívelo. Cuando Chrome solicite confirmación, elija Añadir extensión.
+3. Busque el botón de instalación: Añadir a Chrome, Añadir a Brave o Añadir a Vivaldi según corresponda. Actívelo y, cuando el navegador solicite confirmación, elija Añadir extensión.
 
 4. Entre a https://www.youtube.com e inicie sesión con la cuenta que utiliza normalmente.
 
-5. Abra el botón Extensiones de Chrome. Con lector de pantalla puede recorrer la barra del navegador con Tab hasta encontrar Extensiones.
+5. Abra el botón Extensiones del navegador. Con lector de pantalla puede recorrer la barra del navegador con Tab hasta encontrar Extensiones.
 
 6. Dentro de Extensiones, elija Get cookies.txt LOCALLY.
 
 7. En la extensión, seleccione el formato Netscape. No utilice JSON.
 
-8. Exporte las cookies. Chrome descargará un archivo normalmente llamado cookies.txt.
+8. Exporte las cookies. El navegador descargará un archivo normalmente llamado cookies.txt.
 
 9. En Descargador de Música Accesible abra Herramientas, Opciones, YouTube y autenticación.
 
@@ -109,7 +114,45 @@ El archivo debe estar en formato Netscape. El programa valida este formato antes
 
 11. Active Seleccionar archivo cookies.txt, busque el archivo exportado y ábralo. El programa confirmará que el archivo fue configurado correctamente.
 
-9.2. Obtener cookies.txt con Mozilla Firefox
+Nota para Vivaldi: si al entrar a la Chrome Web Store no aparece el botón Añadir a Vivaldi, abra Configuración, Privacidad y seguridad, Extensiones de Google y active la opción Web Store; luego repita el paso 2.
+
+9.3. Obtener cookies.txt con Microsoft Edge
+
+Edge exige permitir extensiones de otras tiendas antes de poder instalar Get cookies.txt LOCALLY.
+
+1. Abra Microsoft Edge y pulse Ctrl+Shift+X para abrir Extensiones directamente.
+
+2. Busque y active la opción Permitir extensiones de otras tiendas.
+
+3. Cuando Edge muestre una advertencia sobre extensiones no verificadas, elija Permitir.
+
+4. Pulse Ctrl+L, pegue esta dirección y pulse Enter: https://chromewebstore.google.com/detail/get-cookiestxt-locally/cclelndahbckbenkjhflpdbgdldlbecc
+
+5. Active el botón Añadir a Chrome, que en Edge instala la extensión igual, y confirme con Agregar extensión.
+
+6. Entre a https://www.youtube.com e inicie sesión con la cuenta que utiliza normalmente.
+
+7. Abra el botón Extensiones del navegador, elija Get cookies.txt LOCALLY, seleccione el formato Netscape y exporte el archivo.
+
+8. En Descargador de Música Accesible seleccione ese archivo desde Herramientas, Opciones, YouTube y autenticación, siguiendo los pasos 9 a 11 de la sección de Chrome.
+
+9.4. Obtener cookies.txt con Opera
+
+Opera pide instalar primero un pequeño complemento propio antes de habilitar el resto de la Chrome Web Store.
+
+1. Abra Opera. Pulse Ctrl+L, pegue esta dirección y pulse Enter: https://chromewebstore.google.com/detail/get-cookiestxt-locally/cclelndahbckbenkjhflpdbgdldlbecc
+
+2. Opera mostrará un aviso ofreciendo instalar Install Chrome Extensions. Active Instalar la extensión y confirme.
+
+3. Vuelva a la página de Get cookies.txt LOCALLY, que ahora mostrará el botón Añadir a Opera, y actívelo.
+
+4. Entre a https://www.youtube.com e inicie sesión con la cuenta que utiliza normalmente.
+
+5. Abra el botón Extensiones del navegador, elija Get cookies.txt LOCALLY, seleccione el formato Netscape y exporte el archivo.
+
+6. En Descargador de Música Accesible seleccione ese archivo desde Herramientas, Opciones, YouTube y autenticación, siguiendo los pasos 9 a 11 de la sección de Chrome.
+
+9.5. Obtener cookies.txt con Mozilla Firefox
 
 1. Abra Firefox y pulse Ctrl+L.
 
@@ -123,11 +166,15 @@ El archivo debe estar en formato Netscape. El programa valida este formato antes
 
 6. En Descargador de Música Accesible seleccione ese archivo desde Herramientas, Opciones, YouTube y autenticación.
 
-9.3. Sesión directa del navegador
+9.6. ¿Usa otro navegador basado en Chromium?
+
+Si su navegador no aparece en esta lista pero está basado en Chromium (por ejemplo Chromium mismo u otros menos habituales), generalmente puede instalar Get cookies.txt LOCALLY siguiendo los mismos pasos que para Google Chrome. Si el botón de instalación no aparece, revise las opciones de extensiones o privacidad de ese navegador antes de continuar.
+
+9.7. Sesión directa del navegador
 
 La opción Sesión del navegador permanece disponible como alternativa. En algunas versiones recientes de Chrome en Windows, el sistema puede impedir que una aplicación externa descifre directamente las cookies y mostrar un error DPAPI. Si ocurre, utilice el archivo cookies.txt en lugar de modificar la seguridad de Windows o del navegador.
 
-9.4. Seguridad del archivo
+9.8. Seguridad del archivo
 
 cookies.txt puede contener información que permite utilizar una sesión iniciada. No lo comparta, no lo envíe por correo, no lo publique y no lo adjunte a reportes de errores. Si cree que otra persona obtuvo el archivo, cierre las sesiones de su cuenta y exporte uno nuevo.
 
