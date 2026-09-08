@@ -4,7 +4,7 @@ Esta versión suma un ecualizador experimental al reproductor interno, permite r
 
 ## Ecualizador experimental
 
-- El reproductor interno incorpora un ecualizador experimental que aplica una curva de sonido preparada por el desarrollador.
+- El reproductor interno incorpora un ecualizador experimental que reproduce la curva de ecualización configurada por el desarrollador en Stereo Tool.
 - Se activa y desactiva con la tecla E. Viene desactivado de forma predeterminada, y el programa recuerda la preferencia elegida para la próxima vez que se abra.
 - Al tratarse de una función experimental, es posible que se siga ajustando en próximas versiones.
 
