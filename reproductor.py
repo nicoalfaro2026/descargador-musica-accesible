@@ -6,13 +6,13 @@ from pathlib import Path
 import wx
 
 from voz import hablar_async as _hablar_async_original
-from i18n import formatear_duracion, traducir, traducir_clave, traducir_dinamico, traducir_formato
+from i18n import establecer_idioma, formatear_duracion, traducir, traducir_clave, traducir_dinamico, traducir_formato
 
 
 def hablar_async(texto, *args, **kwargs):
     return _hablar_async_original(traducir_dinamico(texto), *args, **kwargs)
 from descargador import ErrorYoutubeBloqueo, ErrorVideoNoDisponible
-from configuracion import guardar_configuracion_completa
+from configuracion import cargar_configuracion, guardar_configuracion_completa
 
 
 class ErrorReproductor(Exception):
@@ -84,6 +84,16 @@ def _preparar_entorno_mpv():
 
     return encontradas
 
+
+def _cargar_filtro_ecualizador():
+    """Importa la función que arma el filtro del ecualizador de Stereo Tool,
+    de forma perezosa y tolerante a fallos (si el archivo no está, el
+    reproductor sigue funcionando sin ecualizador en vez de romperse)."""
+    try:
+        from ecualizador_stereo_tool import filtro_af_ecualizador
+        return filtro_af_ecualizador
+    except Exception:
+        return None
 
 
 def listar_dispositivos_audio():
@@ -191,7 +201,7 @@ def diagnostico_reproductor():
 class ReproductorMPV:
     """Pequeño envoltorio sobre MPV para reproducir audio/video por URL."""
 
-    def __init__(self, volumen_inicial=50, velocidad_inicial=1.0, dispositivo_salida="auto"):
+    def __init__(self, volumen_inicial=50, velocidad_inicial=1.0, dispositivo_salida="auto", ecualizador_inicial=False):
         rutas_mpv = _preparar_entorno_mpv()
 
         try:
@@ -256,6 +266,34 @@ class ReproductorMPV:
                     rutas=detalle_rutas,
                 )
             ) from exc
+
+        self.ecualizador_activo = False
+        if ecualizador_inicial:
+            self.aplicar_ecualizador(True)
+
+    def aplicar_ecualizador(self, activo):
+        """Prende o apaga el ecualizador basado en la curva de Stereo Tool.
+
+        Devuelve True si el cambio se pudo aplicar y False si no (por
+        ejemplo, si falta el módulo del ecualizador o mpv-1.dll no admite
+        el filtro). En caso de no poder aplicarlo, el reproductor sigue
+        funcionando normalmente, solo que sin el ecualizador.
+        """
+        if activo:
+            obtener_filtro = _cargar_filtro_ecualizador()
+            if obtener_filtro is None:
+                return False
+            try:
+                self.player.af = obtener_filtro()
+            except Exception:
+                return False
+        else:
+            try:
+                self.player.af = ""
+            except Exception:
+                return False
+        self.ecualizador_activo = activo
+        return True
 
     def cargar(self, url):
         if not url:
@@ -350,19 +388,24 @@ def formato_tiempo(segundos):
 class DialogoReproductor(wx.Dialog):
     """Diálogo accesible para escuchar un resultado antes de descargar."""
 
-    def __init__(self, padre, descargador, url, resultado, configuracion=None):
+    def __init__(self, padre, descargador=None, url=None, resultado=None, configuracion=None, archivo_local=None):
         super().__init__(padre, title=traducir("Reproductor interno"), size=(720, 300))
         self.padre = padre
         self.descargador = descargador
         self.url = url
+        self.archivo_local = str(archivo_local) if archivo_local else None
         self.resultado = resultado or {}
         self.configuracion = configuracion or {}
-        self.titulo_video = self.resultado.get("titulo", "resultado seleccionado")
+        if self.archivo_local:
+            self.titulo_video = Path(self.archivo_local).stem
+        else:
+            self.titulo_video = self.resultado.get("titulo", "resultado seleccionado")
         self.salto_segundos = self._leer_salto_segundos()
         self.volumen_inicial = self._leer_volumen_inicial()
         self.velocidad_inicial = self._leer_velocidad_inicial()
         self.dispositivo_salida = str(self.configuracion.get("reproductor_dispositivo_salida", "auto") or "auto")
         self.anunciar_posicion_al_pausar = bool(self.configuracion.get("reproductor_anunciar_posicion_al_pausar", False))
+        self.ecualizador_inicial = self._leer_ecualizador_inicial()
         self.reproductor = None
         self.preparando = True
         self.cerrando = False
@@ -373,8 +416,13 @@ class DialogoReproductor(wx.Dialog):
         self.temporizador = wx.Timer(self)
         self.Bind(wx.EVT_TIMER, self._actualizar_posicion_visual, self.temporizador)
 
-        hablar_async(f"Preparando reproducción de {self.titulo_video}", limpiar=True)
-        wx.CallLater(250, self._iniciar_preparacion)
+        if self.archivo_local:
+            # Archivo local: no hay nada que resolver por red, así que se
+            # reproduce directamente, sin el mensaje de "preparando".
+            wx.CallLater(50, self._iniciar_reproduccion, {"stream_url": self.archivo_local})
+        else:
+            hablar_async(f"Preparando reproducción de {self.titulo_video}", limpiar=True)
+            wx.CallLater(250, self._iniciar_preparacion)
 
     def _iniciar_preparacion(self):
         if self.cerrando:
@@ -402,6 +450,9 @@ class DialogoReproductor(wx.Dialog):
             return float(valor)
         except Exception:
             return 1.0
+
+    def _leer_ecualizador_inicial(self):
+        return bool(self.configuracion.get("reproductor_ecualizador_activo", False))
 
     def _crear_interfaz(self):
         sizer = wx.BoxSizer(wx.VERTICAL)
@@ -456,6 +507,7 @@ class DialogoReproductor(wx.Dialog):
                 volumen_inicial=self.volumen_inicial,
                 velocidad_inicial=self.velocidad_inicial,
                 dispositivo_salida=self.dispositivo_salida,
+                ecualizador_inicial=self.ecualizador_inicial,
             )
         except ErrorReproductor as exc:
             self._error_falta_mpv(str(exc))
@@ -468,13 +520,14 @@ class DialogoReproductor(wx.Dialog):
             self.reproductor.cargar(info["stream_url"])
             self.reproductor.reproducir()
             self.preparando = False
-            self.estado.SetValue(traducir_dinamico(
-                traducir_formato("Reproduciendo. Volumen {volumen} por ciento. Velocidad {velocidad}", volumen=self.volumen_inicial, velocidad=f"{self.velocidad_inicial:.2f}")
-            ))
-            hablar_async(
-                traducir_formato("Reproduciendo. Volumen {volumen} por ciento. Velocidad {velocidad}", volumen=self.volumen_inicial, velocidad=f"{self.velocidad_inicial:.2f}"),
-                limpiar=True,
-            )
+            if self.archivo_local:
+                mensaje_inicial = traducir_formato("Reproduciendo {titulo}", titulo=self.titulo_video)
+            else:
+                mensaje_inicial = traducir_formato("Reproduciendo. Volumen {volumen} por ciento. Velocidad {velocidad}", volumen=self.volumen_inicial, velocidad=f"{self.velocidad_inicial:.2f}")
+                if getattr(self.reproductor, "ecualizador_activo", False):
+                    mensaje_inicial = mensaje_inicial + " " + traducir("Ecualizador activado")
+            self.estado.SetValue(traducir_dinamico(mensaje_inicial))
+            hablar_async(mensaje_inicial, limpiar=True)
             self.temporizador.Start(2000)
             self.SetFocus()
         except Exception as exc:
@@ -538,6 +591,7 @@ class DialogoReproductor(wx.Dialog):
             ord("8"): "volumen_mas",
             ord("0"): "duracion",
             ord("9"): "posicion",
+            ord("E"): "ecualizador",
             wx.WXK_NUMPAD1: "retroceder",
             wx.WXK_NUMPAD2: "pausa",
             wx.WXK_NUMPAD3: "adelantar",
@@ -575,6 +629,19 @@ class DialogoReproductor(wx.Dialog):
         except Exception:
             pass
 
+    def _guardar_ecualizador_actual(self):
+        """Guarda si el ecualizador quedó prendido o apagado, para que la
+        próxima vez que se abra el reproductor se respete esa preferencia."""
+        try:
+            if not self.reproductor:
+                return
+            activo = bool(getattr(self.reproductor, "ecualizador_activo", False))
+            self.ecualizador_inicial = activo
+            self.configuracion["reproductor_ecualizador_activo"] = activo
+            guardar_configuracion_completa(self.configuracion)
+        except Exception:
+            pass
+
     def _ejecutar_accion(self, accion):
         if self.preparando or not self.reproductor:
             hablar_async("El reproductor todavía se está preparando", limpiar=True)
@@ -602,17 +669,28 @@ class DialogoReproductor(wx.Dialog):
                 velocidad = self.reproductor.cambiar_velocidad(0.25)
                 self._decir_estado(f"Velocidad {velocidad}")
             elif accion == "volumen_menos":
-                volumen = self.reproductor.cambiar_volumen(-10)
+                volumen = self.reproductor.cambiar_volumen(-2)
                 self._guardar_volumen_actual()
                 self._decir_estado(traducir_formato("Volumen {volumen} por ciento", volumen=volumen))
             elif accion == "volumen_mas":
-                volumen = self.reproductor.cambiar_volumen(10)
+                volumen = self.reproductor.cambiar_volumen(2)
                 self._guardar_volumen_actual()
                 self._decir_estado(traducir_formato("Volumen {volumen} por ciento", volumen=volumen))
             elif accion == "duracion":
                 self._decir_estado(traducir_formato("Duración total {duracion}", duracion=formato_tiempo(self.reproductor.duracion())))
             elif accion == "posicion":
                 self._decir_estado(traducir_formato("Posición actual {posicion}", posicion=formato_tiempo(self.reproductor.posicion())))
+            elif accion == "ecualizador":
+                nuevo_estado = not getattr(self.reproductor, "ecualizador_activo", False)
+                aplicado = self.reproductor.aplicar_ecualizador(nuevo_estado)
+                if not aplicado:
+                    self._decir_estado(traducir("No se pudo activar el ecualizador"))
+                else:
+                    self._guardar_ecualizador_actual()
+                    if nuevo_estado:
+                        self._decir_estado(traducir("Ecualizador activado"))
+                    else:
+                        self._decir_estado(traducir("Ecualizador desactivado"))
         except Exception as exc:
             self._decir_estado(f"No se pudo ejecutar la acción. {exc}")
 
@@ -650,7 +728,10 @@ class DialogoReproductor(wx.Dialog):
             self.reproductor.detener()
 
         if anunciar:
-            hablar_async("Reproducción detenida. Volviendo a la lista", limpiar=True)
+            if self.archivo_local:
+                hablar_async("Reproducción detenida", limpiar=True)
+            else:
+                hablar_async("Reproducción detenida. Volviendo a la lista", limpiar=True)
 
         try:
             if self.IsModal():
@@ -668,3 +749,27 @@ class DialogoReproductor(wx.Dialog):
 
     def _cerrar(self, evento):
         self._detener_y_cerrar()
+
+
+def reproducir_rapido(ruta_archivo):
+    """Punto de entrada rápido para escuchar un archivo local (por ejemplo,
+    elegido con "Reproducir con Descargador de Música Accesible" desde el
+    menú Abrir con de Windows).
+
+    A diferencia del arranque normal del programa, esto NO muestra la
+    ventana principal ni la bienvenida hablada: abre directamente el
+    reproductor accesible con el archivo indicado, para que la música
+    empiece a sonar lo antes posible.
+    """
+    configuracion = cargar_configuracion()
+    establecer_idioma(configuracion.get("idioma", "es"))
+
+    app = wx.App(False)
+    padre_oculto = wx.Frame(None)
+    padre_oculto.Hide()
+    try:
+        dialogo = DialogoReproductor(padre_oculto, configuracion=configuracion, archivo_local=ruta_archivo)
+        dialogo.ShowModal()
+        dialogo.Destroy()
+    finally:
+        padre_oculto.Destroy()

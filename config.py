@@ -2,7 +2,7 @@ import sys
 from pathlib import Path
 
 APP_NOMBRE = "Descargador de Música Accesible"
-VERSION = "1.8.2"
+VERSION = "1.8.3"
 
 BASE_DIR = Path(sys.executable).resolve().parent if getattr(sys, "frozen", False) else Path(__file__).resolve().parent
 DATA_DIR = BASE_DIR / "datos"

@@ -317,7 +317,12 @@ echo APPDIR=%APPDIR% >> "%LOG%"
 echo ZIP=%ZIP% >> "%LOG%"
 echo EXTRACT=%EXTRACT% >> "%LOG%"
 
-timeout /t 3 /nobreak >nul
+rem Windows permite renombrar un .exe aunque siga en ejecucion (se probo y no sirve
+rem como indicador), asi que en vez de intentar adivinar si el programa anterior ya
+rem se cerro del todo, se le da un margen breve para que empiece a cerrarse y despues
+rem se confia en los reintentos de ROBOCOPY (mas abajo) para el copiado en si, que es
+rem la operacion que realmente necesita que el archivo este libre.
+timeout /t 2 /nobreak >nul
 
 if not exist "%ZIP%" (
     echo ERROR: No existe el ZIP de actualizacion. >> "%LOG%"
@@ -331,10 +336,36 @@ if errorlevel 1 (
     goto error
 )
 
-powershell -NoProfile -ExecutionPolicy Bypass -Command "Expand-Archive -LiteralPath '%ZIP%' -DestinationPath '%EXTRACT%' -Force" >> "%LOG%" 2>&1
-if errorlevel 1 (
-    echo ERROR: Expand-Archive fallo. >> "%LOG%"
-    goto error
+rem "tar" viene incluido en Windows 10/11 y descomprime mucho mas rapido que
+rem Expand-Archive de PowerShell. Si por algun motivo no esta disponible o falla,
+rem se usa PowerShell como respaldo para no dejar la actualizacion sin aplicar.
+set "DESCOMPRIMIDO="
+rem Se apunta directamente al tar incluido en Windows (System32), en vez de
+rem confiar en cual "tar" encuentre el PATH: si la persona tiene instalado Git
+rem para Windows u otra herramienta que tambien trae su propio "tar.exe" antes
+rem en el PATH, ese otro tar no entiende archivos ZIP y falla. Usando la ruta
+rem fija nos aseguramos de usar siempre el de Windows, que si sabe leer ZIP.
+set "TAR_EXE=%SystemRoot%\System32\tar.exe"
+if not exist "%TAR_EXE%" set "TAR_EXE=tar"
+if exist "%TAR_EXE%" (
+    rem Ademas, pasarle la ruta completa del ZIP (con letra de unidad, ej.
+    rem "D:\...") hace que tar confunda los dos puntos con un servidor remoto
+    rem y falle. Por eso nos movemos a la carpeta del ZIP y le pasamos solo el
+    rem nombre del archivo.
+    for %%Z in ("%ZIP%") do (
+        pushd "%%~dpZ" >nul 2>&1
+        "%TAR_EXE%" -xf "%%~nxZ" -C "%EXTRACT%" >> "%LOG%" 2>&1
+        if not errorlevel 1 set "DESCOMPRIMIDO=1"
+        popd
+    )
+)
+if not defined DESCOMPRIMIDO (
+    echo AVISO: tar no disponible o fallo, se intenta con PowerShell. >> "%LOG%"
+    powershell -NoProfile -ExecutionPolicy Bypass -Command "Expand-Archive -LiteralPath '%ZIP%' -DestinationPath '%EXTRACT%' -Force" >> "%LOG%" 2>&1
+    if errorlevel 1 (
+        echo ERROR: No se pudo descomprimir la actualizacion. >> "%LOG%"
+        goto error
+    )
 )
 
 set "SOURCE="
@@ -361,7 +392,11 @@ if /I not "%EXE%"=="%EXE_OFICIAL%" (
     )
 )
 
-robocopy "!SOURCE!" "%APPDIR%" /E /R:3 /W:2 /XD datos logs __pycache__ /XF aplicar_actualizacion.bat *.pyc >> "%LOG%" 2>&1
+rem /R:20 /W:1: hasta 20 reintentos con 1 segundo de espera entre uno y otro
+rem (20 segundos como maximo), para tolerar que el ejecutable anterior todavia
+rem se este liberando o que el antivirus lo este escaneando un instante despues
+rem de extraerlo. Corta apenas se logra copiar, no espera el maximo siempre.
+robocopy "!SOURCE!" "%APPDIR%" /E /R:20 /W:1 /XD datos logs __pycache__ /XF aplicar_actualizacion.bat *.pyc >> "%LOG%" 2>&1
 set "ROBO=%ERRORLEVEL%"
 echo ROBOCOPY_ERRORLEVEL=%ROBO% >> "%LOG%"
 if !ROBO! GEQ 8 goto error
@@ -389,7 +424,10 @@ if not exist "%APPDIR%\%EXE%" (
 echo OK: archivos copiados. >> "%LOG%"
 start "" "%APPDIR%\%EXE%" --actualizado {version_nueva}
 
+rem Actualizacion aplicada correctamente: se limpian los archivos temporales
+rem (la carpeta descomprimida y el ZIP descargado) para no dejar espacio ocupado.
 if exist "%EXTRACT%" rmdir /s /q "%EXTRACT%" >> "%LOG%" 2>&1
+if exist "%ZIP%" del /q "%ZIP%" >> "%LOG%" 2>&1
 exit /b 0
 
 :error
@@ -402,4 +440,14 @@ exit /b 1
     return script
 
 def ejecutar_script_y_salir(script):
-    subprocess.Popen([str(script)], shell=False, cwd=str(Path(script).parent))
+    # CREATE_NO_WINDOW evita que se vea la ventana de consola (y las de los
+    # programas que el script llama, como tar o PowerShell) mientras se aplica
+    # la actualizacion. En sistemas que no sean Windows el atributo no existe,
+    # por eso se usa getattr con 0 como respaldo.
+    creationflags = getattr(subprocess, "CREATE_NO_WINDOW", 0)
+    subprocess.Popen(
+        [str(script)],
+        shell=False,
+        cwd=str(Path(script).parent),
+        creationflags=creationflags,
+    )

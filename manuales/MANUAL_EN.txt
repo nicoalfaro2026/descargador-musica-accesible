@@ -1,6 +1,6 @@
 ﻿Accessible Music Downloader
 User Manual
-Version 1.8.2
+Version 1.8.3
 Developed by Nicolás Alfaro
 
 1. Introduction
@@ -68,8 +68,22 @@ Playlists can also be saved to Favorites. When you open a saved playlist from To
 7. Internal player
 
 Play lets you listen before downloading.
-Main controls: 1 rewind, 2 pause/resume, 3 forward, 4 stop and return, 5 decrease speed, 6 increase speed, 7 decrease volume, 8 increase volume, 9 announce position, 0 announce duration.
-The selected volume is preserved. Choose the audio output device in Tools, Options.
+Main controls: 1 rewind, 2 pause/resume, 3 forward, 4 stop and return, 5 decrease speed, 6 increase speed, 7 decrease volume, 8 increase volume, 9 announce position, 0 announce duration, E turn the experimental equalizer on or off.
+The selected volume is preserved and now changes in steps of 2% per keypress for finer control. Choose the audio output device in Tools, Options.
+
+7.1. Experimental equalizer
+
+The E key turns an experimental equalizer on or off inside the internal player. It reproduces the equalization curve the developer configured in Stereo Tool. It is off by default, and the program remembers your choice for the next time you play something.
+Being an experimental feature, it may still be adjusted in future versions of the program.
+
+7.2. Playing songs directly from Windows
+
+Besides playing content inside the program, Descargador de Música Accesible can be added to Windows Explorer's Open With menu, to quickly play songs you already have saved on your computer.
+To turn it on, open Tools and choose Add "Play with Descargador de Música Accesible" to Windows' menu. The program will confirm once it has been added.
+Once added, on any song in MP3, WAV, M4A, FLAC, OGG or WMA format, press the Applications key or right-click and choose Play with Descargador de Música Accesible inside Open With. The song starts playing immediately, without showing the program's main window or the spoken welcome message: only the song's name is announced.
+Playback controls are the same as the internal player's, including the experimental equalizer (E key) and the volume control.
+If you ever want to remove this option, go back to Tools: the same menu item will now say Remove "Play with Descargador de Música Accesible" from Windows' menu.
+Note for Windows 11: in some cases, after adding the option, Windows takes a while to show it in the short Open With flyout that appears on right-click. If you don't see it right away, choose Search for another app on this PC (or Choose another app) inside Open With, or restart your computer.
 
 8. Download formats
 
@@ -212,6 +226,7 @@ Do not disable Windows Defender or another antivirus as a normal troubleshooting
 15. Accessibility
 
 The program is designed for keyboard and screen-reader use. When reporting an accessibility issue, include the program version, screen reader and steps that led to the issue.
+Compatible with NVDA and JAWS: the program speaks directly to both screen readers, without relying on additional Windows voices.
 
 16. Contact and support
 

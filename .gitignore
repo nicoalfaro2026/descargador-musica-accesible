@@ -20,6 +20,7 @@ logs/
 
 # Diagnósticos locales
 diagnostico_dependencias.txt
+_prueba_actualizador_tmp/
 
 # Binarios portables de terceros: se incluyen en Releases, no en el código fuente
 ffmpeg.exe

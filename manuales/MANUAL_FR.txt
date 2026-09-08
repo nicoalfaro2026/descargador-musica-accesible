@@ -1,6 +1,6 @@
 ﻿Descargador de Música Accesible
 Manuel utilisateur
-Version 1.8.2
+Version 1.8.3
 Développé par Nicolás Alfaro
 
 1. Présentation
@@ -68,8 +68,22 @@ Les playlists peuvent également être enregistrées dans les Favoris. Lorsque v
 7. Lecteur interne
 
 L’action Lire permet d’écouter avant le téléchargement.
-Contrôles principaux : 1 reculer, 2 pause/reprendre, 3 avancer, 4 arrêter et revenir, 5 réduire la vitesse, 6 augmenter la vitesse, 7 baisser le volume, 8 augmenter le volume, 9 annoncer la position, 0 annoncer la durée.
-Le volume choisi est conservé et le périphérique de sortie se règle dans Outils, Options.
+Contrôles principaux : 1 reculer, 2 pause/reprendre, 3 avancer, 4 arrêter et revenir, 5 réduire la vitesse, 6 augmenter la vitesse, 7 baisser le volume, 8 augmenter le volume, 9 annoncer la position, 0 annoncer la durée, E activer ou désactiver l’égaliseur expérimental.
+Le volume choisi est conservé et change désormais par pas de 2 % à chaque pression, pour un réglage plus précis. Le périphérique de sortie se règle dans Outils, Options.
+
+7.1. Égaliseur expérimental
+
+La touche E active ou désactive, dans le lecteur interne, un égaliseur expérimental qui reproduit la courbe d’égalisation configurée par le développeur dans Stereo Tool. Il est désactivé par défaut et le programme mémorise le choix effectué pour les prochaines lectures.
+S’agissant d’une fonction expérimentale, elle pourra encore être ajustée dans les prochaines versions du programme.
+
+7.2. Lire des chansons directement depuis Windows
+
+En plus de lire du contenu à l’intérieur du programme, Descargador de Música Accesible peut être ajouté au menu Ouvrir avec de l’Explorateur Windows, pour lire rapidement des chansons déjà enregistrées sur votre ordinateur.
+Pour l’activer, ouvrez Outils et choisissez Ajouter « Lire avec Descargador de Música Accesible » au menu de Windows. Le programme confirmera une fois l’ajout effectué.
+Une fois ajoutée, sur n’importe quelle chanson au format MP3, WAV, M4A, FLAC, OGG ou WMA, appuyez sur la touche Applications ou faites un clic droit, puis choisissez Lire avec Descargador de Música Accesible dans Ouvrir avec. La chanson commence à être lue immédiatement, sans afficher la fenêtre principale du programme ni le message de bienvenue parlé : seul le nom de la chanson est annoncé.
+Les commandes de lecture sont les mêmes que celles du lecteur interne, y compris l’égaliseur expérimental (touche E) et le contrôle du volume.
+Si vous souhaitez retirer cette option, retournez dans Outils : le même élément de menu affichera alors Retirer « Lire avec Descargador de Música Accesible » du menu de Windows.
+Remarque pour Windows 11 : dans certains cas, après avoir ajouté l’option, Windows met un moment à l’afficher dans le menu Ouvrir avec abrégé qui apparaît lors d’un clic droit. Si vous ne la voyez pas tout de suite, choisissez Rechercher une autre application sur ce PC (ou Choisir une autre application) dans Ouvrir avec, ou redémarrez votre ordinateur.
 
 8. Formats de téléchargement
 
@@ -210,6 +224,7 @@ Ne désactivez pas Windows Defender ou un autre antivirus comme solution normale
 15. Accessibilité
 
 Le programme est conçu pour le clavier et les lecteurs d’écran. Pour signaler un problème, indiquez la version, le lecteur d’écran et les étapes permettant de reproduire le problème.
+Compatible avec NVDA et JAWS : le programme communique directement avec ces deux lecteurs d'écran, sans dépendre des voix supplémentaires de Windows.
 
 16. Contact et assistance
 

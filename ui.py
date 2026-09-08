@@ -59,6 +59,7 @@ from utils import abrir_carpeta, sanitizar_nombre_carpeta
 from sonidos import reproducir_sonido
 from voz import hablar_async, hablar_cierre, metodo_activo_voz, diagnostico_voz
 from reproductor import DialogoReproductor, diagnostico_reproductor, listar_dispositivos_audio
+import integracion_windows
 from actualizador_app import (
     ActualizadorNoConfigurado,
     consultar_actualizacion,
@@ -93,6 +94,7 @@ from motor_ytdlp import (
 NOVEDADES_VERSION = {
     "1.8.1": "__whatsnew.1_8_1__body__",
     "1.8.2": "__whatsnew.1_8_2__body__",
+    "1.8.3": "__whatsnew.1_8_3__body__",
 }
 
 
@@ -143,7 +145,7 @@ class Ventana(wx.Frame):
             self._seleccionar_idioma_inicial()
         establecer_idioma(self.configuracion.get("idioma", "es"))
         self._aplicar_preferencias_descargador()
-        self.SetTitle(f"{traducir(APP_NOMBRE)} v{VERSION}")
+        self.SetTitle(f"{traducir(APP_NOMBRE)} v{VERSION} - {traducir('Desarrollado por Nicolás Alfaro')}")
         self._ultima_pestana_anunciada = None
         self._ultima_pestana_anunciada_tiempo = 0
         self._metadatos_enriquecidos = set()
@@ -343,8 +345,10 @@ class Ventana(wx.Frame):
         self.id_pestana_3 = wx.NewIdRef()
         self.id_atajos_teclado = wx.NewIdRef()
         self.id_manual_usuario = wx.NewIdRef()
+        self.id_novedades_version = wx.NewIdRef()
         self.id_opciones = wx.NewIdRef()
         self.id_buscar_actualizaciones_app = wx.NewIdRef()
+        self.id_abrir_con = wx.NewIdRef()
         self.ids_idioma = {codigo: wx.NewIdRef() for codigo in LANGUAGES}
 
     def _crear_menu(self):
@@ -385,7 +389,7 @@ class Ventana(wx.Frame):
         )
         self.menu_reproducir = menu_buscar.Append(self.id_reproducir, "Reproducir elemento enfocado\tAlt+R")
 
-        menu_herramientas = wx.Menu()
+        self.menu_herramientas = menu_herramientas = wx.Menu()
         self.menu_favoritos = menu_herramientas.Append(self.id_favoritos, "Favoritos")
         self.menu_cola_descargas = menu_herramientas.Append(self.id_cola_descargas, "Cola de descargas")
         menu_herramientas.AppendSeparator()
@@ -407,10 +411,16 @@ class Ventana(wx.Frame):
                 item.Check(True)
         menu_herramientas.AppendSubMenu(self.menu_idioma, "Idioma")
         self.menu_opciones = menu_herramientas.Append(self.id_opciones, "Opciones")
+        menu_herramientas.AppendSeparator()
+        self.menu_abrir_con = menu_herramientas.Append(
+            self.id_abrir_con,
+            self._texto_menu_abrir_con(),
+        )
 
         menu_ayuda = wx.Menu()
         self.menu_manual_usuario = menu_ayuda.Append(self.id_manual_usuario, "Manual de usuario")
         self.menu_atajos_teclado = menu_ayuda.Append(self.id_atajos_teclado, "Atajos de teclado")
+        self.menu_novedades_version = menu_ayuda.Append(self.id_novedades_version, "Novedades de esta versión")
         menu_ayuda.AppendSeparator()
         self.menu_acerca = menu_ayuda.Append(wx.ID_ANY, "Acerca de...")
         self.menu_contacto = menu_ayuda.Append(wx.ID_ANY, "Contacto")
@@ -457,11 +467,14 @@ class Ventana(wx.Frame):
         self.Bind(wx.EVT_MENU, self.actualizar_ytdlp, self.menu_actualizar_ytdlp)
         self.Bind(wx.EVT_MENU, self.ver_version_ytdlp, self.menu_version_ytdlp)
         self.Bind(wx.EVT_MENU, self.mostrar_opciones, self.menu_opciones)
+        self.Bind(wx.EVT_MENU, self.alternar_abrir_con_windows, self.menu_abrir_con)
+        self.Bind(wx.EVT_MENU_OPEN, self._al_abrir_menu)
         for codigo, ident in self.ids_idioma.items():
             self.Bind(wx.EVT_MENU, lambda evento, c=codigo: self.cambiar_idioma(c), id=ident)
 
         self.Bind(wx.EVT_MENU, self.abrir_manual_usuario, self.menu_manual_usuario)
         self.Bind(wx.EVT_MENU, self.mostrar_atajos_teclado, self.menu_atajos_teclado)
+        self.Bind(wx.EVT_MENU, self.mostrar_novedades_version, self.menu_novedades_version)
         self.Bind(wx.EVT_MENU, self.mostrar_acerca, self.menu_acerca)
         self.Bind(wx.EVT_MENU, self.mostrar_contacto, self.menu_contacto)
 
@@ -1842,6 +1855,18 @@ class Ventana(wx.Frame):
             traducir("Lista de atajos de teclado"),
         )
 
+    def mostrar_novedades_version(self, evento=None):
+        clave_novedades = NOVEDADES_VERSION.get(VERSION)
+        if clave_novedades:
+            texto = traducir_clave(clave_novedades)
+        else:
+            texto = traducir("No hay novedades registradas para esta versión.")
+        self._mostrar_texto_dialogo(
+            traducir_formato("Novedades de la versión {version}", version=VERSION),
+            texto,
+            traducir("Novedades de esta versión"),
+        )
+
     def abrir_manual_usuario(self, evento=None):
         codigo = self.configuracion.get("idioma", idioma_actual())
         nombres = [f"MANUAL_{str(codigo).upper()}.pdf", f"MANUAL_{str(codigo).upper()}.txt", "MANUAL_ES.pdf", "MANUAL_ES.txt"]
@@ -1903,6 +1928,100 @@ class Ventana(wx.Frame):
             abrir_carpeta(str(LOGS_DIR))
         except Exception:
             self._mostrar_error_detallado("Error", "No fue posible abrir la carpeta de logs.")
+
+    def _texto_menu_abrir_con(self):
+        """Un solo texto de menú que cambia según el estado: si ya está
+        agregado, ofrece quitarlo; si no, ofrece agregarlo."""
+        try:
+            ya_agregado = integracion_windows.registrado()
+        except Exception:
+            ya_agregado = False
+        if ya_agregado:
+            return "Quitar \"Reproducir con Descargador de Música Accesible\" del menú de Windows"
+        return "Agregar \"Reproducir con Descargador de Música Accesible\" al menú de Windows"
+
+    def _actualizar_texto_abrir_con(self):
+        try:
+            self.menu_abrir_con.SetItemLabel(self._texto_menu_abrir_con())
+        except Exception:
+            pass
+
+    def _al_abrir_menu(self, evento):
+        try:
+            if evento.GetMenu() is self.menu_herramientas:
+                self._actualizar_texto_abrir_con()
+        except Exception:
+            pass
+        evento.Skip()
+
+    def alternar_abrir_con_windows(self, evento=None):
+        """Agrega o quita del menú de Windows según corresponda: si ya
+        estaba agregado, lo quita; si no, lo agrega."""
+        try:
+            ya_agregado = integracion_windows.registrado()
+        except Exception:
+            ya_agregado = False
+        if ya_agregado:
+            self.quitar_abrir_con_windows()
+        else:
+            self.agregar_abrir_con_windows()
+        self._actualizar_texto_abrir_con()
+
+    def agregar_abrir_con_windows(self):
+        """Agrega el programa al menú Abrir con de Windows para archivos de
+        audio, sin cambiar el reproductor predeterminado del sistema."""
+        try:
+            self.SetStatusText("Agregando \"Reproducir con Descargador de Música Accesible\" al menú de Windows")
+            self.estado.SetValue(traducir_dinamico("Agregando \"Reproducir con Descargador de Música Accesible\" al menú de Windows"))
+        except Exception:
+            pass
+        hablar_async("Agregando \"Reproducir con Descargador de Música Accesible\" al menú de Windows", limpiar=True)
+        try:
+            integracion_windows.registrar()
+            self._mostrar_mensaje_accesible(
+                "Menú de Windows",
+                "Descargador de Música Accesible se agregó al menú de Windows. Ahora puede elegir \"Reproducir con Descargador de Música Accesible\" al hacer clic derecho o presionar la tecla Aplicaciones sobre una canción, en Abrir con.",
+                wx.ICON_INFORMATION,
+                "Agregado al menú de Windows",
+                False,
+            )
+        except Exception as exc:
+            self._mostrar_error_detallado(
+                "No se pudo agregar al menú de Windows",
+                traducir_formato(
+                    "No se pudo agregar Descargador de Música Accesible al menú de Windows. Detalle: {detalle}",
+                    detalle=exc,
+                ),
+                "Error",
+            )
+
+    def quitar_abrir_con_windows(self):
+        """Quita al programa del menú Abrir con de Windows, si se había
+        agregado antes."""
+        try:
+            self.SetStatusText("Quitando \"Reproducir con Descargador de Música Accesible\" del menú de Windows")
+            self.estado.SetValue(traducir_dinamico("Quitando \"Reproducir con Descargador de Música Accesible\" del menú de Windows"))
+        except Exception:
+            pass
+        hablar_async("Quitando \"Reproducir con Descargador de Música Accesible\" del menú de Windows", limpiar=True)
+        try:
+            integracion_windows.quitar_registro()
+            self._mostrar_mensaje_accesible(
+                "Menú de Windows",
+                "Descargador de Música Accesible se quitó del menú de Windows.",
+                wx.ICON_INFORMATION,
+                "Quitado del menú de Windows",
+                False,
+            )
+        except Exception as exc:
+            self._mostrar_error_detallado(
+                "No se pudo quitar del menú de Windows",
+                traducir_formato(
+                    "No se pudo quitar Descargador de Música Accesible del menú de Windows. Detalle: {detalle}",
+                    detalle=exc,
+                ),
+                "Error",
+            )
 
     def buscar_actualizaciones_programa(self, evento=None):
         """Revisa si existe una nueva versión del programa principal."""

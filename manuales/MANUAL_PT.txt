@@ -1,6 +1,6 @@
 ﻿Descargador de Música Accesible
 Manual do usuário
-Versão 1.8.2
+Versão 1.8.3
 Desenvolvido por Nicolás Alfaro
 
 1. Apresentação
@@ -68,8 +68,22 @@ As playlists também podem ser salvas nos Favoritos. Ao abrir uma playlist salva
 7. Reprodutor interno
 
 Reproduzir permite ouvir antes de baixar.
-Controles principais: 1 voltar, 2 pausar/continuar, 3 avançar, 4 parar e voltar, 5 diminuir velocidade, 6 aumentar velocidade, 7 diminuir volume, 8 aumentar volume, 9 anunciar posição, 0 anunciar duração.
-O volume é preservado e o dispositivo de saída pode ser escolhido em Ferramentas, Opções.
+Controles principais: 1 voltar, 2 pausar/continuar, 3 avançar, 4 parar e voltar, 5 diminuir velocidade, 6 aumentar velocidade, 7 diminuir volume, 8 aumentar volume, 9 anunciar posição, 0 anunciar duração, E ativar ou desativar o equalizador experimental.
+O volume é preservado e agora muda em passos de 2% a cada pressão, para um ajuste mais fino. O dispositivo de saída pode ser escolhido em Ferramentas, Opções.
+
+7.1. Equalizador experimental
+
+A tecla E ativa ou desativa, dentro do reprodutor interno, um equalizador experimental que reproduz a curva de equalização configurada pelo desenvolvedor no Stereo Tool. Vem desativado por padrão, e o programa lembra a escolha feita para as próximas reproduções.
+Por se tratar de uma função experimental, ela ainda poderá ser ajustada em próximas versões do programa.
+
+7.2. Reproduzir músicas diretamente do Windows
+
+Além de reproduzir conteúdo dentro do programa, Descargador de Música Accesible pode ser adicionado ao menu Abrir com do Explorador de Arquivos do Windows, para reproduzir rapidamente músicas que você já tenha salvas no seu computador.
+Para ativar, abra Ferramentas e escolha Adicionar "Reproduzir com Descargador de Música Accesible" ao menu do Windows. O programa confirmará quando for adicionado.
+Depois de adicionado, em qualquer música nos formatos MP3, WAV, M4A, FLAC, OGG ou WMA, pressione a tecla Aplicativos ou clique com o botão direito e escolha Reproduzir com Descargador de Música Accesible dentro de Abrir com. A música começa a tocar imediatamente, sem mostrar a janela principal do programa nem a mensagem de boas-vindas falada: apenas o nome da música é anunciado.
+Os controles de reprodução são os mesmos do reprodutor interno, incluindo o equalizador experimental (tecla E) e o controle de volume.
+Se em algum momento quiser remover essa opção, volte a Ferramentas: o mesmo item do menu agora dirá Remover "Reproduzir com Descargador de Música Accesible" do menu do Windows.
+Observação para o Windows 11: em alguns casos, depois de adicionar a opção, o Windows demora a exibi-la no menu Abrir com resumido que aparece ao clicar com o botão direito. Se não aparecer de imediato, escolha Procurar outro aplicativo neste PC (ou Escolher outro aplicativo) dentro de Abrir com, ou reinicie o computador.
 
 8. Formatos de download
 
@@ -210,6 +224,7 @@ Não desative o Windows Defender ou outro antivírus como solução normal. Baix
 15. Acessibilidade
 
 O programa foi pensado para teclado e leitores de tela. Ao relatar um problema, informe a versão, o leitor de tela e os passos para reproduzi-lo.
+Compatível com NVDA e JAWS: o programa se comunica diretamente com os dois leitores de tela, sem depender de vozes adicionais do Windows.
 
 16. Contato e suporte
 

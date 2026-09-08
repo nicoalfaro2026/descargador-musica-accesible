@@ -1,6 +1,6 @@
 ﻿Descargador de Música Accesible
 Manuale utente
-Versione 1.8.2
+Versione 1.8.3
 Sviluppato da Nicolás Alfaro
 
 1. Presentazione
@@ -68,8 +68,22 @@ Le playlist possono anche essere salvate nei Preferiti. Aprendo una playlist sal
 7. Lettore interno
 
 Riproduci consente di ascoltare prima del download.
-Comandi principali: 1 indietro, 2 pausa/riprendi, 3 avanti, 4 stop e ritorno, 5 riduci velocità, 6 aumenta velocità, 7 abbassa volume, 8 alza volume, 9 annuncia posizione, 0 annuncia durata.
-Il volume viene conservato e il dispositivo di uscita si sceglie in Strumenti, Opzioni.
+Comandi principali: 1 indietro, 2 pausa/riprendi, 3 avanti, 4 stop e ritorno, 5 riduci velocità, 6 aumenta velocità, 7 abbassa volume, 8 alza volume, 9 annuncia posizione, 0 annuncia durata, E attiva o disattiva l’equalizzatore sperimentale.
+Il volume viene conservato e ora cambia a passi del 2% a ogni pressione, per una regolazione più precisa. Il dispositivo di uscita si sceglie in Strumenti, Opzioni.
+
+7.1. Equalizzatore sperimentale
+
+Il tasto E attiva o disattiva, all’interno del lettore interno, un equalizzatore sperimentale che riproduce la curva di equalizzazione configurata dallo sviluppatore in Stereo Tool. È disattivato per impostazione predefinita e il programma ricorda la scelta effettuata per le riproduzioni successive.
+Trattandosi di una funzione sperimentale, potrà ancora essere modificata nelle prossime versioni del programma.
+
+7.2. Riprodurre canzoni direttamente da Windows
+
+Oltre a riprodurre contenuti all’interno del programma, Descargador de Música Accesible può essere aggiunto al menu Apri con di Esplora file di Windows, per riprodurre rapidamente canzoni già salvate sul computer.
+Per attivarlo, apri Strumenti e scegli Aggiungi "Riproduci con Descargador de Música Accesible" al menu di Windows. Il programma confermerà quando sarà stato aggiunto.
+Una volta aggiunta, su qualsiasi canzone in formato MP3, WAV, M4A, FLAC, OGG o WMA, premi il tasto Applicazioni oppure fai clic destro e scegli Riproduci con Descargador de Música Accesible all’interno di Apri con. La canzone inizia a essere riprodotta immediatamente, senza mostrare la finestra principale del programma né il messaggio di benvenuto parlato: viene annunciato solo il nome della canzone.
+I comandi di riproduzione sono gli stessi del lettore interno, incluso l’equalizzatore sperimentale (tasto E) e il controllo del volume.
+Se in qualsiasi momento vuoi rimuovere questa opzione, torna in Strumenti: lo stesso elemento del menu ora dirà Rimuovi "Riproduci con Descargador de Música Accesible" dal menu di Windows.
+Nota per Windows 11: in alcuni casi, dopo aver aggiunto l’opzione, Windows impiega un po’ a mostrarla nel menu Apri con abbreviato che compare facendo clic destro. Se non la vedi subito, scegli Cerca un’altra app in questo PC (o Scegli un’altra app) all’interno di Apri con, oppure riavvia il computer.
 
 8. Formati di download
 
@@ -210,6 +224,7 @@ Non disattivare Windows Defender o altri antivirus come soluzione normale. Scari
 15. Accessibilità
 
 Il programma è progettato per tastiera e lettori di schermo. Per segnalare un problema indicare versione, lettore di schermo e passaggi per riprodurlo.
+Compatibile con NVDA e JAWS: il programma comunica direttamente con entrambi gli screen reader, senza dipendere dalle voci aggiuntive di Windows.
 
 16. Contatto e supporto
 

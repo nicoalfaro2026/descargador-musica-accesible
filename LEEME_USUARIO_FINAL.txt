@@ -1,21 +1,15 @@
-DESCARGADOR DE MÚSICA ACCESIBLE 1.8.1 - VERSIÓN DE PRUEBA
+DESCARGADOR DE MÚSICA ACCESIBLE 1.8.3
 
-Esta compilación se distribuye únicamente para realizar pruebas antes de una publicación estable.
+Aplicación accesible para buscar, reproducir y descargar música, pensada para personas que usan lectores de pantalla como NVDA o JAWS.
 
 USO
-1. Descomprima la carpeta completa.
+1. Descomprima la carpeta completa en el lugar donde desee guardarla.
 2. Abra DescargadorMusicaAccesible.exe.
-3. Mantenga juntos todos los archivos y carpetas incluidos con la aplicación.
-4. No es necesario ejecutar archivos adicionales ni realizar configuraciones externas para utilizar la versión portable final.
+3. Mantenga juntos todos los archivos y carpetas incluidos junto con la aplicación; no mueva ni copie el ejecutable por separado.
+4. No es necesario instalar nada más ni realizar configuraciones externas para usar esta versión portable.
 
-PRINCIPALES CAMBIOS EN PRUEBA
-- Resultados de YouTube más simples, sin mostrar la URL en la lista.
-- Canal, fecha de publicación y visualizaciones se completan cuando están disponibles.
-- Opción para preferir información de YouTube en el idioma del programa.
-- Respaldo opcional mediante una sesión ya iniciada en un navegador cuando YouTube solicite verificación.
-- Comprobación correcta de la versión de la librería de descarga antes de actualizarla.
-- Mejoras en los mensajes de bienvenida y despedida.
-- Nuevo manual profesional en PDF accesible y TXT.
+NOVEDADES DE ESTA VERSIÓN
+Dentro del programa, en el menú Ayuda, elija "Novedades de esta versión" para ver siempre la lista completa y actualizada de los cambios de la versión instalada. El manual de usuario incluido (carpeta Manuales, en PDF y TXT en varios idiomas) tiene además instrucciones detalladas de cada función.
 
 Si detecta un problema, no envíe contraseñas ni datos privados de su cuenta.
 
