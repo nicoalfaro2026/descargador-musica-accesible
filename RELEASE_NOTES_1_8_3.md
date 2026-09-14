@@ -30,6 +30,7 @@ Esta versión suma un ecualizador experimental al reproductor interno, permite r
 ## Otros cambios
 
 - La barra de título del programa ahora muestra siempre "Desarrollado por Nicolás Alfaro" junto al nombre y la versión.
+- Se corrigió una ventana de consola en blanco que a veces aparecía brevemente al consultar la librería de descarga.
 
 ## Contacto
 

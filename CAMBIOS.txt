@@ -241,6 +241,11 @@ VERSIÓN 1.8.3 - ECUALIZADOR EXPERIMENTAL, REPRODUCCIÓN RÁPIDA DESDE WINDOWS Y
 - Se redujo la espera inicial fija de 3 a 2 segundos (antes de intentar el copiado), confiando en los reintentos de robocopy en vez de en un margen fijo más largo.
 - Al terminar una actualización exitosa, el script ahora borra la carpeta temporal descomprimida y el ZIP descargado, en vez de dejarlos ocupando espacio.
 
+1.8.3 - Corrección: ventana de consola en blanco al consultar la versión del motor de descarga (motor_ytdlp.py, motor_pytubefix.py)
+- El desarrollador reportó que, a veces, al abrir el programa aparecía brevemente una ventana de consola en blanco (con la ruta de yt-dlp.exe visible), que podía confundir o asustar a la persona usuaria.
+- Causa: las llamadas a "yt-dlp.exe --version" (en motor_ytdlp.py, usadas para detectar la versión del motor de descarga instalado y decidir si conviene actualizarlo) y a "node.exe --version" (en motor_pytubefix.py, para detectar si hay un Node portable compatible como respaldo de pytubefix) no ocultaban la ventana de consola del proceso que lanzaban, a diferencia de las demás llamadas a motores externos (yt-dlp.exe para buscar/descargar y ffmpeg para el respaldo de pytubefix), que ya usaban STARTUPINFO con STARTF_USESHOWWINDOW para no mostrar ventana.
+- Se agregó el mismo mecanismo (STARTUPINFO con STARTF_USESHOWWINDOW, con respaldo a None en sistemas que no sean Windows) a esas dos llamadas, igualando el comportamiento con el resto de las invocaciones a motores externos del programa.
+
 1.8.3 - Barra de título con crédito del desarrollador (ui.py)
 - La barra de título de la ventana principal, que solo mostraba "{nombre de la app} v{versión}", ahora agrega siempre "- Desarrollado por Nicolás Alfaro" (traducido a los seis idiomas), como crédito permanente y visible sin necesidad de abrir Acerca de.
 

@@ -68,6 +68,7 @@ def _node_portable():
             text=True,
             timeout=8,
             check=False,
+            startupinfo=_startupinfo_sin_ventana(),
         )
         version = (p.stdout or p.stderr or "").strip() if p.returncode == 0 else None
         return str(ruta), version

@@ -16,6 +16,19 @@ except Exception:  # Evita fallos si se importa muy temprano.
 
 NOMBRE_MOTOR = "yt-dlp.exe"
 
+
+def _startupinfo_sin_ventana():
+    # Evita que se vea una ventana de consola en blanco al consultar la
+    # version de yt-dlp.exe (mismo mecanismo que ya usa descargador.py).
+    if os.name != "nt":
+        return None
+    try:
+        startupinfo = subprocess.STARTUPINFO()
+        startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+        return startupinfo
+    except Exception:
+        return None
+
 CANALES_MOTOR = {
     "stable": "yt-dlp/yt-dlp",
     "nightly": "yt-dlp/yt-dlp-nightly-builds",
@@ -94,6 +107,7 @@ def _salida_version_runtime(ruta):
             encoding="utf-8",
             errors="replace",
             timeout=10,
+            startupinfo=_startupinfo_sin_ventana(),
         )
         if resultado.returncode == 0:
             return (resultado.stdout or resultado.stderr or "").strip()
@@ -191,6 +205,7 @@ def _ejecutar_version(ruta):
             encoding="utf-8",
             errors="replace",
             timeout=20,
+            startupinfo=_startupinfo_sin_ventana(),
         )
         if resultado.returncode == 0:
             return (resultado.stdout or "").strip() or "Detectado"
