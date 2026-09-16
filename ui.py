@@ -95,6 +95,7 @@ NOVEDADES_VERSION = {
     "1.8.1": "__whatsnew.1_8_1__body__",
     "1.8.2": "__whatsnew.1_8_2__body__",
     "1.8.3": "__whatsnew.1_8_3__body__",
+    "1.8.4": "__whatsnew.1_8_4__body__",
 }
 
 
@@ -226,6 +227,17 @@ class Ventana(wx.Frame):
                         "Error aplicando actualización",
                     )
                 else:
+                    # Segunda oportunidad de limpieza: si el script de la
+                    # actualización no pudo borrar el ZIP descargado (por
+                    # ejemplo, porque el antivirus lo tenía bloqueado un
+                    # instante), a esta altura el programa nuevo ya está
+                    # abierto y el archivo debería estar libre. Se reintenta
+                    # aquí para no dejar un ZIP de casi 200 MB ocupando
+                    # espacio en AppData hasta la próxima actualización.
+                    try:
+                        limpiar_carpeta_temporal_actualizador()
+                    except Exception:
+                        pass
                     mensaje = traducir_formato(
                         "Descargador de Música Accesible se actualizó correctamente.\n\nAhora está usando la versión {version}.",
                         version=VERSION,
@@ -950,7 +962,7 @@ class Ventana(wx.Frame):
                 wx.CallAfter(self._continuar_revision_motor_post_programa)
                 return
 
-            wx.CallAfter(self._preguntar_descargar_actualizacion_programa, info, True)
+            wx.CallAfter(self._descargar_actualizacion_programa_en_segundo_plano, info, True, True, 1)
         except ActualizadorNoConfigurado:
             wx.CallAfter(self.agregar_log, "Actualizador del programa no configurado para revisión automática.")
             wx.CallAfter(self._continuar_revision_motor_post_programa)
@@ -2047,7 +2059,7 @@ class Ventana(wx.Frame):
                     False,
                 )
                 return
-            wx.CallAfter(self._preguntar_descargar_actualizacion_programa, info)
+            wx.CallAfter(self._descargar_actualizacion_programa_en_segundo_plano, info, False, False, 1)
         except ActualizadorNoConfigurado:
             mensaje = (
                 "El actualizador está preparado, pero todavía no tiene configurado el enlace de actualización.\n\n"
@@ -2084,7 +2096,76 @@ class Ventana(wx.Frame):
         texto = re.sub(r"^[-*]\s+", "- ", texto, flags=re.MULTILINE)
         return texto.strip()
 
-    def _preguntar_descargar_actualizacion_programa(self, info, continuar_motor_despues=False):
+    def _descargar_actualizacion_programa_en_segundo_plano(self, info, continuar_motor_despues=False, silencioso=True, intento=1):
+        """Descarga la actualización del programa sin interrumpir a la persona
+        usuaria (a diferencia de antes, ya no se pregunta antes de bajarla).
+        Cuando termina, se pregunta si se quiere instalar; ver
+        _preguntar_instalar_actualizacion_descargada. Si la descarga es
+        silenciosa (revisión automática) y falla, se reintenta sola cada
+        pocos minutos -pensando sobre todo en conexiones lentas o
+        inestables- hasta que se pueda completar, sin mostrar ningún error."""
+        hilo = threading.Thread(
+            target=self._descargar_actualizacion_programa_hilo,
+            args=(info, continuar_motor_despues, silencioso, intento),
+            daemon=True,
+        )
+        hilo.start()
+
+    def _reintentar_descarga_actualizacion_programa(self, info, intento):
+        if getattr(self, "_cerrando", False):
+            return
+        self._descargar_actualizacion_programa_en_segundo_plano(info, False, True, intento)
+
+    def _descargar_actualizacion_programa_hilo(self, info, continuar_motor_despues, silencioso, intento):
+        limpiar_carpeta_temporal_actualizador()
+        destino = carpeta_temporal_actualizador() / "descarga"
+
+        if not silencioso:
+            try:
+                wx.CallAfter(self.SetStatusText, "Descargando actualización del programa")
+                wx.CallAfter(self.estado.SetValue, traducir_dinamico("Descargando actualización del programa"))
+            except Exception:
+                pass
+            wx.CallAfter(hablar_async, "Descargando actualización del programa", True)
+
+        def progreso(porcentaje):
+            if silencioso:
+                return
+            mensaje = traducir_formato("Descargando actualización {porcentaje} por ciento", porcentaje=porcentaje)
+            wx.CallAfter(self.SetStatusText, mensaje)
+            wx.CallAfter(self.estado.SetValue, traducir_dinamico(mensaje))
+            if porcentaje in (25, 50, 75, 100):
+                wx.CallAfter(hablar_async, mensaje, False)
+
+        try:
+            ruta = descargar_actualizacion(info, destino, callback=progreso)
+            wx.CallAfter(
+                self._preguntar_instalar_actualizacion_descargada,
+                info,
+                ruta,
+                continuar_motor_despues,
+            )
+        except Exception as exc:
+            if silencioso:
+                # No se pidió esto de forma explícita, así que no se muestra
+                # ningún error: se reintenta sola cada dos o tres minutos
+                # hasta que la conexión lo permita.
+                wx.CallAfter(
+                    self.agregar_log,
+                    f"No se pudo descargar la actualización del programa en segundo plano (intento {intento}): {exc}",
+                )
+                if continuar_motor_despues:
+                    wx.CallAfter(self._continuar_revision_motor_post_programa)
+                wx.CallLater(170000, self._reintentar_descarga_actualizacion_programa, info, intento + 1)
+            else:
+                wx.CallAfter(
+                    self._mostrar_error_detallado,
+                    "No se pudo descargar la actualización",
+                    "No se pudo descargar la actualización. Verifique su conexión a Internet e inténtelo nuevamente.\n\n" + str(exc),
+                    "Error descargando actualización",
+                )
+
+    def _preguntar_instalar_actualizacion_descargada(self, info, ruta, continuar_motor_despues=False):
         notas = self._limpiar_notas_actualizacion(getattr(info, "notas", ""))
         if not notas:
             notas = traducir("Esta versión no incluye una descripción detallada de novedades.")
@@ -2110,7 +2191,7 @@ class Ventana(wx.Frame):
         etiqueta = wx.StaticText(
             panel,
             label=traducir(
-                "Se recomienda actualizar para recibir mejoras, correcciones y mayor estabilidad.\n"
+                "La actualización ya se descargó y está lista para instalarse.\n"
                 "Use las flechas arriba y abajo para leer las novedades de esta versión."
             ),
         )
@@ -2122,7 +2203,7 @@ class Ventana(wx.Frame):
 
         botones = wx.BoxSizer(wx.HORIZONTAL)
         btn_aceptar = wx.Button(panel, wx.ID_YES, label=traducir("Aceptar"))
-        btn_aceptar.SetName(traducir("Aceptar y descargar la actualización"))
+        btn_aceptar.SetName(traducir("Instalar la actualización ahora"))
         btn_mas_tarde = wx.Button(panel, wx.ID_NO, label=traducir("Más tarde"))
         btn_mas_tarde.SetName(traducir("Actualizar más tarde"))
         botones.Add(btn_aceptar, 0, wx.ALL, 10)
@@ -2142,64 +2223,16 @@ class Ventana(wx.Frame):
 
         if respuesta == wx.ID_YES:
             self._revision_motor_arranque_pendiente = False
-            self._descargar_actualizacion_programa(info)
-        elif continuar_motor_despues:
-            self._continuar_revision_motor_post_programa()
+            self._aplicar_actualizacion_descargada(info, ruta)
+        else:
+            # No quiere instalar ahora: se borra lo descargado para no dejarlo
+            # ocupando espacio sin uso; se vuelve a bajar si en el futuro se
+            # detecta de nuevo esta misma actualización (o una más nueva).
+            limpiar_carpeta_temporal_actualizador()
+            if continuar_motor_despues:
+                self._continuar_revision_motor_post_programa()
 
-    def _descargar_actualizacion_programa(self, info):
-        try:
-            self.SetStatusText("Descargando actualización del programa")
-            self.estado.SetValue(traducir_dinamico("Descargando actualización del programa"))
-        except Exception:
-            pass
-        hablar_async("Descargando actualización del programa", limpiar=True)
-        hilo = threading.Thread(target=self._descargar_actualizacion_programa_hilo, args=(info,), daemon=True)
-        hilo.start()
-
-    def _descargar_actualizacion_programa_hilo(self, info):
-        limpiar_carpeta_temporal_actualizador()
-        destino = carpeta_temporal_actualizador() / "descarga"
-
-        def progreso(porcentaje):
-            mensaje = traducir_formato("Descargando actualización {porcentaje} por ciento", porcentaje=porcentaje)
-            wx.CallAfter(self.SetStatusText, mensaje)
-            wx.CallAfter(self.estado.SetValue, traducir_dinamico(mensaje))
-            if porcentaje in (25, 50, 75, 100):
-                wx.CallAfter(hablar_async, mensaje, False)
-
-        try:
-            ruta = descargar_actualizacion(info, destino, callback=progreso)
-            wx.CallAfter(self._preguntar_aplicar_actualizacion_programa, info, ruta)
-        except Exception as exc:
-            wx.CallAfter(
-                self._mostrar_error_detallado,
-                "No se pudo descargar la actualización",
-                "No se pudo descargar la actualización. Verifique su conexión a Internet e inténtelo nuevamente.\n\n" + str(exc),
-                "Error descargando actualización",
-            )
-
-    def _preguntar_aplicar_actualizacion_programa(self, info, ruta):
-        mensaje = (
-            "La actualización está lista para instalarse.\n\n"
-            "El programa se cerrará por unos momentos para aplicar los cambios y se abrirá nuevamente de forma automática.\n\n"
-            "Por favor, no cierre ni apague el equipo durante este proceso."
-        )
-        hablar_async("Actualización descargada correctamente", limpiar=True)
-        respuesta = wx.MessageBox(
-            mensaje,
-            "Actualización descargada correctamente",
-            wx.OK | wx.CANCEL | wx.ICON_INFORMATION,
-        )
-        if respuesta != wx.OK:
-            self._mostrar_mensaje_accesible(
-                "Actualización pendiente",
-                traducir_formato("La actualización quedó descargada en:\n{ruta}", ruta=ruta),
-                wx.ICON_INFORMATION,
-                "Actualización pendiente",
-                False,
-            )
-            return
-
+    def _aplicar_actualizacion_descargada(self, info, ruta):
         try:
             script = crear_script_aplicacion(ruta, info.version)
         except Exception as exc:
@@ -2218,7 +2251,8 @@ class Ventana(wx.Frame):
 
         self._mostrar_mensaje_accesible(
             "Aplicando actualización",
-            "El programa se va a cerrar para aplicar los cambios. Se abrirá nuevamente cuando termine la actualización.",
+            "El programa se va a cerrar para aplicar los cambios. Se abrirá nuevamente cuando termine la actualización.\n\n"
+            "Por favor, no cierre ni apague el equipo durante este proceso.",
             wx.ICON_INFORMATION,
             "Aplicando actualización",
             False,

@@ -426,8 +426,26 @@ start "" "%APPDIR%\%EXE%" --actualizado {version_nueva}
 
 rem Actualizacion aplicada correctamente: se limpian los archivos temporales
 rem (la carpeta descomprimida y el ZIP descargado) para no dejar espacio ocupado.
+rem El ZIP puede quedar bloqueado un instante (por ejemplo, por el antivirus
+rem revisandolo justo despues de usarlo), asi que se reintenta varias veces
+rem antes de rendirse; si aun asi no se puede, el programa vuelve a intentarlo
+rem la proxima vez que se abra o se aplique otra actualizacion.
 if exist "%EXTRACT%" rmdir /s /q "%EXTRACT%" >> "%LOG%" 2>&1
-if exist "%ZIP%" del /q "%ZIP%" >> "%LOG%" 2>&1
+
+set "INTENTOS_BORRAR_ZIP=0"
+:reintentar_borrar_zip
+if not exist "%ZIP%" goto zip_borrado
+del /q "%ZIP%" >> "%LOG%" 2>&1
+if exist "%ZIP%" (
+    set /a INTENTOS_BORRAR_ZIP+=1
+    if !INTENTOS_BORRAR_ZIP! LSS 15 (
+        ping -n 2 127.0.0.1 >nul
+        goto reintentar_borrar_zip
+    )
+    echo AVISO: no se pudo borrar el ZIP descargado despues de varios intentos. >> "%LOG%"
+)
+:zip_borrado
+
 exit /b 0
 
 :error

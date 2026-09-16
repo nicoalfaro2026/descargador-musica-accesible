@@ -260,3 +260,24 @@ VERSIÓN 1.8.3 - ECUALIZADOR EXPERIMENTAL, REPRODUCCIÓN RÁPIDA DESDE WINDOWS Y
 - Se agregó __whatsnew.1_8_3__body__ (sincronizado en los seis idiomas) y NOVEDADES_VERSION["1.8.3"] con los cambios visibles de esta versión para la persona usuaria, sin detalles técnicos internos (el limitador de saturación, el mecanismo de registro de Windows, la particularidad de "pythonw.exe" en modo desarrollo, etc. quedan documentados aquí, no en las novedades ni en el manual).
 - Se regeneraron los PDF de los seis manuales a partir de los .txt actualizados con el mismo script generar_markdown_manual.py ya usado en 1.8.2 (se amplió su lista de encabezados esperados para incluir 7.1 y 7.2).
 - Verificado con tools/verificar_traducciones.py (978 claves sincronizadas en los 6 idiomas) y tools/verificar_textos_interfaz.py (sin textos fuera del catálogo) tras cada tanda de cambios.
+
+1.8.4 - Descarga silenciosa de actualizaciones y una sola pregunta para instalar (ui.py)
+- Antes, al detectar una actualización, el programa preguntaba primero si se quería descargar, y solo después de la descarga (que podía tardar bastante con un ZIP de casi 200 MB) preguntaba de nuevo si se quería instalar: dos preguntas separadas por una espera larga en el medio.
+- A pedido del desarrollador, ahora la actualización se descarga sola, en segundo plano, sin preguntar nada primero (tanto en la revisión automática al iniciar como en Ayuda > Buscar actualizaciones). Solo cuando la descarga termina aparece un único cartel con las novedades y los botones Aceptar / Más tarde; al aceptar, se instala de inmediato (ya no hay una segunda confirmación redundante como antes).
+- Si se elige "Más tarde", se borra el archivo descargado para no dejarlo ocupando espacio sin usarse.
+- Se refactorizaron _preguntar_descargar_actualizacion_programa, _descargar_actualizacion_programa/_hilo y _preguntar_aplicar_actualizacion_programa en un solo flujo nuevo: _descargar_actualizacion_programa_en_segundo_plano -> _descargar_actualizacion_programa_hilo -> _preguntar_instalar_actualizacion_descargada -> _aplicar_actualizacion_descargada.
+- Se agregaron 3 claves nuevas al catálogo de idiomas (982 en total, sincronizadas en los 6 idiomas) para el texto del cartel y el nombre accesible del botón, que ya no dicen "descargar" sino "instalar", para no confundir a quien usa lector de pantalla sobre lo que va a pasar al presionar Aceptar.
+
+1.8.4 - Reintento silencioso si la descarga en segundo plano falla (ui.py)
+- Si la descarga automática (la de la revisión al iniciar, no la manual desde el menú Ayuda) falla -por ejemplo, por una conexión lenta o inestable-, el programa no muestra ningún aviso: espera unos 170 segundos y lo vuelve a intentar solo, cuantas veces sea necesario, hasta lograrlo. Pensado especialmente para personas con conexiones poco confiables.
+- La revisión manual desde Ayuda > Buscar actualizaciones sigue avisando con un error si la descarga falla, ya que en ese caso la persona la pidió activamente y está esperando una respuesta.
+
+1.8.4 - Corrección: el ZIP descargado por el actualizador no se borraba siempre (actualizador_app.py, ui.py)
+- El desarrollador detectó que, después de aplicar una actualización, el ZIP descargado (de casi 200 MB) podía quedar sin borrarse en la carpeta temporal del actualizador (%LOCALAPPDATA%\DescargadorMusicaAccesible\Update\descarga), acumulando espacio en actualizaciones sucesivas.
+- Causa probable: el script generado por crear_script_aplicacion intentaba borrar el ZIP una sola vez, justo después de copiar los archivos nuevos; si en ese instante el antivirus u otro proceso lo tenía brevemente bloqueado, el borrado fallaba en silencio y no se reintentaba.
+- Se agregó un bucle de reintento (hasta 15 intentos, con una pequeña pausa entre cada uno) a esa parte del script generado.
+- Como respaldo adicional, cuando el programa recién actualizado se abre con éxito (bandera --actualizado), ahora también llama a limpiar_carpeta_temporal_actualizador() antes de mostrar el aviso de "Actualización completada", por si el script no pudo borrar el ZIP.
+- Probado con PRUEBA_ACTUALIZADOR_LOCAL.py: "Se borró el ZIP de prueba al terminar (limpieza): SÍ", sin errores en el registro.
+
+1.8.4 - Revisión de actualizaciones al iniciar por defecto (configuracion.py)
+- Se cambió el valor predeterminado de "frecuencia_actualizaciones" de "Cada semana" a "Al iniciar", a pedido del desarrollador, para que el programa revise si hay una versión nueva cada vez que se abre (sobre todo útil junto con la descarga silenciosa: cuanto más seguido revisa, antes tiene la actualización lista sin que la persona lo note). Solo afecta a instalaciones nuevas o a quien no haya cambiado nunca esta opción; quien ya la tenga configurada de otra forma no se ve afectado.

@@ -39,7 +39,7 @@ CONFIG_DEFECTO = {
     "carpeta": CARPETA_DEFECTO,
     "formato": FORMATO_DEFECTO,
     "calidad": CALIDAD_DEFECTO,
-    "frecuencia_actualizaciones": "Cada semana",
+    "frecuencia_actualizaciones": "Al iniciar",
     "ultima_revision_actualizaciones": "",
     "primera_revision_actualizaciones_realizada": False,
     "frecuencia_actualizaciones_motor": "Cada semana",
