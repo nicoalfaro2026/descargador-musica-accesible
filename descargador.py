@@ -9,11 +9,6 @@ from datetime import datetime
 from pathlib import Path
 from urllib.parse import quote_plus
 
-try:
-    import yt_dlp
-except Exception:
-    yt_dlp = None
-
 from config import LOG_ARCHIVO, MAX_RESULTADOS_BUSQUEDA
 from i18n import traducir, traducir_formato
 from motor_ytdlp import argumentos_runtime_javascript_cli, buscar_motor_descarga
@@ -35,6 +30,31 @@ from utils import (
     formato_velocidad,
     limpiar_texto_consola,
 )
+
+
+_yt_dlp_modulo = None
+_yt_dlp_intentado = False
+
+
+def _obtener_yt_dlp():
+    """Importa la librería interna yt-dlp recién la primera vez que se necesita.
+
+    Antes se importaba al cargar este archivo (es decir, al abrir el programa),
+    aunque el usuario no fuera a descargar nada todavía. Como yt-dlp es una
+    librería grande, eso hacía más lenta la apertura del programa sin ninguna
+    necesidad. Ahora se importa una sola vez, la primera vez que realmente se
+    intenta extraer información con ella, y el resultado queda guardado para
+    las siguientes veces.
+    """
+    global _yt_dlp_modulo, _yt_dlp_intentado
+    if not _yt_dlp_intentado:
+        _yt_dlp_intentado = True
+        try:
+            import yt_dlp as _modulo_yt_dlp
+            _yt_dlp_modulo = _modulo_yt_dlp
+        except Exception:
+            _yt_dlp_modulo = None
+    return _yt_dlp_modulo
 
 
 class DescargaCancelada(Exception):
@@ -1214,6 +1234,7 @@ class Descargador:
         No lee cookies del navegador en silencio porque eso sería invasivo para la privacidad.
         """
         opciones_extra = opciones_extra or {}
+        yt_dlp = _obtener_yt_dlp()
         if yt_dlp is None:
             raise RuntimeError(
                 "No está disponible la librería interna yt-dlp y tampoco se encontró el motor externo yt-dlp.exe."

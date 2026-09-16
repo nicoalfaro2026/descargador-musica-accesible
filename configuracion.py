@@ -39,6 +39,7 @@ CONFIG_DEFECTO = {
     "carpeta": CARPETA_DEFECTO,
     "formato": FORMATO_DEFECTO,
     "calidad": CALIDAD_DEFECTO,
+    "pestana_inicial": "buscar",
     "frecuencia_actualizaciones": "Al iniciar",
     "ultima_revision_actualizaciones": "",
     "primera_revision_actualizaciones_realizada": False,
@@ -49,8 +50,6 @@ CONFIG_DEFECTO = {
     "ultima_revision_actualizaciones_motor": "",
     "primera_revision_actualizaciones_motor_realizada": False,
     "sonidos_activados": True,
-    "sonido_inicio": True,
-    "sonido_cierre": True,
     "sonido_descarga": True,
     "sonido_error": True,
     "reproductor_volumen_inicial": "50%",
@@ -93,8 +92,6 @@ def _normalizar_configuracion(datos):
         "primera_revision_actualizaciones_motor_realizada",
         "actualizar_motor_silenciosamente",
         "sonidos_activados",
-        "sonido_inicio",
-        "sonido_cierre",
         "sonido_descarga",
         "sonido_error",
         "reproductor_anunciar_posicion_al_pausar",
@@ -110,6 +107,9 @@ def _normalizar_configuracion(datos):
 
     if configuracion["frecuencia_actualizaciones_motor"] not in FRECUENCIAS_ACTUALIZACION:
         configuracion["frecuencia_actualizaciones_motor"] = CONFIG_DEFECTO["frecuencia_actualizaciones_motor"]
+
+    if configuracion.get("pestana_inicial") not in ("url", "buscar", "canales"):
+        configuracion["pestana_inicial"] = CONFIG_DEFECTO["pestana_inicial"]
 
     canales_motor = {"stable", "nightly", "master"}
     canal_deseado = str(configuracion.get("canal_actualizaciones_motor", "stable") or "stable").strip().lower()

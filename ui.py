@@ -146,7 +146,7 @@ class Ventana(wx.Frame):
             self._seleccionar_idioma_inicial()
         establecer_idioma(self.configuracion.get("idioma", "es"))
         self._aplicar_preferencias_descargador()
-        self.SetTitle(f"{traducir(APP_NOMBRE)} v{VERSION} - {traducir('Desarrollado por Nicolás Alfaro')}")
+        self.SetTitle(f"{traducir(APP_NOMBRE)} v{VERSION}")
         self._ultima_pestana_anunciada = None
         self._ultima_pestana_anunciada_tiempo = 0
         self._metadatos_enriquecidos = set()
@@ -178,7 +178,7 @@ class Ventana(wx.Frame):
             return
         self._bienvenida_anunciada = True
         mensaje = traducir_formato(
-            "{app}. Versión {version}. Desarrollado por Nicolás Alfaro. Bienvenido.",
+            "{app}. Versión {version}. Bienvenido.",
             app=APP_NOMBRE,
             version=VERSION,
         )
@@ -187,24 +187,35 @@ class Ventana(wx.Frame):
             self.SetFocus()
         except Exception:
             pass
-        self._sonido("inicio", esperar=True)
-        hablar_async(mensaje, limpiar=True)
+        # Solo se DICE "Bienvenido": el lector de pantalla ya anuncia por su
+        # cuenta, apenas aparece la ventana, el título (que incluye el nombre
+        # del programa y la versión), así que repetir todo eso en voz se
+        # escuchaba dos veces seguidas. El texto completo sigue mostrándose
+        # en la barra de estado para quien lo lea de forma visual.
+        hablar_async(traducir("Bienvenido."), limpiar=True)
 
         # No mover el foco mientras NVDA está pronunciando la presentación.
-        wx.CallLater(5200, self._finalizar_inicio_accesible)
+        # El mensaje ahora es solo "Bienvenido." (una palabra), muchísimo más
+        # corto que antes, así que este número se pudo bajar bastante.
+        # IMPORTANTE: probar con el lector de pantalla real (incluida una
+        # velocidad de voz lenta) antes de publicar; si la bienvenida se
+        # corta, volver a subir este número.
+        wx.CallLater(1500, self._finalizar_inicio_accesible)
 
     def _finalizar_inicio_accesible(self):
         if self._cerrando:
             return
         try:
             self.SetStatusText(traducir("Listo"))
-            self.campo_url.SetFocus()
+            self._enfocar_pestana_inicial()
         except Exception:
             pass
 
         # Los avisos posteriores comienzan cuando la bienvenida ya terminó.
-        wx.CallLater(1000, self._notificar_resultado_actualizacion_arranque)
-        wx.CallLater(3000, self._programar_revision_actualizaciones)
+        # El programa ya está usable en este punto (el foco ya se movió al
+        # campo URL), así que estos avisos ya no necesitan tanto margen.
+        wx.CallLater(400, self._notificar_resultado_actualizacion_arranque)
+        wx.CallLater(1200, self._programar_revision_actualizaciones)
 
     def _notificar_resultado_actualizacion_arranque(self):
         try:
@@ -858,13 +869,36 @@ class Ventana(wx.Frame):
             control = self.campo_busqueda_coleccion
         self._ir_a_pestana(2, control=control)
 
+    def _enfocar_pestana_inicial(self):
+        """Al terminar la bienvenida, ubica el foco en la pestaña elegida en
+        Opciones (por defecto, Buscar en YouTube), sin anunciar nada extra
+        para no superponerse con el mensaje de bienvenida ni con "Listo".
+        """
+        pestana = self.configuracion.get("pestana_inicial", "buscar")
+        if pestana == "url":
+            indice, control = 0, self.campo_url
+        elif pestana == "canales":
+            if self.lista_videos_coleccion.IsEnabled() and self.videos_coleccion:
+                control = self.lista_videos_coleccion
+            elif self.lista_colecciones.IsEnabled() and self.resultados_colecciones:
+                control = self.lista_colecciones
+            else:
+                control = self.campo_busqueda_coleccion
+            indice = 2
+        else:
+            control = self.lista_resultados if self.lista_resultados.IsEnabled() and self.resultados_busqueda else self.campo_busqueda
+            indice = 1
+        # ChangeSelection() (y no SetSelection()) porque SetSelection() dispara
+        # el evento de cambio de pestaña, que anuncia por voz el nombre de la
+        # pestaña y su atajo — justo lo que no queríamos acá.
+        self.notebook.ChangeSelection(indice)
+        control.SetFocus()
+
     def _sonido(self, nombre, esperar=False):
         if not self.configuracion.get("sonidos_activados", True):
             return False
 
         mapa = {
-            "inicio": "sonido_inicio",
-            "cierre": "sonido_cierre",
             "descarga_completada": "sonido_descarga",
             "error": "sonido_error",
         }
@@ -903,7 +937,7 @@ class Ventana(wx.Frame):
                 hilo = threading.Thread(target=self._revisar_actualizaciones_inicio_hilo, daemon=True)
                 hilo.start()
             elif revisar_motor:
-                wx.CallLater(1500, self._continuar_revision_motor_post_programa)
+                wx.CallLater(500, self._continuar_revision_motor_post_programa)
         except Exception:
             pass
 
@@ -912,7 +946,7 @@ class Ventana(wx.Frame):
             if not getattr(self, "_revision_motor_arranque_pendiente", False):
                 return
             self._revision_motor_arranque_pendiente = False
-            wx.CallLater(1200, self._iniciar_revision_motor_arranque)
+            wx.CallLater(500, self._iniciar_revision_motor_arranque)
         except Exception:
             pass
 
@@ -1056,8 +1090,23 @@ class Ventana(wx.Frame):
         panel.SetScrollRate(0, 12)
         sizer = wx.BoxSizer(wx.VERTICAL)
 
+        sizer.Add(wx.StaticText(panel, label="Pestaña con la que iniciar el programa:"), 0, wx.ALL, 8)
+        pestanas_iniciales_ids = ["url", "buscar", "canales"]
+        pestanas_iniciales_etiquetas = ["Descargar por URL", "Buscar en YouTube", "Canales y listas"]
+        combo_pestana_inicial = wx.Choice(panel, choices=pestanas_iniciales_etiquetas)
+        pestana_inicial_actual = self.configuracion.get("pestana_inicial", "buscar")
+        if pestana_inicial_actual not in pestanas_iniciales_ids:
+            pestana_inicial_actual = "buscar"
+        combo_pestana_inicial.SetSelection(pestanas_iniciales_ids.index(pestana_inicial_actual))
+        combo_pestana_inicial.SetName("Pestaña con la que iniciar el programa")
+        sizer.Add(combo_pestana_inicial, 0, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, 8)
+
         sizer.Add(wx.StaticText(panel, label="Buscar actualizaciones del programa:"), 0, wx.ALL, 8)
         combo_frecuencia = wx.Choice(panel, choices=FRECUENCIAS_ACTUALIZACION)
+        # Se fija el orden de tabulación de forma explícita: sin esto, el
+        # control nuevo terminaba al final de la ventana (después de Cancelar)
+        # en vez de quedar primero, que es donde está ubicado visualmente.
+        combo_pestana_inicial.MoveBeforeInTabOrder(combo_frecuencia)
         frecuencia_actual = self.configuracion.get("frecuencia_actualizaciones", "Cada semana")
         if frecuencia_actual not in FRECUENCIAS_ACTUALIZACION:
             frecuencia_actual = "Cada semana"
@@ -1459,15 +1508,11 @@ class Ventana(wx.Frame):
 
         caja_sonidos = wx.StaticBox(panel, label="Sonidos individuales")
         sizer_sonidos = wx.StaticBoxSizer(caja_sonidos, wx.VERTICAL)
-        chk_inicio = wx.CheckBox(caja_sonidos, label="Sonido de inicio")
-        chk_cierre = wx.CheckBox(caja_sonidos, label="Sonido de cierre")
         chk_descarga = wx.CheckBox(caja_sonidos, label="Sonido de descarga finalizada")
         chk_error = wx.CheckBox(caja_sonidos, label="Sonido de error")
-        chk_inicio.SetValue(bool(self.configuracion.get("sonido_inicio", True)))
-        chk_cierre.SetValue(bool(self.configuracion.get("sonido_cierre", True)))
         chk_descarga.SetValue(bool(self.configuracion.get("sonido_descarga", True)))
         chk_error.SetValue(bool(self.configuracion.get("sonido_error", True)))
-        for chk in (chk_inicio, chk_cierre, chk_descarga, chk_error):
+        for chk in (chk_descarga, chk_error):
             sizer_sonidos.Add(chk, 0, wx.ALL, 4)
         sizer.Add(sizer_sonidos, 0, wx.EXPAND | wx.ALL, 8)
 
@@ -1572,13 +1617,14 @@ class Ventana(wx.Frame):
         # como respaldo, por si EVT_ACTIVATE no llegara a dispararse en algún caso.
         def _pedir_foco_inicial_opciones(evento_activar):
             if evento_activar.GetActive():
-                combo_frecuencia.SetFocus()
+                combo_pestana_inicial.SetFocus()
             evento_activar.Skip()
 
         dialogo.Bind(wx.EVT_ACTIVATE, _pedir_foco_inicial_opciones)
-        wx.CallLater(120, combo_frecuencia.SetFocus)
+        wx.CallLater(120, combo_pestana_inicial.SetFocus)
 
         if dialogo.ShowModal() == wx.ID_OK:
+            self.configuracion["pestana_inicial"] = pestanas_iniciales_ids[combo_pestana_inicial.GetSelection()]
             self.configuracion["frecuencia_actualizaciones"] = combo_frecuencia.GetStringSelection()
             self.configuracion["frecuencia_actualizaciones_motor"] = combo_frecuencia_motor.GetStringSelection()
             self.configuracion["actualizar_motor_silenciosamente"] = chk_actualizar_motor_auto.GetValue()
@@ -1603,8 +1649,6 @@ class Ventana(wx.Frame):
             indice_nav = combo_navegador.GetSelection()
             self.configuracion["youtube_navegador_cookies"] = navegadores_ids[indice_nav] if 0 <= indice_nav < len(navegadores_ids) else "auto"
             self.configuracion["sonidos_activados"] = chk_sonidos.GetValue()
-            self.configuracion["sonido_inicio"] = chk_inicio.GetValue()
-            self.configuracion["sonido_cierre"] = chk_cierre.GetValue()
             self.configuracion["sonido_descarga"] = chk_descarga.GetValue()
             self.configuracion["sonido_error"] = chk_error.GetValue()
             self.configuracion["reproductor_volumen_inicial"] = combo_volumen.GetStringSelection()
@@ -5474,26 +5518,30 @@ class Ventana(wx.Frame):
             self.Enable(False)
         except Exception:
             pass
-        self._sonido("cierre", esperar=True)
         hablar_cierre(
             traducir_formato(
-                "Gracias por utilizar {app}. Desarrollado por Nicolás Alfaro.",
+                "Gracias por utilizar {app}.",
                 app=APP_NOMBRE,
             ),
             limpiar=True,
         )
         # Mantener el proceso vivo mientras el lector termina la despedida.
-        # 1,8 segundos resultaron insuficientes en pruebas reales con NVDA.
+        # 1,8 segundos resultaron insuficientes en pruebas reales con NVDA, por
+        # eso antes se esperaban 5500 ms. El mensaje ahora es más corto (ya no
+        # incluye "Desarrollado por Nicolás Alfaro"), así que se acortó primero
+        # a 4000 ms y luego, a pedido, a 3000 ms. IMPORTANTE: probar con el
+        # lector de pantalla real (incluida una velocidad de voz lenta) antes
+        # de publicar; si la despedida se corta, volver a subir este número.
         try:
             self.SetStatusText(
                 traducir_formato(
-                    "Gracias por utilizar {app}. Desarrollado por Nicolás Alfaro.",
+                    "Gracias por utilizar {app}.",
                     app=APP_NOMBRE,
                 )
             )
         except Exception:
             pass
-        wx.CallLater(5500, self.Destroy)
+        wx.CallLater(3000, self.Destroy)
 
 
 def iniciar():

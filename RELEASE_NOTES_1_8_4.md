@@ -14,6 +14,16 @@ Esta versión mejora cómo se instalan las actualizaciones del programa: ahora s
 
 - Se corrigió un problema por el cual, después de aplicar una actualización, podía quedar sin borrarse el archivo ZIP descargado (de casi 200 MB) en una carpeta temporal del sistema.
 
+## Más rápido, y más simple al abrir y cerrar
+
+- El programa ahora abre y se cierra más rápido.
+- Se quitaron los sonidos al abrir y cerrar el programa. Los sonidos de descarga finalizada y de error se mantienen, y se pueden desactivar desde Herramientas > Opciones.
+- Los mensajes de bienvenida y de despedida ahora son más breves.
+
+## Nueva opción: pestaña con la que iniciar el programa
+
+- Desde Herramientas > Opciones ahora se puede elegir con qué pestaña iniciar el programa: Descargar por URL, Buscar en YouTube o Canales y listas. Por defecto, sigue iniciando en Buscar en YouTube.
+
 ## Contacto
 
 Desarrollado por Nicolás Alfaro.

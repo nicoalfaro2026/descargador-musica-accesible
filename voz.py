@@ -5,6 +5,7 @@ import queue
 import sys
 import threading
 import time
+from datetime import datetime
 from pathlib import Path
 
 _cola_voz = queue.Queue()
@@ -211,6 +212,25 @@ def _beep_respaldo():
         pass
 
 
+def _registrar_voz(mensaje):
+    """Guarda en el log cada texto que se manda a hablar, con hora exacta.
+
+    Esto es independiente del Visor de voz de NVDA: el Visor de voz no
+    muestra el texto que este programa le envía a NVDA por su API de
+    controlador (nvdaControllerClient), solo lo que NVDA genera por su
+    cuenta al leer la pantalla. Este registro permite confirmar, sin
+    depender de eso, exactamente qué dijo el programa y en qué momento.
+    """
+    try:
+        from config import LOG_ARCHIVO
+        LOG_ARCHIVO.parent.mkdir(parents=True, exist_ok=True)
+        with open(LOG_ARCHIVO, "a", encoding="utf-8") as archivo:
+            marca = datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")[:-3]
+            archivo.write(f"{marca} - [voz] {mensaje}\n")
+    except Exception:
+        pass
+
+
 def _vaciar_cola():
     try:
         while True:
@@ -231,6 +251,8 @@ def _trabajador_voz():
         texto = str(texto or "").strip()
         if not texto:
             continue
+
+        _registrar_voz(f"hablar_async(limpiar={limpiar}): {texto!r}")
 
         # 1) NVDA directo, solo si está disponible. Así no se mezcla con otra voz.
         if _hablar_nvda(texto, limpiar=limpiar):
@@ -277,6 +299,7 @@ def hablar_async(texto, limpiar=False, preferir_nvda=True):
 
     ahora = time.time()
     if texto == _ultimo_texto and (ahora - _ultimo_tiempo) < 0.8:
+        _registrar_voz(f"hablar_async: descartado por repetido dentro de 0.8s: {texto!r}")
         return
 
     _ultimo_texto = texto
@@ -310,6 +333,8 @@ def hablar_cierre(texto, limpiar=True):
 
     _ultimo_texto = texto
     _ultimo_tiempo = time.time()
+
+    _registrar_voz(f"hablar_cierre(limpiar={limpiar}): {texto!r}")
 
     # NVDA conserva el anuncio aunque la ventana se destruya inmediatamente.
     if _hablar_nvda(texto, limpiar=limpiar):
