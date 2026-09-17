@@ -24,6 +24,12 @@ Esta versión mejora cómo se instalan las actualizaciones del programa: ahora s
 
 - Desde Herramientas > Opciones ahora se puede elegir con qué pestaña iniciar el programa: Descargar por URL, Buscar en YouTube o Canales y listas. Por defecto, sigue iniciando en Buscar en YouTube.
 
+## ¿Sabías que esto recién empieza?
+
+Ya estamos preparando la próxima gran actualización: vas a poder sintonizar miles de radios de todo el mundo, guardarlas en tus favoritos, y vas a encontrar tus descargas mejor organizadas por carpeta según el canal o la lista de origen.
+
+¿Tenés una idea para una nueva función, o te gustaría probar las novedades antes que nadie y ayudarnos a encontrar errores antes de que lleguen a todo el mundo? Armamos un grupo chico de WhatsApp de beta testers de Descargador de Música Accesible, con cupo limitado a los primeros 10 en escribirnos. Escribinos a alfaronico8@gmail.com para sumarte o para contarnos tu idea: este programa crece gracias a lo que la comunidad pide.
+
 ## Contacto
 
 Desarrollado por Nicolás Alfaro.
